@@ -80,6 +80,10 @@
 #include "usb_serial.h"
 #endif
 
+#ifdef RAZOR_IMU
+#include "razor_imu.h"
+#endif
+
 #if ! defined CATASTROPHIC_BAT_LEVEL && defined LOW_BATTERY
 #warning "LOW_BATTERY deprecated. Renamed into CATASTROPHIC_BAT_LEVEL (in airframe file)"
 #define CATASTROPHIC_BAT_LEVEL LOW_BATTERY
@@ -446,6 +450,14 @@ void periodic_task_ap( void ) {
 #error "Only 20 and 60 allowed for CONTROL_RATE"
 #endif
 
+#ifdef RAZOR_IMU 
+  if (!_20Hz) {
+      /// razor_imu
+      estimator_update_state_razor_imu();
+      razor_imu_downlink();
+    }
+#endif // RAZOR_IMU
+
 #if CONTROL_RATE == 20
   if (!_20Hz)
 #endif
@@ -532,6 +544,11 @@ void init_ap( void ) {
   i2c2_init();
 #endif
 
+#ifdef RAZOR_IMU
+  razor_imu_init();
+#warning flight with RAZOR_IMU
+#endif
+
   /************* Links initialization ***************/
 #if defined USE_SPI
   spi_init();
@@ -584,6 +601,11 @@ void init_ap( void ) {
   traffic_info_init();
 #endif
 
+#ifdef RAZOR_IMU
+  //wait 10secs for init
+  sys_time_usleep(10000000);
+  razor_imu_offset_set();
+#endif
 }
 
 

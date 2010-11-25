@@ -39,6 +39,10 @@
 #include "sys_time.h"
 #include "airframe.h"
 
+#ifdef RAZOR_IMU
+#include "razor_imu.h"
+#endif // RAZOR_IMU
+
 #if defined IR_ESTIMATED_PHI_PI_4 || defined IR_ESTIMATED_PHI_MINUS_PI_4 || defined IR_ESTIMATED_THETA_PI_4
 #error "IR_ESTIMATED_PHI_PI_4 correction has been deprecated. Please remove the definition from your airframe config file"
 #endif
@@ -206,6 +210,7 @@ void ir_update(void) {
 }
 
 void estimator_update_state_infrared( void ) {
+  #if ! (defined RAZOR_IMU)
   estimator_phi  = atan2(ir_roll, ir_top) - ir_roll_neutral;
 
   estimator_theta  = atan2(ir_pitch, ir_top) - ir_pitch_neutral;
@@ -223,6 +228,7 @@ void estimator_update_state_infrared( void ) {
   if (estimator_theta >= 0)
     estimator_theta *= ir_correction_up;
   else
-    estimator_theta *= ir_correction_down;
-
+    estimator_theta *= ir_correction_down;    
+  #endif
+  
 }
