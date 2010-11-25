@@ -1,0 +1,2 @@
+export PAPARAZZI_HOME=`pwd`;
+export PAPARAZZI_SRC=`pwd`;

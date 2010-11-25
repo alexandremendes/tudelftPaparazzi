@@ -1529,10 +1529,23 @@
     <field name="mz" type="float" />
   </message>
 
-  <message name="IMU_ACCEL" id="202">
-    <field name="ax" type="float" unit="m/s-2"/>
-    <field name="ay" type="float" unit="m/s-2"/>
-    <field name="az" type="float" unit="m/s-2"/>
+  <message name="HB_FILTER" id="202">
+    <field name="time" type="float" unit="msecs"/>
+    <field name="ACC_X" type="float" unit="m/s-2"/>
+    <field name="ACC_Y" type="float" unit="m/s-2"/>
+    <field name="ACC_Z" type="float" unit="m/s-2"/>
+    <field name="GYRO_ROLL" type="float" unit="rad/s" alt_unit="deg/s" alt_unit_coef="57.29578"/>
+    <field name="GYRO_PITCH" type="float" unit="rad/s" alt_unit="deg/s" alt_unit_coef="57.29578"/>
+    <field name="GYRO_YAW" type="float" unit="rad/s" alt_unit="deg/s" alt_unit_coef="57.29578"/>
+    <field name="heading" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.29578" />
+    <field name="MAG_X" type="int16" unit="adc"/>
+    <field name="MAG_Y" type="int16" unit="adc"/>
+    <field name="MAG_Z" type="int16" unit="adc"/>
+    <field name="ACC_ANGLE_ROLL" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.29578" />
+    <field name="ACC_ANGLE_PITCH" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.29578" />
+    <field name="ACC_ANGLE_YAW" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.29578" />
+    <field name="ESTIMATOR_IR_PHI" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.29578" />
+    <field name="ESTIMATOR_IR_THETA" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.29578" />
   </message>
 
   <message name="IMU_GYRO_RAW" id="203">
