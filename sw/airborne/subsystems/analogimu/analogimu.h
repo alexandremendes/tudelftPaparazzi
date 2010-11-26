@@ -1,5 +1,5 @@
 /*
- * $Id: razor_imu.h $
+ * $Id: analogimu.h $
  *  
  * Copyright (C) 2010 Oliver Riesener, Christoph Niemann
  *
@@ -22,8 +22,8 @@
  *
  */
 
-/** \file razor_imu.h
- *  \brief Razor IMU Interface
+/** \file analogimu.h
+ *  \brief Analog IMU Interface
  *
  */
 
@@ -35,8 +35,8 @@
 #include "std.h"
 #include "airframe.h"
 
-extern float razor_roll_neutral;
-extern float razor_pitch_neutral;
+extern float imu_roll_neutral;
+extern float imu_pitch_neutral;
 
 
 // ADC0 Slots
@@ -53,15 +53,15 @@ extern float razor_pitch_neutral;
 #define ADC_ALT  (7+8)
 
 //functions
-void razor_imu_init( void );
-void razor_imu_update( void ); 
-void razor_imu_downlink( void );
+void analog_imu_init( void );
+void analog_imu_update( void ); 
+void analog_imu_downlink( void );
 void analogconversion( void );
 void matrix_transpose(float *c, float *a, short m, short n);
 void accel2euler( void );
 void accel2ms2( void );
-void estimator_update_state_razor_imu( void );
+void estimator_update_state_analog_imu( void );
 void gyro2rads( void );
-void razor_imu_offset_set( void );
+void analog_imu_offset_set( void );
 
-#endif // _RAZOR_IMU_H_
+#endif // _ANALOGIMU_H_

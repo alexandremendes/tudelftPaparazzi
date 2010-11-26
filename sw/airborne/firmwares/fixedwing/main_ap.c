@@ -80,7 +80,7 @@
 #include "usb_serial.h"
 #endif
 
-#ifdef RAZOR_IMU
+#ifdef ANALOG_IMU
 #include "subsystems/analogimu/analogimu.h"
 #endif
 
@@ -450,13 +450,12 @@ void periodic_task_ap( void ) {
 #error "Only 20 and 60 allowed for CONTROL_RATE"
 #endif
 
-#ifdef RAZOR_IMU 
+#ifdef ANALOG_IMU 
   if (!_20Hz) {
-      /// razor_imu
-      estimator_update_state_razor_imu();
-      razor_imu_downlink();
+      estimator_update_state_analog_imu();
+      analog_imu_downlink();
     }
-#endif // RAZOR_IMU
+#endif // ANALOG_IMU
 
 #if CONTROL_RATE == 20
   if (!_20Hz)
@@ -544,9 +543,8 @@ void init_ap( void ) {
   i2c2_init();
 #endif
 
-#ifdef RAZOR_IMU
-  razor_imu_init();
-#warning flight with RAZOR_IMU
+#ifdef ANALOG_IMU
+  analog_imu_init();
 #endif
 
   /************* Links initialization ***************/
@@ -601,10 +599,10 @@ void init_ap( void ) {
   traffic_info_init();
 #endif
 
-#ifdef RAZOR_IMU
+#ifdef ANALOG_IMU
   //wait 10secs for init
   sys_time_usleep(10000000);
-  razor_imu_offset_set();
+  analog_imu_offset_set();
 #endif
 }
 

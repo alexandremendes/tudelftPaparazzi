@@ -1,5 +1,5 @@
 /*
- * $Id: razor_imu.h $
+ * $Id: analogimu.c $
  *  
  * Copyright (C) 2010 Oliver Riesener, Christoph Niemann
  *
@@ -22,8 +22,8 @@
  *
  */
 
-/** \file razor_imu.c
- *  \brief Razor IMU Routines
+/** \file analogimu.c
+ *  \brief Analog IMU Routines
  *
  */
 #if ! (defined SITL || defined HITL)
@@ -49,13 +49,13 @@
 
 // variables
 
-uint16_t razor_imu_offset[NB_ADC] = {0,};
+uint16_t analog_imu_offset[NB_ADC] = {0,};
 
 static struct adc_buf buf_adc[NB_ADC];
 int adc_average[16] = { 0 };
 
-float razor_roll_neutral = RadOfDeg(RAZOR_ROLL_NEUTRAL_DEFAULT);
-float razor_pitch_neutral = RadOfDeg(RAZOR_PITCH_NEUTRAL_DEFAULT);
+float imu_roll_neutral = RadOfDeg(IMU_ROLL_NEUTRAL_DEFAULT);
+float imu_pitch_neutral = RadOfDeg(IMU_PITCH_NEUTRAL_DEFAULT);
 
 #if ! (defined SITL || defined HITL)
 
@@ -63,7 +63,6 @@ float razor_pitch_neutral = RadOfDeg(RAZOR_PITCH_NEUTRAL_DEFAULT);
 /**
  * accel2ms2():
  *
- * \note RAZOR version
  * \return accel[ACC_X], accel[ACC_Y], accel[ACC_Z]  
  */
 void accel2ms2( void ) {
@@ -75,7 +74,6 @@ void accel2ms2( void ) {
  * gyro2rads():
  *
  * \return gyro[G_ROLL], gyro[G_PITCH], gyro[G_YAW] 
- * \note RAZOR version
  */
 void gyro2rads( void ) {
   /** 150 grad/sec 10Bit, 3,3Volt, 1rad = 2Pi/1024 => Pi/512 */
@@ -84,44 +82,42 @@ void gyro2rads( void ) {
   gyro[G_YAW]   = (float)(-adc_average[ADC_YAW]) / 60.1;
 }
 
-void razor_imu_init( void ) { 
-  adc_buf_channel(ADC_CHANNEL_RAZ_GROLL, &buf_adc[0], ADC_NB_SAMPLES);
-  adc_buf_channel(ADC_CHANNEL_RAZ_GPITCH, &buf_adc[1], ADC_NB_SAMPLES);
-  adc_buf_channel(ADC_CHANNEL_RAZ_GYAW, &buf_adc[2], ADC_NB_SAMPLES);
-  adc_buf_channel(ADC_CHANNEL_RAZ_ACCX, &buf_adc[5], ADC_NB_SAMPLES);
-  adc_buf_channel(ADC_CHANNEL_RAZ_ACCY, &buf_adc[6], ADC_NB_SAMPLES);
-  adc_buf_channel(ADC_CHANNEL_RAZ_ACCZ, &buf_adc[7], ADC_NB_SAMPLES);
+void analog_imu_init( void ) { 
+  adc_buf_channel(ADC_CHANNEL_IMU_GROLL, &buf_adc[0], ADC_NB_SAMPLES);
+  adc_buf_channel(ADC_CHANNEL_IMU_GPITCH, &buf_adc[1], ADC_NB_SAMPLES);
+  adc_buf_channel(ADC_CHANNEL_IMU_GYAW, &buf_adc[2], ADC_NB_SAMPLES);
+  adc_buf_channel(ADC_CHANNEL_IMU_ACCX, &buf_adc[5], ADC_NB_SAMPLES);
+  adc_buf_channel(ADC_CHANNEL_IMU_ACCY, &buf_adc[6], ADC_NB_SAMPLES);
+  adc_buf_channel(ADC_CHANNEL_IMU_ACCZ, &buf_adc[7], ADC_NB_SAMPLES);
   
 #if NB_ADC != 8
 #error "8 ADCs expected !"
 #endif
-
-  //kalman_hb_init(45);
   
 }
 
-void razor_imu_offset_set( void ) {
+void analog_imu_offset_set( void ) {
   uint8_t i;
   for(i = 0; i < NB_ADC - 1; i++) {
-    razor_raw[i] = buf_adc[i].sum / ADC_NB_SAMPLES;
-    razor_imu_offset[i] = razor_raw[i];
+    analog_raw[i] = buf_adc[i].sum / ADC_NB_SAMPLES;
+    analog_imu_offset[i] = analog_raw[i];
   }
-  razor_imu_offset[7] = razor_raw[7] + 528;// 553; // + Zero of z-acc (without gravity) needs to be adjusted
+  analog_imu_offset[7] = analog_raw[7] + 528;// 553; // + Zero of z-acc (without gravity) needs to be adjusted
 }
 /**
- * razor_imu_update():
+ * analog_imu_update():
  */
-void razor_imu_update( void ) {  
+void analog_imu_update( void ) {  
   uint8_t i;
   for(i = 0; i < NB_ADC; i++) {
-    razor_raw[i] = buf_adc[i].sum / ADC_NB_SAMPLES;
+    analog_raw[i] = buf_adc[i].sum / ADC_NB_SAMPLES;
   }
-  adc_average[ADC_ROLL]   = razor_raw[0] - razor_imu_offset[0];
-  adc_average[ADC_PITCH]  = razor_raw[1] - razor_imu_offset[1];
-  adc_average[ADC_YAW]    = razor_raw[2] - razor_imu_offset[2];
-  adc_average[ADC_ACCX] = razor_raw[5] - razor_imu_offset[5];
-  adc_average[ADC_ACCY] = razor_raw[6] - razor_imu_offset[6];
-  adc_average[ADC_ACCZ] = razor_raw[7] - razor_imu_offset[7];
+  adc_average[ADC_ROLL]   = analog_raw[0] - analog_imu_offset[0];
+  adc_average[ADC_PITCH]  = analog_raw[1] - analog_imu_offset[1];
+  adc_average[ADC_YAW]    = analog_raw[2] - analog_imu_offset[2];
+  adc_average[ADC_ACCX] = analog_raw[5] - analog_imu_offset[5];
+  adc_average[ADC_ACCY] = analog_raw[6] - analog_imu_offset[6];
+  adc_average[ADC_ACCZ] = analog_raw[7] - analog_imu_offset[7];
   accel2ms2();
   gyro2rads();
 }
@@ -131,14 +127,14 @@ volatile float g = 0.;
 
 // functions
 
-void razor_imu_downlink( void ) {  
+void analog_imu_downlink( void ) {  
   //uint8_t id = 0;
   //float time = GET_CUR_TIME_FLOAT();
   //time *= 1000;//secs to msecs
   //int mx = 0;
   //int my = 0;
   //int mz = 0;
-  //DOWNLINK_SEND_HB_FILTER( DefaultChannel,&time, &accel[ACC_X],&accel[ACC_Y],&accel[ACC_Z],&gyro[G_ROLL],&gyro[G_PITCH],&gyro[G_YAW],&heading,&mx,&my,&mz,&euler[EULER_ROLL],&euler[EULER_PITCH],&euler[EULER_YAW], &razor_roll_neutral, &razor_pitch_neutral );
+  //DOWNLINK_SEND_HB_FILTER( DefaultChannel,&time, &accel[ACC_X],&accel[ACC_Y],&accel[ACC_Z],&gyro[G_ROLL],&gyro[G_PITCH],&gyro[G_YAW],&heading,&mx,&my,&mz,&euler[EULER_ROLL],&euler[EULER_PITCH],&euler[EULER_YAW], &imu_roll_neutral, &imu_pitch_neutral );
 }
 
 
@@ -235,14 +231,14 @@ void accel2euler( void ) {
 }
 
 
-void estimator_update_state_razor_imu( void ) {
+void estimator_update_state_analog_imu( void ) {
 #undef ANGLE_FROM_ACCEL
 #ifdef ANGLE_FROM_ACCEL
-  estimator_phi = (float)(atan2f((float)((razor_raw[6]-510)),(float)(-(razor_raw[7]-510))));
-  estimator_theta = (float)(atan2f((float)(-(razor_raw[5]-510)),(float)(-(razor_raw[7]-510))));
+  estimator_phi = (float)(atan2f((float)((analog_raw[6]-510)),(float)(-(analog_raw[7]-510))));
+  estimator_theta = (float)(atan2f((float)(-(analog_raw[5]-510)),(float)(-(analog_raw[7]-510))));
 #else
 
-  razor_imu_update();
+  analog_imu_update();
   
   Matrix_update();
   Normalize();
@@ -250,9 +246,9 @@ void estimator_update_state_razor_imu( void ) {
   Euler_angles();
 
   // return euler angles to phi and theta
-  estimator_phi = euler[EULER_ROLL]-razor_roll_neutral;
+  estimator_phi = euler[EULER_ROLL]-imu_roll_neutral;
   //estimator_phi = angle[ANG_ROLL];
-  estimator_theta = euler[EULER_PITCH]-razor_pitch_neutral;
+  estimator_theta = euler[EULER_PITCH]-imu_pitch_neutral;
   //estimator_theta = angle[ANG_PITCH];
   estimator_psi = euler[EULER_YAW];
 

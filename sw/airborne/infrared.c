@@ -39,10 +39,6 @@
 #include "sys_time.h"
 #include "airframe.h"
 
-#ifdef RAZOR_IMU
-#include "razor_imu.h"
-#endif // RAZOR_IMU
-
 #if defined IR_ESTIMATED_PHI_PI_4 || defined IR_ESTIMATED_PHI_MINUS_PI_4 || defined IR_ESTIMATED_THETA_PI_4
 #error "IR_ESTIMATED_PHI_PI_4 correction has been deprecated. Please remove the definition from your airframe config file"
 #endif

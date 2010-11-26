@@ -1,5 +1,5 @@
 /*
- * $Id: razor_imu.h $
+ * $Id: analogimu_imu.h $
  *  
  * Copyright (C) 2010 Christoph Niemann
  *
@@ -22,13 +22,13 @@
  *
  */
 
-/** \file razor_util.h
- *  \brief Razor IMU Utilities
+/** \file analogimu_util.h
+ *  \brief Analog IMU Utilities
  *
  */
 
-#ifndef _RAZOR_UTIL_H_
-#define _RAZOR_UTIL_H_
+#ifndef _ANALOGIMU_UTIL_H_
+#define _ANALOGIMU_UTIL_H_
 
 #include "std.h"
 
@@ -53,16 +53,14 @@ extern volatile float accel[];
 extern volatile float angle[];
 /** magnet heading \todo heading ? */
 extern volatile float heading;
-/** kalman period, possible self tuned */
-extern volatile int kalman_period;
-/** razor_raw[] razor downlink arry */
-extern uint16_t razor_raw[];
+/** analog_raw[] analog downlink arry */
+extern uint16_t analog_raw[];
 
 extern volatile float gyro_to_zero[];
 
-extern bool_t razor_imu_reset( void );
+extern bool_t analog_imu_reset( void );
 
-void razor_delay( void );
+void analogimu_delay( void );
 
 
 #endif

@@ -50,17 +50,17 @@
   <!-- Configure the pinning of the ADC -->
 
   <section name="adc" prefix="ADC_CHANNEL_">
-    <define name="RAZ_GROLL" value="ADC_0"/>
-    <define name="RAZ_GPITCH" value="ADC_1"/>
-    <define name="RAZ_GYAW" value="ADC_2"/>
-    <define name="RAZ_ACCX" value="ADC_5"/>
-    <define name="RAZ_ACCY" value="ADC_6"/>
-    <define name="RAZ_ACCZ" value="ADC_7"/>
+    <define name="IMU_GROLL" value="ADC_0"/>
+    <define name="IMU_GPITCH" value="ADC_1"/>
+    <define name="IMU_GYAW" value="ADC_2"/>
+    <define name="IMU_ACCX" value="ADC_5"/>
+    <define name="IMU_ACCY" value="ADC_6"/>
+    <define name="IMU_ACCZ" value="ADC_7"/>
   </section>
 
   <!-- settings for the Analog IMU -->
 
-  <section name="RAZOR" prefix="RAZOR_">
+  <section name="IMU" prefix="IMU_">
     <define name="ROLL_NEUTRAL_DEFAULT" value="0" unit="deg"/>
     <define name="PITCH_NEUTRAL_DEFAULT" value="0" unit="deg"/>
   </section>
@@ -181,8 +181,8 @@
   </firmware>
   <!-- Carefull: add the location after!! -->
   <makefile location="after">
-      ap.CFLAGS += -DRAZOR_ROTATED
-      ap.CFLAGS += -DRAZOR_ZERO_AVERAGE
+      ap.CFLAGS += -DANALOGIMU_ROTATED
+      ap.CFLAGS += -DANALOGIMU_ZERO_AVERAGE
   </makefile>
 
 </airframe>

@@ -6,16 +6,10 @@
 #include "read_adc.h"
 #include "arduimu.h" 
 
-//#include "std.h"
-//#include "nav.h"
-//#include "estimator.h"
-//#include "autopilot.h"
-//#include "flight_plan.h"
-
-#ifdef RAZOR_IMU
+#ifdef ANALOG_IMU
 #include "analogimu.h"
 #include "analogimu_util.h"
-#endif // RAZOR_IMU
+#endif // ANALOG_IMU
 
 #include "dcm.h"
 /**
@@ -245,7 +239,7 @@ void Drift_correction(void)
 /**************************************************/
 void Accel_adjust(void)
 {
-  #ifndef RAZOR_ROTATED
+  #ifndef ANALOGIMU_ROTATED
     Accel_Vector[1] += Accel_Scale(speed_3d*Omega[2]);  // Centrifugal force on Acc_y = GPS_speed*GyroZ
     Accel_Vector[2] -= Accel_Scale(speed_3d*Omega[1]);  // Centrifugal force on Acc_z = GPS_speed*GyroY 
   #else
@@ -330,7 +324,7 @@ void Euler_angles(void)
     //pitch = -asin(DCM_Matrix[2][0]);
     //roll = atan2(DCM_Matrix[2][1],DCM_Matrix[2][2]);
     //yaw = atan2(DCM_Matrix[1][0],DCM_Matrix[0][0]);
-    #ifndef RAZOR_ROTATED
+    #ifndef ANALOGIMU_ROTATED
      euler[EULER_PITCH] = -asin(DCM_Matrix[2][0]);
      euler[EULER_ROLL] = atan2(DCM_Matrix[2][1],DCM_Matrix[2][2]);
     #else

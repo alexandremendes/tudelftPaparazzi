@@ -1,5 +1,5 @@
 /*
- * $Id: razor_imu.h $
+ * $Id: analogimu_util.c $
  *  
  * Copyright (C) 2010 Christoph Niemann
  *
@@ -44,7 +44,7 @@
 #include "analogimu_util.h" 
 
  
-uint16_t razor_raw[NB_ADC];
+uint16_t analog_raw[NB_ADC];
 
 // variables
 /** gyro rate in rad */
@@ -57,23 +57,15 @@ volatile float accel[ACC_LAST] = {0.};
 volatile float angle[ANG_LAST] = {0.};
 /** magnet heading \todo heading ? */
 volatile float heading;
-/** kalman period, possible self tuned */
-volatile int kalman_period = 0;
 
-
-// static void razor_util_init( void ) {
-// 
-//   
-// }
-
-void razor_delay( void ) {
+void analogimu_delay( void ) {
   volatile int i,j;
   for (i=0;i<1000;i++)
     for (j=0;j<1000;j++);
 }
 
-bool_t  razor_imu_reset( void ) {
- #ifndef RAZOR_ZERO_AVERAGE
+bool_t  analog_imu_reset( void ) {
+ #ifndef ANALOGIMU_ZERO_AVERAGE
   gyro_to_zero[GO_ROLL] = gyro[G_ROLL];
   gyro_to_zero[GO_PITCH] = gyro[G_PITCH];
   gyro_to_zero[GO_YAW] = gyro[G_YAW];
@@ -85,13 +77,13 @@ bool_t  razor_imu_reset( void ) {
   gyro_to_zero_temp[GO_PITCH] = gyro[G_PITCH];
   gyro_to_zero_temp[GO_YAW] = gyro[G_YAW];
   
-  razor_delay();
+  analogimu_delay();
   
   gyro_to_zero_temp[GO_ROLL] += gyro[G_ROLL];
   gyro_to_zero_temp[GO_PITCH] += gyro[G_PITCH];
   gyro_to_zero_temp[GO_YAW] += gyro[G_YAW];
   
-  razor_delay();
+  analogimu_delay();
   
   gyro_to_zero_temp[GO_ROLL] += gyro[G_ROLL];
   gyro_to_zero_temp[GO_PITCH] += gyro[G_PITCH];
