@@ -1,10 +1,10 @@
-#include <analogimu/wiring.h>
+#include "wiring.h"
 /* This file was automatically generated.  Do not edit! */
 void debug_print(char string[]);
 void startup_air(void);
 void debug_handler(byte message);
 void startup_ground(void);
-void loop();
+//void loop();
 #if USE_BAROMETER == 1
 extern long press_alt;
 extern long ground_alt;
@@ -26,7 +26,6 @@ extern byte renorm_sqrt_count;
 extern byte adc_constraints;
 extern byte gyro_sat_count;
 extern int G_Dt_max;
-extern int SENSOR_SIGN[];
 extern int SENSOR_SIGN[];
 extern volatile uint8_t analog_count[8];
 extern volatile uint16_t analog_buffer[8];

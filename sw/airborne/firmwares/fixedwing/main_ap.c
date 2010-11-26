@@ -81,7 +81,7 @@
 #endif
 
 #ifdef RAZOR_IMU
-#include "razor_imu.h"
+#include "subsystems/analogimu/analogimu.h"
 #endif
 
 #if ! defined CATASTROPHIC_BAT_LEVEL && defined LOW_BATTERY

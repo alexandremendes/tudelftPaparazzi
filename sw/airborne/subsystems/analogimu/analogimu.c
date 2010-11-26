@@ -34,15 +34,13 @@
 #include "downlink.h"
 #include "estimator.h"
 #include "ap_downlink.h"
-//#include "kalman_hb.h"
 #include "sys_time.h"
 
-//#include "diydrones/arduimu.h"
-#include "analogimu/dcm.h"
+#include "dcm.h"
 
-#include "razor_util.h"
+#include "analogimu_util.h"
 
-#include "razor_imu.h"
+#include "analogimu.h"
 
 #endif
 
@@ -134,13 +132,13 @@ volatile float g = 0.;
 // functions
 
 void razor_imu_downlink( void ) {  
-  uint8_t id = 0;
-  float time = GET_CUR_TIME_FLOAT();
-  time *= 1000;//secs to msecs
-  int mx = 0;
-  int my = 0;
-  int mz = 0;
-  DOWNLINK_SEND_HB_FILTER( DefaultChannel,&time, &accel[ACC_X],&accel[ACC_Y],&accel[ACC_Z],&gyro[G_ROLL],&gyro[G_PITCH],&gyro[G_YAW],&heading,&mx,&my,&mz,&euler[EULER_ROLL],&euler[EULER_PITCH],&euler[EULER_YAW], &razor_roll_neutral, &razor_pitch_neutral );
+  //uint8_t id = 0;
+  //float time = GET_CUR_TIME_FLOAT();
+  //time *= 1000;//secs to msecs
+  //int mx = 0;
+  //int my = 0;
+  //int mz = 0;
+  //DOWNLINK_SEND_HB_FILTER( DefaultChannel,&time, &accel[ACC_X],&accel[ACC_Y],&accel[ACC_Z],&gyro[G_ROLL],&gyro[G_PITCH],&gyro[G_YAW],&heading,&mx,&my,&mz,&euler[EULER_ROLL],&euler[EULER_PITCH],&euler[EULER_YAW], &razor_roll_neutral, &razor_pitch_neutral );
 }
 
 
@@ -244,12 +242,7 @@ void estimator_update_state_razor_imu( void ) {
   estimator_theta = (float)(atan2f((float)(-(razor_raw[5]-510)),(float)(-(razor_raw[7]-510))));
 #else
 
-  // angles for kalman_hb
   razor_imu_update();
-  
-  // run kalman_hb 20Hz = 50ms
-  unsigned int dt_kalman=50;
-  //chni: kalman_hb_run(dt_kalman);
   
   Matrix_update();
   Normalize();

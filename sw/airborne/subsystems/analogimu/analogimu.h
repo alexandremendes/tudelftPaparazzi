@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef _RAZOR_IMU_H_
-#define _RAZOR_IMU_H_
+#ifndef _ANALOGIMU_H_
+#define _ANALOGIMU_H_
 // types
 #define uint16_t short int
 

@@ -22,8 +22,8 @@
  *
  */
 
-/** \file razor_util.c
- *  \brief Razor IMU Utilities
+/** \file analogimu_util.c
+ *  \brief Analog IMU Utilities
  *
  */
 
@@ -37,11 +37,11 @@
 #include "flight_plan.h"
 
 
-#include "bomb.h"
+//#include "bomb.h"
 #include "airframe.h"
 #include "inter_mcu.h"
 
-#include "razor_util.h" 
+#include "analogimu_util.h" 
 
  
 uint16_t razor_raw[NB_ADC];

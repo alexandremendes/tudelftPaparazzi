@@ -13,8 +13,8 @@
 //#include "flight_plan.h"
 
 #ifdef RAZOR_IMU
-#include "../razor_imu.h"
-#include "../razor_util.h"
+#include "analogimu.h"
+#include "analogimu_util.h"
 #endif // RAZOR_IMU
 
 #include "dcm.h"
@@ -165,14 +165,11 @@ void Normalize(void)
 void Drift_correction(void)
 {
   //Compensation the Roll, Pitch and Yaw drift. 
-  float mag_heading_x;
-  float mag_heading_y;
   static float Scaled_Omega_P[3];
   static float Scaled_Omega_I[3];
   float Accel_magnitude;
   float Accel_weight;
   float Integrator_magnitude;
-  float tempfloat;
   // hwarm
     ground_course=gps_course/10.-180.;
     ground_speed=gps_gspeed/100.;

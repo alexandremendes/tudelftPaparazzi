@@ -62,5 +62,7 @@ extern volatile float gyro_to_zero[];
 
 extern bool_t razor_imu_reset( void );
 
+void razor_delay( void );
+
 
 #endif

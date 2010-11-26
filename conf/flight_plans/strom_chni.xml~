@@ -2,6 +2,7 @@
 
 <flight_plan alt="80" ground_alt="9" lat0="53.091700" lon0="8.660311" max_dist_from_home="200" name="Strom" qfu="270" security_height="50">
   <header>
+    #include "razor_util.h"
     #include "nav_line.h"
 </header>
   <waypoints>

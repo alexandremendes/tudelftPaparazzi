@@ -210,7 +210,6 @@ void ir_update(void) {
 }
 
 void estimator_update_state_infrared( void ) {
-  #if ! (defined RAZOR_IMU)
   estimator_phi  = atan2(ir_roll, ir_top) - ir_roll_neutral;
 
   estimator_theta  = atan2(ir_pitch, ir_top) - ir_pitch_neutral;
@@ -229,6 +228,5 @@ void estimator_update_state_infrared( void ) {
     estimator_theta *= ir_correction_up;
   else
     estimator_theta *= ir_correction_down;    
-  #endif
   
 }
