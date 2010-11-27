@@ -186,9 +186,9 @@
      
       ap.CFLAGS += -DGPS_USE_LATLONG
       
-      ap.CFLAGS += -DWIND_INFO -DSTRONG_WIND
+      //ap.CFLAGS += -DWIND_INFO -DSTRONG_WIND
 
-      sim.CFLAGS += -DWIND_INFO -DSTRONG_WIND
+      //sim.CFLAGS += -DWIND_INFO -DSTRONG_WIND
   </makefile>
 
 </airframe>
