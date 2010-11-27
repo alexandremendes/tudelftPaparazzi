@@ -22,6 +22,8 @@ sim.srcs += $(SRC_FIXEDWING)/infrared.c
 
 sim.srcs += $(SRC_ARCH)/sim_ir.c
 
+sim.srcs += $(SRC_ARCH)/sim_analogimu.c
+
 endif
 
 jsbsim.srcs += $(SRC_ARCH)/jsbsim_ir.c
