@@ -183,8 +183,6 @@
   <makefile location="after">
       ap.CFLAGS += -DANALOGIMU_ROTATED
       ap.CFLAGS += -DANALOGIMU_ZERO_AVERAGE
-     
-      ap.CFLAGS += -DGPS_USE_LATLONG
       
       ap.CFLAGS += -DWIND_INFO -DSTRONG_WIND
 
