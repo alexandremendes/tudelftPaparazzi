@@ -9,6 +9,19 @@ ap.srcs += $(SRC_FIXEDWING)/subsystems/analogimu/dcm.c $(SRC_FIXEDWING)/subsyste
 ap.srcs += $(SRC_FIXEDWING)/subsystems/analogimu/analogimu.c $(SRC_FIXEDWING)/subsystems/analogimu/analogimu_util.c
 endif
 
+# since there is currently no SITL sim for the Analog IMU, we use the infrared sim 
+
+ifeq ($(TARGET), sim)
+
+sim.CFLAGS += -DIR_ROLL_NEUTRAL_DEFAULT=0 
+
+sim.CFLAGS += -DIR_PITCH_NEUTRAL_DEFAULT=0 
+
+sim.CFLAGS += -DINFRARED
+sim.srcs += $(SRC_FIXEDWING)/infrared.c
 
 sim.srcs += $(SRC_ARCH)/sim_ir.c
+
+endif
+
 jsbsim.srcs += $(SRC_ARCH)/jsbsim_ir.c
