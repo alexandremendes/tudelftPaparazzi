@@ -1,5 +1,7 @@
 echo "Cleanup TUDelft SVN Version"
-make clean
+cd ../gitsvnpprz/
+make clean 2&>1 > tmp.txt
+rm tmp.txt
 rm -vrf ./conf/conf.xml.*-*
 git svn rebase
 git svn dcommit

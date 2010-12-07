@@ -1,7 +1,9 @@
 echo "Updating/Cleaning SVN"
+cd ../gitsvnpprz
 rm -vrf ./conf/conf.xml.*-*
 echo "Make Clean"
-make clean 2&>1 | grep 2139842398470129387401283947
+make clean 2&>1 > tmp.txt
+rm tmp.txt 
 echo "Rebase and Dcommit"
 git svn rebase
 git svn dcommit
