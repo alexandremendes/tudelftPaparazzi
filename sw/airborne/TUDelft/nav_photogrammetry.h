@@ -12,7 +12,7 @@ extern float photogrammetry_overlap;
 extern float photogrammetry_wind_direction;
 extern uint8_t photo_lines_completed;
 
-enum block_status {PRE_ENTRY, ENTRY, LINE_HEAD, RETURN, LINE_TAIL};
+enum block_status {ENTRY, LINE_HEAD, RETURN, LINE_TAIL};
 
 extern bool_t  nav_photogrammetry_init(uint8_t wp1, uint8_t nr_of_wp, float _photogrammetry_overlap, float _photogrammetry_sidelap, float _wind_threshold, float block_margin, bool_t new_block);
 extern bool_t  nav_photogrammetry_init_extra(uint8_t wp1, float _photogrammetry_overlap, float _photogrammetry_sidelap, float _wind_threshold, bool_t new_block);
