@@ -177,6 +177,14 @@ bool_t  nav_photogrammetry_init_extra(uint8_t wp1, float _photogrammetry_overlap
     Top_from = Top2;
     Top_to = Top;
    }
+   
+  float minimum_top_distance = 300;
+
+  if(fabs(Top_from.x - Top_to.x) < minimum_top_distance)
+   {
+    Top_from.x = Top_from.x - 0.5 * (minimum_top_distance -fabs(Top_from.x - Top_to.x));
+    Top_to.x = Top_to.x + 0.5 * (minimum_top_distance -fabs(Top_from.x - Top_to.x));
+   }
 
   if(Top.y < 0)
    {
@@ -205,7 +213,7 @@ bool_t  nav_photogrammetry_init_extra(uint8_t wp1, float _photogrammetry_overlap
     if(fabs(Top_from.y - Top_to.y) < 2* photogrammetry_sidestep)
      top_step = 0;
     else
-     top_step = (Top_to.x - (Top_from.x + 200)) / (Top_to.y - Top_from.y);
+     top_step = (Top_to.x - (Top_from.x + minimum_top_distance)) / (Top_to.y - Top_from.y);
    }  
   else
    {
@@ -215,7 +223,7 @@ bool_t  nav_photogrammetry_init_extra(uint8_t wp1, float _photogrammetry_overlap
     if(fabs(Top_from.y - Top_to.y) < 2* photogrammetry_sidestep)
      top_step = 0;
     else
-    top_step = ((Top_to.x - 200) - Top_from.x) / (Top_to.y - Top_from.y);
+    top_step = ((Top_to.x - minimum_top_distance) - Top_from.x) / (Top_to.y - Top_from.y);
    }
 
   // Photogrammetry
@@ -297,7 +305,7 @@ bool_t nav_photogrammetry(){
       {
         TranslateAndRotateFromWorldtoPhotogrammetry(&temp2, TransX, TransY);
         LINE_STOP_FUNCTION;
-        if((fabs(temp2.y) + 4 * fabs(photogrammetry_sidestep)) > fabs(ymax))
+        if((fabs(temp2.y) + 3 * fabs(photogrammetry_sidestep)) > fabs(ymax))
          {
           photo_lines_completed = photo_lines_completed + 2;
           final_line = TRUE;
@@ -466,7 +474,7 @@ bool_t  nav_photogrammetry_init(uint8_t wp1, uint8_t nr_of_wp, float _photogramm
   pre_photogrammetry_position.x = estimator_x;
   pre_photogrammetry_position.y = estimator_y;
 
-  block_status = PRE_ENTRY;
+  block_status = ENTRY;
   photogrammetry_radius =  50;
 
   //Determine photogrammetry coordinates for block corners
