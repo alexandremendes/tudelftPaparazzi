@@ -1,28 +1,35 @@
-echo "Warning: Did you commit first?"
-echo "Cleanup TUDelft Paparazzi Version"
+echo "Cleanup TUDelft SVN Version"
 make clean
 rm -vrf ./conf/conf.xml.*-*
-echo "Cleaning (Not updateing) ENAC Paparazzi Version"
-cd ../paparazzi3/
-svn revert -R ./
-svn status | sed 's/?   /rm -rf /' > rm.sh
+git svn rebase
+git svn dcommit
+cd ../contribute2pprz/
+git reset --hard 
+git status -s | sed 's/?? /rm -rf /' > rm.sh
 chmod +x ./rm.sh
 ./rm.sh
-cd ../ppz2svn/
-echo "Exporting TUDelft To Paparazzi"
-svn export ./ ../paparazzi3/ --force
-cd ../paparazzi3/
-svn status | grep 'TUDelft' | sed 's/?     /rm -rf /' > rm.sh
+git fetch paparazzi
+git pull paparazzi master
+cd ../gitsvnpprz/
+echo "Exporting TUDelft SVN To Tudelft git"
+cd ../tudelft
+git checkout master
+cd ../gitsvnpprz/
+git archive master | tar -x -C ../tudelft/
+echo "Exporting TUDelft SVN To Paparazzi"
+git archive master | tar -x -C ../contribute2pprz/ 
+cd ../contribute2pprz/
+git status -s | grep 'TUDelft' | sed 's/?? /rm -rf /' > rm.sh
 chmod +x ./rm.sh
 ./rm.sh
-rm -rf ./import.sh
-rm -rf ./export.sh
+rm ./rm.sh
 rm -rf ./sw/airborne/modules/onboardcam
 rm -rf ./sw/airborne/modules/opticflow
 rm -rf ./sw/airborne/boards/tiny_sense.h
 rm -rf ./sw/airborne/booz/aerovinci
+rm -rf ./conf/joysticks
 rm -rf ./conf/simulator/jsbsim/aircraft/LISA_BOOZ_BART.xml
-echo "Check this list manually: what files need to be added to ENAC server?" > ./add.sh
-svn status | sed 's/?       /svn add /' >> add.sh
+echo "# Add following SVN files to Paparazzi Github" > ./add.sh
+git status -s | grep -v add.sh | sed 's/?? /git add /' >> add.sh
 chmod +x ./add.sh
 gedit ./add.sh
