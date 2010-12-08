@@ -84,8 +84,7 @@
  
   <section name="BAT">
     <define name="VoltageOfAdc(adc)" value="(0.01688000f*(adc)+2)"/>
-<!--    <define name="MilliAmpereOfAdc(adc)" value="(504 - (adc)) * 124.0f"/> -->
-    <define name="MilliAmpereOfAdc(adc)" value="(adc) * 1.0f"/>
+    <define name="MilliAmpereOfAdc(adc)" value="((adc) - 505) * 124.0f"/>
 
     <define name="LOW_BAT_LEVEL" value="10.5" unit="V"/>
     <define name="CRITIC_BAT_LEVEL" value="10" unit="V"/>
