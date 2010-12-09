@@ -26,8 +26,8 @@
     <waypoint alt="70.0" name="CLIMB" x="211.3" y="7.7"/>
     <waypoint alt="100.0" name="PHOTO_FROM" x="-374.2" y="-91.8"/>
     <waypoint alt="70.0" name="PHOTO_TO" x="326.5" y="-750.9"/>
-    <waypoint alt="70.0" name="PHOTO_TOP_TRI" x="951.6" y="-69.2"/>
-    <waypoint alt="70.0" name="PHOTO_TOP_QUADR" x="-0.3" y="108.6"/>
+    <waypoint alt="70.0" name="PHOTO_TOP_1" x="951.6" y="-69.2"/>
+    <waypoint alt="70.0" name="PHOTO_TOP_2" x="-0.3" y="108.6"/>
   </waypoints>
   <exceptions>
     <exception cond="datalink_time > 60" deroute="Standby"/>
@@ -61,12 +61,12 @@
       <oval p1="1" p2="2" radius="nav_radius"/>
     </block>
     <block name="Photogrammetry" strip_button="P" strip_icon="survey.png">
-      <call fun="PhotogrammetryInit_extra(WP_PHOTO_FROM, 0.8f, 0.25f, 5.0f, 0)"/>
+      <call fun="PhotogrammetryInit(WP_PHOTO_FROM, 0.8f, 0.25f, 5.0f, 0)"/>
       <call fun="Photogrammetry()"/>
       <deroute block="Standby"/>
     </block>
     <block name="Photogrammetry_Reset">
-      <call fun="PhotogrammetryInit_extra(WP_PHOTO_FROM, 0.8f, 0.25f, 5.0f, 1)"/>
+      <call fun="PhotogrammetryInit(WP_PHOTO_FROM, 0.8f, 0.25f, 5.0f, 1)"/>
       <deroute block="Standby"/>
     </block>
     <block name="Land Right AF-TD" strip_button="Land right (wp AF-TD)" strip_icon="land-right.png">

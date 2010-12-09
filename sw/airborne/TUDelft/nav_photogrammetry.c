@@ -7,7 +7,7 @@
 float photogrammetry_height;
 float photogrammetry_overlap;
 float photogrammetry_sidestep;
-float photogrammetry_wind_direction;
+//float photogrammetry_wind_direction;
 float photogrammetry_radius;
 float photogrammetry_bb_offset;
 uint8_t photo_lines_completed = 0;
@@ -16,15 +16,15 @@ float wind_threshold;
 //bool_t new_block;
 float flight_lines_direction;
 float vertical_sign;
-float flight_line_correction;
+//float flight_line_correction;
 float from_step;
 float to_step;
-float right_step;
+//float right_step;
 float top_step;
 bool_t top_from_below_to;
 enum block_status block_status;
 bool_t weak_wind;
-struct XYPoint pre_photogrammetry_position;
+//struct XYPoint pre_photogrammetry_position;
 
 //block corners
 float xmin;
@@ -32,26 +32,6 @@ float xmax;
 float ymin;
 float ymax;
 float ytop_low;
-
-struct XYPoint left_corner;
-struct XYPoint bottom_corner;
-struct XYPoint top_corner;
-struct XYPoint right_corner;
-
-struct XYPoint BBox1;
-struct XYPoint BBox2;
-struct XYPoint BBox3;
-struct XYPoint BBox4;
-
-/*
-//AoI boundingbox corners
-struct XYPoint bb_left_corner;
-struct XYPoint bb_bottom_corner;
-struct XYPoint bb_top_corner;
-struct XYPoint bb_right_corner;
-*/
-
-
 
 #include "generated/flight_plan.h"
 #include "generated/airframe.h"
@@ -71,16 +51,14 @@ float TransY;
 
 static void Rot_Trans_Init(float Zrot, uint8_t wp1)
 {
-  T_sin = sin(-Zrot); //rotation around DOWN axis in NED coordinates. (i.e. rotation photogrammetry -> world)
-  T_cos = cos(-Zrot); //rotation around DOWN axis in NED coordinates.
-  TransX = waypoints[wp1].x; //Positive in direction photogramm -> world
-  TransY = waypoints[wp1].y; //Positive in direction photogramm -> world
-  //photogrammetry_T[1][0] = -sin(Angle);
-  //photogrammetry_T[1][1] = cos(Angle);
+  T_sin = sin(-Zrot); //rotation around DOWN axis in NED coordinates. (i.e. rotation photogrammetry -> world) CHECK uitleg
+  T_cos = cos(-Zrot); //rotation around DOWN axis in NED coordinates. CHECK uitleg
+  TransX = waypoints[wp1].x; //Positive in direction photogramm -> world CHECK uitleg
+  TransY = waypoints[wp1].y; //Positive in direction photogramm -> world CHECK uitleg
 }
 
 
-static void TranslateAndRotateFromPhotogrammetrytoWorld(struct XYPoint *p, float transX, float transY) //float PhotogramBoxOrient,
+static void TranslateAndRotateFromPhotogrammetrytoWorld(struct XYPoint *p, float transX, float transY) 
 {
 	float temp;
 
@@ -92,7 +70,7 @@ static void TranslateAndRotateFromPhotogrammetrytoWorld(struct XYPoint *p, float
 	p->y = p->y + transY;
 }
 
-static void TranslateAndRotateFromWorldtoPhotogrammetry(struct XYPoint *p, float transX, float transY) //float PhotogramBoxOrient,
+static void TranslateAndRotateFromWorldtoPhotogrammetry(struct XYPoint *p, float transX, float transY) 
 {
 	float temp;
 
@@ -102,44 +80,16 @@ static void TranslateAndRotateFromWorldtoPhotogrammetry(struct XYPoint *p, float
 	temp = p->x;
 	p->x = p->x*T_cos+p->y*-T_sin;
 	p->y = temp*T_sin+p->y*T_cos;
-	//p->x = p->x*photogrammetry_T[0][0]+p->y*photogrammetry_T[0][1];
-	//p->y = temp*photogrammetry_T[1][0]+p->y*photogrammetry_T[1][1];
 }
 
-/*
-static void TranslateAndRotateFromPhotogrammetrytoWorld(struct XYPoint *p, float transX, float transY) //float PhotogramBoxOrient,
+bool_t  nav_photogrammetry_init(uint8_t wp1, float _photogrammetry_overlap, float photogrammetry_sidelap, float _wind_threshold, bool_t new_block)
 {
-	float temp;
-
-	temp = p->x;
-	p->x = p->x*T_cos+p->y*-T_sin;
-	p->y = temp*T_sin+p->y*T_cos;
-
-	p->x = p->x + transX;
-	p->y = p->y + transY;
-}
-
-static void TranslateAndRotateFromWorldtoPhotogrammetry(struct XYPoint *p, float transX, float transY) //float PhotogramBoxOrient,
-{
-	float temp;
-
-	p->x = p->x - transX;
-	p->y = p->y - transY;
-
-	temp = p->x;
-	p->x = p->x*T_cos+p->y*T_sin;
-	p->y = temp*-T_sin+p->y*T_cos;
-	//p->x = p->x*photogrammetry_T[0][0]+p->y*photogrammetry_T[0][1];
-	//p->y = temp*photogrammetry_T[1][0]+p->y*photogrammetry_T[1][1];
-}*/
-
-bool_t  nav_photogrammetry_init_extra(uint8_t wp1, float _photogrammetry_overlap, float photogrammetry_sidelap, float _wind_threshold, bool_t new_block)
-{
-  // Eerst 3 punten inlezen (Base1, Base2 en Top)
-  // Photogrammetry flightdirection is Base1 - Base2 
-  // Daarna, met sidelap zoals bepaald, vlieglijnen verleggen richting Top
-  // Hoogte = hoogte van Base1
-  // Hiermee heb je vanaf grondstation invloed op vliegrichting (handmatig afstemmen op omgeving&windrichting)!!
+  // Eerst 4 punten inlezen (Photo_to, Photo_from, Top_1 en Top_2)
+  // Photogrammetry flightline direction is de baseline Photo_from --> Photo_to 
+  // Daarna, met sidelap zoals bepaald, vlieglijnen beide kanten op laten vliegen  
+  // De vlieglijnen worden aangepast aan de 'zijkanten' van het gebied, van photo_from/to naar de dichtstbijzijnde top
+  // Als een van beide toppen verder van de baseline ligt dan de ander, wordt de lengte van de vliegpaden aangepast
+  // Hiermee heb je vanaf grondstation invloed op vliegrichting en gebiedsgrens (handmatig afstemmen windrichting)!!
 
   // Define Photogrammetry Area and Altitude by 4 points
   struct XYPoint Base1;
@@ -189,12 +139,10 @@ bool_t  nav_photogrammetry_init_extra(uint8_t wp1, float _photogrammetry_overlap
   if(Top.y < 0)
    {
      vertical_sign = -1.0;
-     flight_line_correction = 0.0;
    }
   else 
    {
      vertical_sign = 1.0;
-     flight_line_correction = 180.0;
    }
 
   float viewing_ratio_height = ((float) PHOTOGRAMMETRY_SENSOR_HEIGHT) / ((float)PHOTOGRAMMETRY_FOCAL_LENGTH);
@@ -263,7 +211,7 @@ bool_t nav_photogrammetry(){
       temp2.y = (photo_lines_completed * photogrammetry_sidestep);
       temp2.x = photogrammetry_bb_offset + temp1.y * from_step;
       
-      if(fabs(temp1.y) > fabs(ytop_low) && top_from_below_to == TRUE) //7 dec: fabs(ytop_low) ipv ytop_low
+      if(fabs(temp1.y) > fabs(ytop_low) && top_from_below_to == TRUE)
        {
         temp1.x = fabs(ytop_low) * from_step + fabs(temp1.y-ytop_low)*top_step + photogrammetry_bb_offset;
         temp2.x = fabs(ytop_low) * from_step + fabs(temp1.y-ytop_low)*top_step + photogrammetry_bb_offset;
@@ -282,16 +230,16 @@ bool_t nav_photogrammetry(){
     case LINE_HEAD:
       temp1.y = (photo_lines_completed * photogrammetry_sidestep);
       temp1.x = photogrammetry_bb_offset + temp1.y * from_step;
-      if(fabs(temp1.y) > fabs(ytop_low) && top_from_below_to == TRUE) //7dec: fabs(ytop_low) ipv ytop_low
+      if(fabs(temp1.y) > fabs(ytop_low) && top_from_below_to == TRUE)
        {
-        temp1.x = fabs(ytop_low) * from_step + fabs(temp1.y-ytop_low)*top_step + photogrammetry_bb_offset; //7dec: 1 ipv 2 maal fabs(photogrammetry_radius)
+        temp1.x = fabs(ytop_low) * from_step + fabs(temp1.y-ytop_low)*top_step + photogrammetry_bb_offset;
        }
       temp2.y = (photo_lines_completed * photogrammetry_sidestep);
       temp2.x = xmax - photogrammetry_bb_offset + temp2.y * to_step;
   
       if(fabs(temp2.y) > fabs(ytop_low) && top_from_below_to == FALSE)
        {
-        temp2.x = xmax + ytop_low * to_step - photogrammetry_bb_offset + fabs(temp2.y-ytop_low) * top_step; //7 dec: fabs(temp2.y-ytop_low) ipv temp2.y-ytop_low
+        temp2.x = xmax + ytop_low * to_step - photogrammetry_bb_offset + fabs(temp2.y-ytop_low) * top_step; 
        }
       position_photogrammetry.x = estimator_x;
       position_photogrammetry.y = estimator_y;
@@ -340,7 +288,6 @@ bool_t nav_photogrammetry(){
          top_from_below_to == FALSE)
        {
         temp1.x = xmax + ytop_low * to_step - photogrammetry_bb_offset + fabs(temp2.y-ytop_low) * top_step;
-        //7 dec:((photo_lines_completed - 1) *photogrammetry_sidestep) hier boven vervangen door temp2.y
         temp2.x = temp1.x;
        }
 
@@ -366,7 +313,6 @@ bool_t nav_photogrammetry(){
       if(fabs(temp1.y) > fabs(ytop_low) && top_from_below_to == FALSE)
        {
         temp1.x = xmax + ytop_low * to_step - photogrammetry_bb_offset + fabs(temp1.y-ytop_low) * top_step;
-         //7 dec: ((photo_lines_completed - 1) * photogrammetry_sidestep) hierboven vervangen door temp1.y
        }
            
       if(fabs(temp2.y) > fabs(ytop_low) && top_from_below_to == TRUE)
@@ -418,7 +364,8 @@ bool_t nav_photogrammetry(){
 
 // ONDERSTAANDE ROUTINE WERKT! (nav_photogrammetry2 vereist 4 punten!)
 
-bool_t  nav_photogrammetry_init(uint8_t wp1, uint8_t nr_of_wp, float _photogrammetry_overlap, float photogrammetry_sidelap,  float _wind_threshold, float block_margin, bool_t new_block)
+/*
+bool_t  nav_photogrammetry_init_extra(uint8_t wp1, uint8_t nr_of_wp, float _photogrammetry_overlap, float photogrammetry_sidelap,  float _wind_threshold, float block_margin, bool_t new_block)
 {
   // Photogrammetry
   photogrammetry_height = waypoints[wp1].a;
@@ -509,7 +456,7 @@ bool_t  nav_photogrammetry_init(uint8_t wp1, uint8_t nr_of_wp, float _photogramm
  
  return FALSE;
 }
-
+*/
 
 /*
 // NAV_PHOTOGRAMMETRY_TRI_BB covers a rectangular area described by the bounding box around a triangle,
@@ -901,4 +848,22 @@ bool_t nav_photogrammetry2(){
   NavVerticalAutoThrottleMode(0);
   return TRUE;
 }
+*/
+
+/*
+struct XYPoint left_corner;
+struct XYPoint bottom_corner;
+struct XYPoint top_corner;
+struct XYPoint right_corner;
+
+struct XYPoint BBox1;
+struct XYPoint BBox2;
+struct XYPoint BBox3;
+struct XYPoint BBox4;
+
+//AoI boundingbox corners
+struct XYPoint bb_left_corner;
+struct XYPoint bb_bottom_corner;
+struct XYPoint bb_top_corner;
+struct XYPoint bb_right_corner;
 */

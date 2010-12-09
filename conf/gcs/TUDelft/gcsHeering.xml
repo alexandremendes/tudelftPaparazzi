@@ -25,7 +25,7 @@
         <papget type="message_field" display="text" x="10" y="420">
           <property name="scale" value="1"/>
           <property name="field" value="DC_SHOT:photo_nr"/>
-          <property name="format" value="Photo:%d"/>
+          <property name="format" value="Photo:%.0f"/>
           <property name="size" value="15."/>
           <property name="color" value="green"/>
         </papget>

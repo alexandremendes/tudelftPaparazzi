@@ -3,11 +3,11 @@
 <airframe name="TwinStarXSens">
 
   <servos>
-    <servo name="THROTTLE_LEFT" no="0" min="1100" neutral="1100" max="1900"/>
-    <servo name="THROTTLE_RIGHT" no="1" min="1100" neutral="1100" max="1900"/>
-    <servo name="AILERON_RIGHT" no="2" min="730" neutral="1530" max="2330"/>
-    <servo name="AILERON_LEFT" no="3" min="700" neutral="1500" max="2300"/>
-    <servo name="ELEVATOR" no="4" min="1180" neutral="1580" max="1980"/>
+    <servo name="THROTTLE_LEFT" no="1" min="1100" neutral="1100" max="1900"/>
+    <servo name="THROTTLE_RIGHT" no="0" min="1100" neutral="1100" max="1900"/>
+    <servo name="AILERON_RIGHT" no="2" min="2300" neutral="1550" max="700"/>
+    <servo name="AILERON_LEFT" no="3" min="2300" neutral="1550" max="700"/>
+    <servo name="ELEVATOR" no="4" min="1100" neutral="1500" max="1900"/>
   </servos>
 
   <commands>
@@ -84,7 +84,7 @@
  
   <section name="BAT">
     <define name="VoltageOfAdc(adc)" value="(0.01688000f*(adc)+2)"/>
-    <define name="MilliAmpereOfAdc(adc)" value="(504 - (adc)) * 124.0f"/>
+    <define name="MilliAmpereOfAdc(adc)" value="((adc) - 505) * 124.0f"/>
 
     <define name="LOW_BAT_LEVEL" value="10.5" unit="V"/>
     <define name="CRITIC_BAT_LEVEL" value="10" unit="V"/>
