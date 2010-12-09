@@ -1,6 +1,10 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="50" ground_alt="-1" lat0="52.204872" lon0="5.393987" max_dist_from_home="2500" name="Heering" qfu="90" security_height="125">
+<!-- 
+Delft             lat0="51.979506" lon0="4.390265"
+Smink, Amersfoort lat0="52.204872" lon0="5.393987" -->
+
+<flight_plan alt="50" ground_alt="-1" lat0="51.979506" lon0="4.390265" max_dist_from_home="2500" name="Heering" qfu="90" security_height="125">
   <header>
 #include "datalink.h"
 #include "./TUDelft/nav_photogrammetry.h"
