@@ -30,6 +30,16 @@
    gui_color="blue"
   />
   <aircraft
+   name="CHNI"
+   ac_id="7"
+   airframe="airframes/example_twog_analogimu.xml"
+   radio="radios/cockpitMM.xml"
+   telemetry="telemetry/default.xml"
+   flight_plan="flight_plans/versatile.xml"
+   settings="settings/tuning_imu.xml"
+   gui_color="blue"
+  />
+  <aircraft
    name="EasyStarTinySense"
    ac_id="1"
    airframe="airframes/TUDelft/EasyStarSenseNoIRXmlOnly.xml"
