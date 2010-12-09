@@ -28,32 +28,29 @@
  */
 #if ! (defined SITL || defined HITL)
 
+
+// Actual Inertial Measurements
+#include "subsystems/imu/imu_analog.h"
+
+// AHRS attitude computations
 #include "led.h"
-#include "mcu_periph/adc.h"
 #include "mcu_periph/uart.h"
 //#include "downlink.h"
-#include "estimator.h"
 //#include "ap_downlink.h"
+#include "estimator.h"
 #include "sys_time.h"
 
 #include "dcm.h"
-
 #include "analogimu_util.h"
-
 #include "analogimu.h"
 
 #endif
 
-#define NB_ADC 8
-#define ADC_NB_SAMPLES 16
-
 // variables
-
-uint16_t analog_imu_offset[NB_ADC] = {0,};
-
-static struct adc_buf buf_adc[NB_ADC];
+uint16_t analog_imu_offset[NB_ANALOG_IMU_ADC] = {0,};
 int adc_average[16] = { 0 };
 
+// remotely settable
 float imu_roll_neutral = RadOfDeg(IMU_ROLL_NEUTRAL_DEFAULT);
 float imu_pitch_neutral = RadOfDeg(IMU_PITCH_NEUTRAL_DEFAULT);
 
@@ -66,9 +63,9 @@ float imu_pitch_neutral = RadOfDeg(IMU_PITCH_NEUTRAL_DEFAULT);
  * \return accel[ACC_X], accel[ACC_Y], accel[ACC_Z]  
  */
 void accel2ms2( void ) {
-  accel[ACC_X] = (float)(adc_average[ADC_ACCX])/10.19;
-  accel[ACC_Y] = (float)(-adc_average[ADC_ACCY])/10.5;
-  accel[ACC_Z] = (float)(adc_average[ADC_ACCZ])/10.4;//chni: needs to be adjusted for earth gravity
+  accel[ACC_X] = (float)(adc_average[3]) * IMU_ACCEL_X_SENS;
+  accel[ACC_Y] = (float)(adc_average[4]) * IMU_ACCEL_Y_SENS;
+  accel[ACC_Z] = (float)(adc_average[5]) * IMU_ACCEL_Z_SENS;
 }
 /**
  * gyro2rads():
@@ -77,47 +74,42 @@ void accel2ms2( void ) {
  */
 void gyro2rads( void ) {
   /** 150 grad/sec 10Bit, 3,3Volt, 1rad = 2Pi/1024 => Pi/512 */
-  gyro[G_ROLL]  = (float)(adc_average[ADC_ROLL]) / 61.3588;
-  gyro[G_PITCH] = (float)(adc_average[ADC_PITCH]) / 57.96;
-  gyro[G_YAW]   = (float)(-adc_average[ADC_YAW]) / 60.1;
+  gyro[G_ROLL]  = (float)(adc_average[0]) * IMU_GYRO_P_SENS;
+  gyro[G_PITCH] = (float)(adc_average[1]) * IMU_GYRO_Q_SENS;
+  gyro[G_YAW]   = (float)(adc_average[2]) * IMU_GYRO_R_SENS;
 }
 
 void analog_imu_init( void ) { 
-  adc_buf_channel(ADC_CHANNEL_IMU_GROLL, &buf_adc[0], ADC_NB_SAMPLES);
-  adc_buf_channel(ADC_CHANNEL_IMU_GPITCH, &buf_adc[1], ADC_NB_SAMPLES);
-  adc_buf_channel(ADC_CHANNEL_IMU_GYAW, &buf_adc[2], ADC_NB_SAMPLES);
-  adc_buf_channel(ADC_CHANNEL_IMU_ACCX, &buf_adc[5], ADC_NB_SAMPLES);
-  adc_buf_channel(ADC_CHANNEL_IMU_ACCY, &buf_adc[6], ADC_NB_SAMPLES);
-  adc_buf_channel(ADC_CHANNEL_IMU_ACCZ, &buf_adc[7], ADC_NB_SAMPLES);
-  
-#if NB_ADC != 8
-#error "8 ADCs expected !"
-#endif
-  
+  imu_impl_init();
 }
 
 void analog_imu_offset_set( void ) {
   uint8_t i;
-  for(i = 0; i < NB_ADC - 1; i++) {
-    analog_raw[i] = buf_adc[i].sum / ADC_NB_SAMPLES;
-    analog_imu_offset[i] = analog_raw[i];
+
+  // read IMU
+  imu_periodic();
+
+  for(i = 0; i < NB_ANALOG_IMU_ADC; i++) {
+    analog_imu_offset[i] = analog_imu_values[i];
   }
-  analog_imu_offset[7] = analog_raw[7] + 528;// 553; // + Zero of z-acc (without gravity) needs to be adjusted
+
+  // Z channel should read
+  analog_imu_offset[5] +=  (9.81f / IMU_ACCEL_Z_SENS); 
 }
 /**
  * analog_imu_update():
  */
+
 void analog_imu_update( void ) {  
   uint8_t i;
-  for(i = 0; i < NB_ADC; i++) {
-    analog_raw[i] = buf_adc[i].sum / ADC_NB_SAMPLES;
+
+  // read IMU
+  imu_periodic();
+
+  for(i = 0; i < NB_ANALOG_IMU_ADC; i++) {
+    adc_average[i] -= analog_imu_offset[i];
   }
-  adc_average[ADC_ROLL]   = analog_raw[0] - analog_imu_offset[0];
-  adc_average[ADC_PITCH]  = analog_raw[1] - analog_imu_offset[1];
-  adc_average[ADC_YAW]    = analog_raw[2] - analog_imu_offset[2];
-  adc_average[ADC_ACCX] = analog_raw[5] - analog_imu_offset[5];
-  adc_average[ADC_ACCY] = analog_raw[6] - analog_imu_offset[6];
-  adc_average[ADC_ACCZ] = analog_raw[7] - analog_imu_offset[7];
+
   accel2ms2();
   gyro2rads();
 }
@@ -138,42 +130,6 @@ void analog_imu_downlink( void ) {
 }
 
 
-/**
- *  matrix transpose is safe to call with c == a if m = n
- *
- * \param [out] *c pointer to destination array 
- * \param [in] *a pointer to source array
- * \param [in] m dimention rows 
- * \param [in] n dimention cols
- * \return result is in *c, or error if a==c and m != n
- */
-void matrix_transpose(float *c, float *a, short m, short n)
-{
-    if ( a != c ) { // quick version
-        short i,j;
-        // [i][j] ... [m][n]
-        for ( i=0 ; i<m ; i++ ) {
-            for( j=0 ; j<n ; j++ ) {
-                // c[j][i] = a[i][j];
-                *(c+(m*j)+i) = *(a+(n*i)+j);
-            }
-        }
-    } else if ( m == n) { // save version
-        short i,j;
-        // [i][j] ... [m][n]
-        for ( i=0 ; i<m ; i++ ) {
-            for( j=0 ; j<n ; j++ ) {
-                /* c[j][i] = a[i][j]; */
-                float vc = *(c+(m*j)+i);
-                float va = *(a+(n*i)+j);
-                *(c+(m*j)+i) = va;
-                *(a+(n*i)+j) = vc;
-            }
-        }
-    } else {
-        // error illegal !!
-    }
-}
 
 /**
  * Minimalistic version to get angles from acceleration

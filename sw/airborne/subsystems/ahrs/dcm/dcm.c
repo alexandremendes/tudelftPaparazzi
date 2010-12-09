@@ -3,8 +3,7 @@
 #include "wiring.h"
 #include "vector.h"
 #include "matrix.h"
-#include "read_adc.h"
-#include "arduimu.h" 
+#include "arduimu.h"
 
 #ifdef ANALOG_IMU
 #include "analogimu.h"
@@ -251,28 +250,19 @@ void Accel_adjust(void)
 
 void Matrix_update(void)
 {
-  /* chni: Gyro_Vector[0]=Gyro_Scaled_X(read_adc(3)); //gyro x roll
-  Gyro_Vector[1]=Gyro_Scaled_Y(read_adc(4)); //gyro y pitch
-  Gyro_Vector[2]=Gyro_Scaled_Z(read_adc(5)); //gyro Z yaw
-  
-  Accel_Vector[0]=read_adc(0); // acc x
-  Accel_Vector[1]=read_adc(1); // acc y
-  Accel_Vector[2]=read_adc(2); // acc z */
-  
-  /* chni: Offset is set dynamic on Ground*/
-  Gyro_Vector[0]= -gyro_to_zero[G_ROLL] + gyro[G_ROLL]; 
-  Gyro_Vector[1]= -gyro_to_zero[G_PITCH]  + gyro[G_PITCH]; 
+  /* Offset is set dynamic on Ground*/
+  Gyro_Vector[0]= -gyro_to_zero[G_ROLL]   + gyro[G_ROLL];
+  Gyro_Vector[1]= -gyro_to_zero[G_PITCH]  + gyro[G_PITCH];
   Gyro_Vector[2]= -gyro_to_zero[G_PITCH]  + gyro[G_YAW];
   
-  Accel_Vector[0] = + 0.0 +  accel[ACC_X];
-  Accel_Vector[1] = - 0.286 + accel[ACC_Y];
+  Accel_Vector[0] = accel[ACC_X];
+  Accel_Vector[1] = accel[ACC_Y];
   Accel_Vector[2] = accel[ACC_Z];
-  
   
   
   Vector_Add(&Omega[0], &Gyro_Vector[0], &Omega_I[0]);  //adding proportional term
   Vector_Add(&Omega_Vector[0], &Omega[0], &Omega_P[0]); //adding Integrator term
-#define USE_GPS 
+//#define USE_GPS
 #ifdef USE_GPS
  if (gps_mode==3) Accel_adjust();    //Remove centrifugal acceleration.
 #endif
