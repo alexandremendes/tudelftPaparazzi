@@ -1,15 +1,37 @@
-void Euler_angles(void);
+
+// Inputs for DCM
+extern float Gyro_Vector[3];
+extern float Accel_Vector[3];
+
+// Integrate Inertial
 void Matrix_update(void);
-void Accel_adjust(void);
-void Drift_correction(void);
 void Normalize(void);
 
-/** defines for euler vector */
+// Input GPS/Pressure/Magnetometer data
+
+// Correct
+void Drift_correction(void);
+
+// Get outputs
+void Euler_angles(void);
 enum euler_idx_t { EULER_ROLL, EULER_PITCH, EULER_YAW, EULER_LAST };
+extern float euler[3];
 
-#define M_PI    3.14159265358979323846
+// DCM Parameters
 
-// variables
+//#define Kp_ROLLPITCH 0.2
+#define Kp_ROLLPITCH 0.015
+#define Ki_ROLLPITCH 0.000010
+#define Kp_YAW 1.2      	//High yaw drift correction gain - use with caution!
+#define Ki_YAW 0.00005
 
-/** output vector with angles in rad */
-extern float euler[EULER_LAST];
+#define GRAVITY 9.81
+
+
+#define OUTPUTMODE 1
+// Mode 0 = DCM integration without Ki gyro bias
+// Mode 1 = DCM integration with Kp and Ki
+// Mode 2 = direct accelerometer -> euler
+
+
+

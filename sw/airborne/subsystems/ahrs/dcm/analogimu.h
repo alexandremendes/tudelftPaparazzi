@@ -29,26 +29,18 @@
 
 #ifndef _ANALOGIMU_H_
 #define _ANALOGIMU_H_
-// types
-#define uint16_t short int
 
-#include "std.h"
-#include "generated/airframe.h"
+#include <inttypes.h>
 
 extern float imu_roll_neutral;
 extern float imu_pitch_neutral;
-
-
 
 //functions
 void analog_imu_init( void );
 void analog_imu_update( void );
 void analog_imu_downlink( void );
 void analogconversion( void );
-void accel2euler( void );
-void accel2ms2( void );
 void estimator_update_state_analog_imu( void );
-void gyro2rads( void );
 void analog_imu_offset_set( void );
 
 #endif // _ANALOGIMU_H_
