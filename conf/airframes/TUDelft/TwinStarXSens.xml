@@ -51,18 +51,14 @@
               int verwaarloos_deze_warning_CDW" value="0"/>
 
     <!-- Differential Aileron Depending on Brake Value -->
-    <let var="aileron_up_rate" 
-         value="(AILERON_RATE_UP   * (MAX_PPRZ - $brake_value)) + (AILERON_RATE_UP_BRAKE   * $brake_value)"/>
-    <let var="aileron_down_rate" 
-         value="(AILERON_RATE_DOWN * (MAX_PPRZ - $brake_value)) + (AILERON_RATE_DOWN_BRAKE * $brake_value)"/>
+    <let var="aileron_up_rate" value="(AILERON_RATE_UP   * (MAX_PPRZ - $brake_value)) + (AILERON_RATE_UP_BRAKE   * $brake_value)"/>
+    <let var="aileron_down_rate" value="(AILERON_RATE_DOWN * (MAX_PPRZ - $brake_value)) + (AILERON_RATE_DOWN_BRAKE * $brake_value)"/>
     <let var="aileron_up" value="(@ROLL  *  (((float)$aileron_up_rate) / ((float)MAX_PPRZ)))"/>
     <let var="aileron_down" value="(@ROLL  * (((float)$aileron_down_rate) / ((float)MAX_PPRZ)))"/>
     <let var="leftturn" value="(@ROLL >= 0? 1 : 0)"/>
     <let var="rightturn" value="(1 - $leftturn)"/>
-    <set servo="AILERON_LEFT" 
-         value="($aileron_up * $leftturn) + ($aileron_down * $rightturn) - $brake_value*(BRAKE_AILEVON)"/>
-    <set servo="AILERON_RIGHT" 
-         value="($aileron_up * $rightturn) + ($aileron_down * $leftturn) + $brake_value*(BRAKE_AILEVON)"/>
+    <set servo="AILERON_LEFT" value="($aileron_up * $leftturn) + ($aileron_down * $rightturn) - $brake_value*(BRAKE_AILEVON)"/>
+    <set servo="AILERON_RIGHT" value="($aileron_up * $rightturn) + ($aileron_down * $leftturn) + $brake_value*(BRAKE_AILEVON)"/>
 
     <!-- Differential Thurst -->
     <set servo="THROTTLE_LEFT" value="@THROTTLE + @ROLL * (YAW_THRUST)"/>
@@ -102,13 +98,13 @@
   </section>
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
-    <define name="COURSE_PGAIN" value="-0.9"/>
-    <define name="COURSE_DGAIN" value="0.47"/>
-    <define name="COURSE_PRE_BANK_CORRECTION" value="0.22"/>
+    <define name="COURSE_PGAIN" value="-0.75"/>
+    <define name="COURSE_DGAIN" value="0.45"/>
+    <define name="COURSE_PRE_BANK_CORRECTION" value="0.935"/>
 
     <define name="ROLL_MAX_SETPOINT" value="0.8" unit="radians"/>
-    <define name="PITCH_MAX_SETPOINT" value="0.5" unit="radians"/>
-    <define name="PITCH_MIN_SETPOINT" value="-0.35" unit="radians"/>
+    <define name="PITCH_MAX_SETPOINT" value="0.4" unit="radians"/>
+    <define name="PITCH_MIN_SETPOINT" value="-0.275" unit="radians"/>
 
     <define name="PITCH_PGAIN" value="-11000"/>
     <define name="PITCH_DGAIN" value="0."/>
@@ -135,25 +131,25 @@
     <define name="AUTO_THROTTLE_LOITER_TRIM" value="1000."/>
     <define name="AUTO_THROTTLE_DASH_TRIM" value="-1500"/>
 
-    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.11" unit="%/(m/s)"/>
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.2" unit="%/(m/s)"/>
     <define name="AUTO_THROTTLE_PGAIN" value="0."/>
     <define name="AUTO_THROTTLE_IGAIN" value="0."/>
-    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.22"/>
+    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.175"/>
 
-    <define name="THROTTLE_SLEW_LIMITER" value="2" unit="s"/>
+    <define name="THROTTLE_SLEW_LIMITER" value="1" unit="s"/>
   </section>
 
   <section name="NAV">
-    <define name="NOMINAL_AIRSPEED" value="12." unit="m/s"/>
+    <define name="NOMINAL_AIRSPEED" value="15." unit="m/s"/>
     <define name="NAV_PITCH" value="0."/>
     <define name="NAV_GLIDE_PITCH_TRIM" value="0."/>
     <define name="DEFAULT_CIRCLE_RADIUS" value="75."/>
-    <define name="CARROT" value="5." unit="s"/>
+    <define name="CARROT" value="6." unit="s"/>
     <define name="AGR_CLIMB_PITCH" value="0."/> <!-- Needed For OSAMNav -->
   </section>
  
   <section name="DIGITAL_CAMERA" prefix="DC_">
-    <define name="AUTOSHOOT_QUARTERSEC_PERIOD" value="6" unit="quarter_second"/>
+    <define name="AUTOSHOOT_QUARTERSEC_PERIOD" value="8" unit="quarter_second"/>
     <define name="AUTOSHOOT_METER_GRID" value="50" unit="meter"/>
   </section>
 
@@ -169,14 +165,14 @@
       <define name="LED_6_BANK" value="0"/>
       <define name="LED_6_PIN" value="15"/>
 
-      <define name="USE_AD0"  />
-      <define name="USE_AD0_3" />
+      <define name="USE_AD0"/>
+      <define name="USE_AD0_3"/>
       <define name="ADC_6" value="\"AdcBank0(3)\""/>
     </target>
 
     <subsystem name="telemetry" type="xbee_api">
-      <param name="MODEM_UART_NR" value="0" />
-      <param name="MODEM_BAUD" value="B9600" />
+      <param name="MODEM_UART_NR" value="0"/>
+      <param name="MODEM_BAUD" value="B9600"/>
     </subsystem>
     <subsystem name="control"/>
     <subsystem name="navigation" type="extra"/>
@@ -189,7 +185,7 @@
       <define name="RADIO_LED" value="2"/>
       <define name="USE_AD1_5" value="1"/>
       <define name="USE_AD1" value="1"/>
-      <param name="ACTUATORS" value="TUDelft/actuators_ppm_fasst" />
+      <param name="ACTUATORS" value="TUDelft/actuators_ppm_fasst"/>
     </target>
     <subsystem name="radio_control" type="ppm"/>
   </firmware>
@@ -202,29 +198,29 @@
       <flag name="DC_SHUTTER_LED" value="6"/>
    </load>
    <load name="adc_generic.xml">
-      <flag name="ADC_GENERIC_NB_SAMPLES" value="32" />
-      <flag name="ADC_CHANNEL_GENERIC1" value="ADC_6" /> <!-- e.g. current sensor -->
-      <define name="ADC_CHANNEL_GENERIC1" value="ADC_6" /> <!-- e.g. current sensor -->
+      <flag name="ADC_GENERIC_NB_SAMPLES" value="32"/>
+      <flag name="ADC_CHANNEL_GENERIC1" value="ADC_6"/> <!-- e.g. current sensor -->
+      <define name="ADC_CHANNEL_GENERIC1" value="ADC_6"/> <!-- e.g. current sensor -->
    </load>
   </modules>
 
 <!-- --------------------------------------------------------------------------- -->
 
 
-  <section name="Photogrammetry" prefix="PHOTOGRAMMETRY_" >
+  <section name="Photogrammetry" prefix="PHOTOGRAMMETRY_">
     <!-- Camera Parameters -->
-    <define name="FOCAL_LENGTH" value="20" unit="mm" />
-    <define name="SENSOR_WIDTH" value="24" unit="mm" />
-    <define name="SENSOR_HEIGHT" value="13.5" unit="mm" />
+    <define name="FOCAL_LENGTH" value="20" unit="mm"/>
+    <define name="SENSOR_WIDTH" value="24" unit="mm"/>
+    <define name="SENSOR_HEIGHT" value="13.5" unit="mm"/>
 
     <!-- FlightPlan Parameters -->
-    <define name="OVERLAP" value="0.8" unit="PROCENT" />
-    <define name="SIDELAP" value="0.8" unit="PROCENT" />
-    <define name="HEIGHT" value="50" unit="m" />
+    <define name="OVERLAP" value="0.8" unit="PROCENT"/>
+    <define name="SIDELAP" value="0.8" unit="PROCENT"/>
+    <define name="HEIGHT" value="50" unit="m"/>
   </section>
 
 
-  <makefile location="after" >
+  <makefile location="after">
 
 ap.srcs += ./TUDelft/nav_photogrammetry.c	    
 
