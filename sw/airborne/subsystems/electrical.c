@@ -25,7 +25,7 @@ static struct {
 
 void electrical_init(void) {
   electrical.vsupply = 0;
-  electrical.current = 3500;
+  electrical.current = 0;
 
   adc_buf_channel(ADC_CHANNEL_VSUPPLY, &electrical_priv.vsupply_adc_buf, DEFAULT_AV_NB_SAMPLE);
 #ifdef ADC_CHANNEL_CURRENT
