@@ -1,13 +1,10 @@
 <!DOCTYPE airframe SYSTEM "../airframe.dtd">
 
 <!-- 
-     Funjet Multiplex (http://www.multiplex-rc.de/), Jeti ECO 25
-     Tiny 2.11 board (http://paparazzi.enac.fr/wiki/index.php/Tiny_v2)
-     PerkinElmer TPS334 IR Sensors
-     Tilted infrared sensor (http://paparazzi.enac.fr/wiki/index.php/Image:Tiny_v2_1_Funjet.jpg)
+     EasyStar + Ailerons
+     TinySense with embedded Infrared sensors + GPS
      XBee modem
-     Payload: Sensirion humidity/temp, VTI pressure/temp
-     K68, LEA 5
+     Payload: BlackFin DSP Camera connected to I2C
 -->
 
 <airframe name="EasyStarSense">
