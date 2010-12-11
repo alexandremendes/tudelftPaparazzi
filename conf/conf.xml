@@ -42,7 +42,7 @@
   <aircraft
    name="EasyStarTinySense"
    ac_id="1"
-   airframe="airframes/TUDelft/EasyStarSenseNoIRXmlOnly.xml"
+   airframe="airframes/TUDelft/EasyStarTinySense.xml"
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/TUDelft/telemetry_onboardcam.xml"
    flight_plan="flight_plans/TUDelft/opticflow_delft.xml"

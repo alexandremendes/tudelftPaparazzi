@@ -1,13 +1,13 @@
 #include "opticflow.h"
-#include "adc.h"
+#include "mcu_periph/adc.h"
 #include "generated/airframe.h"
 #include "generated/flight_plan.h"
-#include "nav.h"
+#include "subsystems/nav.h"
 
 #ifndef DOWNLINK_DEVICE
 #define DOWNLINK_DEVICE DOWNLINK_AP_DEVICE
 #endif
-#include "uart.h"
+#include "mcu_periph/uart.h"
 #include "messages.h"
 #include "downlink.h"
 #include "estimator.h"

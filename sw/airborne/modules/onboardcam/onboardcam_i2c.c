@@ -1,7 +1,7 @@
 #include BOARD_CONFIG
 
 #include "onboardcam.h"
-#include "adc.h"
+#include "mcu_periph/adc.h"
 #include "generated/flight_plan.h"
 #include "generated/airframe.h"
 #include "firmwares/fixedwing/stabilization/stabilization_attitude.h"
@@ -10,7 +10,7 @@
 #ifndef DOWNLINK_DEVICE
 #define DOWNLINK_DEVICE DOWNLINK_AP_DEVICE
 #endif
-#include "uart.h"
+#include "mcu_periph/uart.h"
 #include "messages.h"
 #include "downlink.h"
 #include "generated/periodic.h"
@@ -24,6 +24,7 @@
 // Status
 uint8_t onboardcam_status;
 uint8_t onboardcam_mode;
+uint8_t blackfin_mode = 0;
 
 // Unused but needed by settings
 uint16_t adc_onboardcama = 1;
@@ -32,7 +33,7 @@ uint16_t adc_onboardcamb = 2;
 // Init
 void init_onboardcam(void)
 {
-  ir_init();
+  infrared_init();
   onboardcam_mode = !IS_CAMERA;
   atmega48_init();
 }
@@ -97,19 +98,48 @@ static inline int unscale_from_range(uint8_t x, int range, int min, int max)
 /**********************************************************************
  *********************************************************************/
 
+enum AlgorithmeType { BF_HORIZON = 0, BF_OBSTACLES = 1 };
 
 void periodic_onboardcam(void)
 {
 	// Send and Receive BlackFun Data
-	to_atmega48[1] = scale_to_range(DegOfRad(estimator_phi), -MAX_ROLL_ANGLE, MAX_ROLL_ANGLE, MAX_I2C_BYTE);
-	to_atmega48[0] = scale_to_range(DegOfRad(estimator_theta), -MAX_PITCH_ANGLE, MAX_PITCH_ANGLE, MAX_I2C_BYTE);
+	if (blackfin_mode == 0)
+	{
+  	to_atmega48[0] = BF_HORIZON;    // Task: (Algorithm) Horizon=0, Obstacles=1
+	  to_atmega48[1] = 0;             // 0=max-min segmentation, 1=decision tree
+	  to_atmega48[2] = 4;             // Horizon: aantal samples: 4 = 1000 samples9 =14000
+	                                  // Obstacles: Threshold: 0 = meer grond detecteren, 9 = meer lucht
+	}
+	else if (blackfin_mode == 1)
+	{
+  	to_atmega48[0] = BF_HORIZON;    // Task: (Algorithm) Horizon=0, Obstacles=1
+	  to_atmega48[1] = 1;             // 0=max-min segmentation, 1=decision tree
+	  to_atmega48[2] = 4;             // Horizon: aantal samples: 4 = 1000 samples9 =14000
+	                                  // Obstacles: Threshold: 0 = meer grond detecteren, 9 = meer lucht
+	}
+	else if (blackfin_mode == 2)
+	{
+  	to_atmega48[0] = BF_OBSTACLES;    // Task: (Algorithm) Horizon=0, Obstacles=1
+	  to_atmega48[1] = 0;             // 0=max-min segmentation, 1=decision tree
+	  to_atmega48[2] = 4;             // Horizon: aantal samples: 4 = 1000 samples9 =14000
+	                                  // Obstacles: Threshold: 0 = meer grond detecteren, 9 = meer lucht
+	}
+	else
+	{
+  	to_atmega48[0] = BF_OBSTACLES;    // Task: (Algorithm) Horizon=0, Obstacles=1
+	  to_atmega48[1] = 1;             // 0=max-min segmentation, 1=decision tree
+	  to_atmega48[2] = 4;             // Horizon: aantal samples: 4 = 1000 samples9 =14000
+	                                  // Obstacles: Threshold: 0 = meer grond detecteren, 9 = meer lucht
+	}
+	to_atmega48[3] = scale_to_range(DegOfRad(estimator_theta), -MAX_PITCH_ANGLE, MAX_PITCH_ANGLE, MAX_I2C_BYTE);
+	to_atmega48[4] = scale_to_range(DegOfRad(estimator_phi), -MAX_ROLL_ANGLE, MAX_ROLL_ANGLE, MAX_I2C_BYTE);
 
 	atmega48_periodic();
 
 	// Infrared Attitude
 	if ( onboardcam_mode == IS_CAMERA )
 	{
-		ir_update(); //for mesages
+		infrared_update(); //for mesages
 		if (from_atmega48[2] > 50)
 		{
 			estimator_phi  = RadOfDeg(unscale_from_range(from_atmega48[1], MAX_I2C_BYTE, -MAX_ROLL_ANGLE, MAX_ROLL_ANGLE));
@@ -124,7 +154,7 @@ void periodic_onboardcam(void)
 	// Infrared Attitude
 	else	
 	{
-		ir_update();
+		infrared_update();
 		estimator_update_state_infrared();
 	}
 

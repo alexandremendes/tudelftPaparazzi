@@ -1,6 +1,6 @@
 #include BOARD_CONFIG
 #include "onboardcam.h"
-#include "adc.h"
+#include "mcu_periph/adc.h"
 #include "generated/flight_plan.h"
 #include "generated/airframe.h"
 #include "firmwares/fixedwing/stabilization/stabilization_attitude.h"
@@ -29,10 +29,11 @@ uint16_t adc_onboardcamb;
 uint8_t onboardcam_status;
 
 uint8_t onboardcam_mode;
+uint8_t blackfin_mode = 0;
 
 void init_onboardcam(void)
 {
-  ir_init();
+  infrared_init();
   onboardcam_mode = IS_CAMERA;
   adc_buf_channel(ADC_CHANNEL_ONBOARDCAMA, &buf_onboardcama, ADC_CHANNEL_ONBOARDCAMA_NB_SAMPLES);
   adc_buf_channel(ADC_CHANNEL_ONBOARDCAMB, &buf_onboardcamb, ADC_CHANNEL_ONBOARDCAMB_NB_SAMPLES);
@@ -53,7 +54,7 @@ void periodic_onboardcam(void)
 
 	if ( onboardcam_mode == IS_CAMERA )
 	{
-		ir_update(); //for mesages
+		infrared_update(); //for mesages
 		estimator_phi  = (adc_onboardcama-512.00f)/512.00f; //0=1rad 512=0 930=1rad
 		estimator_theta  =(adc_onboardcamb-512.00f)/512.00f;
 //		ir_roll_neutral = 0.00f;
@@ -61,7 +62,7 @@ void periodic_onboardcam(void)
 	}
 	else	// Infrared ATT
 	{
-		ir_update();
+		infrared_update();
 		estimator_update_state_infrared();
 //		ir_roll_neutral = 0.00f;
 //		ir_pitch_neutral = 0.00f;
@@ -107,8 +108,8 @@ void downlink_onboardcam(uint8_t channel)
 void start_onboardcam(void)
 {
   onboardcam_status = 1;
- LED_ON(5)
- LED_ON(1)
+  LED_ON(5)
+  LED_ON(1)
 }
 
 void stop_onboardcam(void)

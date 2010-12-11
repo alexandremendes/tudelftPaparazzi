@@ -31,13 +31,14 @@
 #define onboardcam_MODULE_H
 
 #include <inttypes.h>
-#include "infrared.h"
+#include "subsystems/sensors/infrared.h"
 
 // ADC Result
 extern uint16_t adc_onboardcama;
 extern uint16_t adc_onboardcamb;
 extern uint16_t adc_onboardcam_sim;
 extern uint8_t onboardcam_mode;
+extern uint8_t blackfin_mode;
 
 // On Board Settings 
 extern uint8_t onboardcam_status;

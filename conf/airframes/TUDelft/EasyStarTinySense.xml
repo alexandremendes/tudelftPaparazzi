@@ -306,9 +306,9 @@ ap.CFLAGS += -DADC_CHANNEL_IR2=$(ADC_IR2) -DUSE_$(ADC_IR2)
 ap.CFLAGS += -DADC_CHANNEL_IR_TOP=$(ADC_IR_TOP) -DUSE_$(ADC_IR_TOP)
 ap.CFLAGS += -DADC_CHANNEL_IR_NB_SAMPLES=$(ADC_IR_NB_SAMPLES)
 
-ap.srcs += $(SRC_FIXEDWING)/infrared.c
+ap.srcs += $(SRC_FIXEDWING)/subsystems/sensors/infrared.c
 
-sim.srcs += $(SRC_FIXEDWING)/infrared.c $(SRC_ARCH)/sim_ir.c
+sim.srcs += $(SRC_FIXEDWING)/subsystems/sensors/infrared.c $(SRC_ARCH)/sim_ir.c
   </makefile>
 
   <modules>

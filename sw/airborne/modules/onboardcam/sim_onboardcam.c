@@ -1,6 +1,6 @@
 #include BOARD_CONFIG
 #include "onboardcam.h"
-#include "adc.h"
+#include "mcu_periph/adc.h"
 #include "generated/flight_plan.h"
 #include "generated/airframe.h"
 #include "firmwares/fixedwing/stabilization/stabilization_attitude.h"
@@ -8,12 +8,12 @@
 #ifndef DOWNLINK_DEVICE
 #define DOWNLINK_DEVICE DOWNLINK_AP_DEVICE
 #endif
-#include "uart.h"
+#include "mcu_periph/uart.h"
 #include "messages.h"
 #include "downlink.h"
 #include "generated/periodic.h"
 
-#include "infrared.h"
+#include "subsystems/sensors/infrared.h"
 #include "estimator.h"
 
 #define IS_CAMERA 1
@@ -24,9 +24,10 @@ uint16_t adc_onboardcama;
 uint16_t adc_onboardcamb;
 uint8_t onboardcam_status;
 uint8_t onboardcam_mode;
+uint8_t blackfin_mode = 0;
 
 void init_onboardcam(void) {
-  ir_init();
+  infrared_init();
   onboardcam_mode = IS_CAMERA;
   adc_onboardcama = 512.00f;
   adc_onboardcamb = 512.00f;
@@ -44,7 +45,7 @@ void periodic_onboardcam(void) {
 	}
 	else	// Infrared ATT
 	{
-		ir_update();
+		infrared_update();
 		estimator_update_state_infrared();
 	}
 
