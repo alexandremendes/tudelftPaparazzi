@@ -82,7 +82,7 @@
   <aircraft
    name="Holiday50"
    ac_id="2"
-   airframe="airframes/TUDelft/holiday50.xml"
+   airframe="airframes/TU_Delft/holiday50.xml"
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/aerocomm.xml"
    flight_plan="flight_plans/TUDelft/EMAV2010.xml"
@@ -132,7 +132,7 @@
   <aircraft
    name="MicrojetBR"
    ac_id="3"
-   airframe="airframes/TUDelft/MicrojetBR.xml"
+   airframe="airframes/TU_Delft/MicrojetBR.xml"
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/versatile.xml"
@@ -142,17 +142,17 @@
   <aircraft
    name="MicrojetCDW"
    ac_id="4"
-   airframe="airframes/TUDelft/MicrojetCDW.xml"
+   airframe="airframes/TU_Delft/MicrojetCDW.xml"
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
    flight_plan="flight_plans/versatile.xml"
-   settings="settings/tuning_analog_imu.xml"
+   settings="settings/tuning_ins.xml"
    gui_color="#ffffffffffff"
   />
   <aircraft
    name="TINY_FW"
    ac_id="22"
-   airframe="airframes/TUDelft/yapa_xsens.xml"
+   airframe="airframes/TU_Delft/yapa_xsens.xml"
    radio="radios/cockpitSX.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/versatile.xml"
@@ -162,7 +162,7 @@
   <aircraft
    name="TUdelftTwinjetAirspeed"
    ac_id="19"
-   airframe="airframes/TUDelft/TUDelftTwinjetAirspeedXmlOnly.xml"
+   airframe="airframes/TUDelft/TUDelftTwinjetAirspeed.xml"
    radio="radios/TUDelft/wk2801.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/TUDelft/opticflow_delft.xml"
@@ -172,7 +172,7 @@
   <aircraft
    name="TUdelftTwinjetNOAirspeed"
    ac_id="20"
-   airframe="airframes/TUDelft/TUDelftTwinjetNOAirspeedXmlOnly.xml"
+   airframe="airframes/TUDelft/TUDelftTwinjetNOAirspeed.xml"
    radio="radios/TUDelft/wk2801.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/TUDelft/opticflow_delft.xml"
@@ -182,7 +182,7 @@
   <aircraft
    name="Trip50A"
    ac_id="14"
-   airframe="airframes/TUDelft/Trip50A.xml"
+   airframe="airframes/TU_Delft/Trip50A.xml"
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/TUDelft/versatile_delft.xml"
@@ -192,7 +192,7 @@
   <aircraft
    name="Trip50B"
    ac_id="15"
-   airframe="airframes/TUDelft/Trip50B.xml"
+   airframe="airframes/TU_Delft/Trip50B.xml"
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/TUDelft/versatile_delft.xml"
@@ -212,7 +212,7 @@
   <aircraft
    name="YAPA"
    ac_id="11"
-   airframe="airframes/TUDelft/yapa_xsens.xml"
+   airframe="airframes/TU_Delft/yapa_xsens.xml"
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/basic.xml"
