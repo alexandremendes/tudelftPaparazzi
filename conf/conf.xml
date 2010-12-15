@@ -144,7 +144,7 @@
    ac_id="4"
    airframe="airframes/TUDelft/MicrojetCDW.xml"
    radio="radios/TUDelft/mc22.xml"
-   telemetry="telemetry/TUDelft/fw_imu.xml"
+   telemetry="telemetry/default_fixedwing_imu.xml"
    flight_plan="flight_plans/versatile.xml"
    settings="settings/tuning_analog_imu.xml"
    gui_color="#ffffffffffff"
