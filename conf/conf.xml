@@ -144,9 +144,9 @@
    ac_id="4"
    airframe="airframes/TUDelft/MicrojetCDW.xml"
    radio="radios/TUDelft/mc22.xml"
-   telemetry="telemetry/aerocomm.xml"
-   flight_plan="flight_plans/TUDelft/test_vertical_control.xml"
-   settings="settings/TUDelft/tuning_energy.xml settings/TUDelft/tuning_hor.xml"
+   telemetry="telemetry/TUDelft/fw_imu.xml"
+   flight_plan="flight_plans/versatile.xml"
+   settings="settings/tuning_analog_imu.xml"
    gui_color="#ffffffffffff"
   />
   <aircraft
@@ -155,7 +155,7 @@
    airframe="airframes/TUDelft/yapa_xsens.xml"
    radio="radios/cockpitSX.xml"
    telemetry="telemetry/default.xml"
-   flight_plan="flight_plans/TUDelft/versatile_delft.xml"
+   flight_plan="flight_plans/versatile.xml"
    settings="settings/dc.xml settings/tuning.xml"
    gui_color="blue"
   />

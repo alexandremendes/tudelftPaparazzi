@@ -3,7 +3,7 @@
 <flight_plan alt="50" ground_alt="-1" lat0="51.979506" lon0="4.390265" max_dist_from_home="2500" name="DelftVersatile" qfu="90" security_height="50">
   <header>
 #include "datalink.h"
-#include "nav_line.h"
+#include "subsystems/navigation/nav_line.h"
 #include "fw_v_ctl_energy.h"
 </header>
   <waypoints>
