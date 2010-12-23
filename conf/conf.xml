@@ -6,7 +6,7 @@
    radio="radios/cockpitSX.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/basic.xml"
-   settings="settings/basic.xml"
+   settings=" settings/basic.xml"
    gui_color="blue"
   />
   <aircraft
@@ -16,7 +16,7 @@
    radio="radios/cockpitSX.xml"
    telemetry="telemetry/telemetry_booz2.xml"
    flight_plan="flight_plans/dummy.xml"
-   settings="settings/settings_booz2.xml settings/settings_booz2_ahrs_cmpl.xml"
+   settings=" settings/settings_booz2.xml settings/settings_booz2_ahrs_cmpl.xml"
    gui_color="white"
   />
   <aircraft
@@ -26,7 +26,7 @@
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/dummy.xml"
-   settings="settings/settings_booz2.xml"
+   settings=" settings/settings_booz2.xml"
    gui_color="blue"
   />
   <aircraft
@@ -56,7 +56,7 @@
    radio="radios/TUDelft/t12fg_5channel.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/TUDelft/versatile_delft.xml"
-   settings="settings/basic.xml"
+   settings=" settings/basic.xml"
    gui_color="#1084f3ce294a"
   />
   <aircraft
@@ -66,7 +66,7 @@
    radio="radios/cockpitSX.xml"
    telemetry="telemetry/hitl.xml"
    flight_plan="flight_plans/basic.xml"
-   settings="settings/basic.xml"
+   settings=" settings/basic.xml"
    gui_color="blue"
   />
   <aircraft
@@ -86,7 +86,7 @@
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/aerocomm.xml"
    flight_plan="flight_plans/TUDelft/EMAV2010.xml"
-   settings="settings/TUDelft/TuneHoliday.xml"
+   settings=" settings/TUDelft/TuneHoliday.xml"
    gui_color="#f6f611111111"
   />
   <aircraft
@@ -96,7 +96,7 @@
    radio="radios/cockpitSX.xml"
    telemetry="telemetry/telemetry_booz2.xml"
    flight_plan="flight_plans/dummy.xml"
-   settings="settings/settings_booz2.xml"
+   settings=" settings/settings_booz2.xml"
    gui_color="white"
   />
   <aircraft
@@ -136,7 +136,7 @@
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/versatile.xml"
-   settings="settings/light.xml settings/tune_agr_climb.xml settings/tuning.xml"
+   settings=" settings/light.xml settings/tune_agr_climb.xml settings/tuning.xml"
    gui_color="#f9f92d2d1515"
   />
   <aircraft
@@ -146,7 +146,7 @@
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
    flight_plan="flight_plans/versatile.xml"
-   settings="settings/tuning_ins.xml"
+   settings=" settings/tuning_ins.xml"
    gui_color="#ffffffffffff"
   />
   <aircraft
@@ -156,7 +156,7 @@
    radio="radios/cockpitSX.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/versatile.xml"
-   settings="settings/dc.xml settings/tuning.xml"
+   settings=" settings/dc.xml settings/tuning.xml"
    gui_color="blue"
   />
   <aircraft
@@ -166,7 +166,7 @@
    radio="radios/TUDelft/wk2801.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/TUDelft/opticflow_delft.xml"
-   settings="settings/TUDelft/opticflow.xml settings/TUDelft/TuneTwinjetAirspeed.xml"
+   settings=" settings/TUDelft/opticflow.xml settings/TUDelft/TuneTwinjetAirspeed.xml"
    gui_color="#ececabab1818"
   />
   <aircraft
@@ -176,7 +176,7 @@
    radio="radios/TUDelft/wk2801.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/TUDelft/opticflow_delft.xml"
-   settings="settings/TUDelft/TuneTwinjetNOAirspeed.xml"
+   settings=" settings/TUDelft/TuneTwinjetNOAirspeed.xml"
    gui_color="#ececabab1818"
   />
   <aircraft
@@ -196,7 +196,7 @@
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/TUDelft/versatile_delft.xml"
-   settings="settings/cam_pitch.xml settings/tuning.xml"
+   settings=" settings/cam_pitch.xml settings/tuning.xml"
    gui_color="#ffffb9b9aeae"
   />
   <aircraft
@@ -216,7 +216,7 @@
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/basic.xml"
-   settings="settings/TUDelft/tuning_xsens.xml"
+   settings=" settings/TUDelft/tuning_xsens.xml"
    gui_color="blue"
   />
 </conf>

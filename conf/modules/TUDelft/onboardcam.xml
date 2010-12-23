@@ -8,8 +8,8 @@
   <periodic fun="periodic_onboardcam()" start="start_onboardcam()" stop="stop_onboardcam()" autorun="TRUE"/>
   <makefile target="ap">
     <file name="onboardcam.c"/>
-    <flag name="USE_ADC_14"/>
-    <flag name="USE_ADC_3"/>
+    <define name="USE_ADC_14"/>
+    <define name="USE_ADC_3"/>
   </makefile>
   <makefile target="sim">
     <file name="sim_onboardcam.c"/>

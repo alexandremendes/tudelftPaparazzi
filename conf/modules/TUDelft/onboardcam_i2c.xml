@@ -15,8 +15,8 @@
   <makefile target="ap">
     <file name="onboardcam_i2c.c"/>
     <file name="atmega48.c"/>
-      <flag name="ATMEGA48_I2C_DEV" value="i2c0"/>
-      <flag name="USE_I2C0" value="1"/>
+      <define name="ATMEGA48_I2C_DEV" value="i2c0"/>
+      <define name="USE_I2C0" value="1"/>
 
   </makefile>
   <makefile target="sim">

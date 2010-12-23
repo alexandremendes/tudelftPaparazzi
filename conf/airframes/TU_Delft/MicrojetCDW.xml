@@ -184,7 +184,7 @@
 
   <firmware name="fixedwing">
     <target name="ap" 			board="tiny_1.1">
-      <param name="PERIODIC_FREQUENCY" value="480" />
+      <configure name="PERIODIC_FREQUENCY" value="480" />
     </target>
     <target name="sim" 			board="pc" />
 

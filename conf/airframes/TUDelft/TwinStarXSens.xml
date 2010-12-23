@@ -171,8 +171,8 @@
     </target>
 
     <subsystem name="telemetry" type="xbee_api">
-      <param name="MODEM_UART_NR" value="0"/>
-      <param name="MODEM_BAUD" value="B9600"/>
+      <configure name="MODEM_UART_NR" value="0"/>
+      <configure name="MODEM_BAUD" value="B9600"/>
     </subsystem>
     <subsystem name="control"/>
     <subsystem name="navigation" type="extra"/>
@@ -185,21 +185,21 @@
       <define name="RADIO_LED" value="2"/>
       <define name="USE_AD1_5" value="1"/>
       <define name="USE_AD1" value="1"/>
-      <param name="ACTUATORS" value="TUDelft/actuators_ppm_fasst"/>
+      <configure name="ACTUATORS" value="TUDelft/actuators_ppm_fasst"/>
     </target>
     <subsystem name="radio_control" type="ppm"/>
   </firmware>
 
   <modules>
     <load name="ins_xsens_MTiG_fixedwing.xml">
-      <flag name="XSENS_UART_NR" value="1"/>
+      <configure name="XSENS_UART_NR" value="1"/>
     </load>
     <load name="digital_cam.xml">
-      <flag name="DC_SHUTTER_LED" value="6"/>
+      <define name="DC_SHUTTER_LED" value="6"/>
    </load>
    <load name="adc_generic.xml">
-      <flag name="ADC_GENERIC_NB_SAMPLES" value="32"/>
-      <flag name="ADC_CHANNEL_GENERIC1" value="ADC_6"/> <!-- e.g. current sensor -->
+      <define name="ADC_GENERIC_NB_SAMPLES" value="32"/>
+      <define name="ADC_CHANNEL_GENERIC1" value="ADC_6"/> <!-- e.g. current sensor -->
       <define name="ADC_CHANNEL_GENERIC1" value="ADC_6"/> <!-- e.g. current sensor -->
    </load>
   </modules>

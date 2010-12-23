@@ -10,7 +10,7 @@
     <raw>
 #Exemple of RAW makefile part
     </raw>
-    <flag name="ADC_CHANNEL_OPTICFLOW_NB_SAMPLES" value="32"/>
+    <define name="ADC_CHANNEL_OPTICFLOW_NB_SAMPLES" value="32"/>
     <file name="opticflow.c"/>
   </makefile>
 </module>

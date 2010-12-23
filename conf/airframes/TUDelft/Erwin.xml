@@ -306,7 +306,7 @@
       <define name="DWIND_INFO_RET"/>
     </target>
     <target name="ap" board="tiny_1.1">
-      <param name="FLASH_MODE" value="IAP"/>
+      <configure name="FLASH_MODE" value="IAP"/>
       <define name="AGR_CLIMB"/>
       <define name="LOITER_TRIM"/>
       <define name="ALT_KALMAN"/>
@@ -321,8 +321,8 @@
     <!-- Communication -->
     <subsystem name="radio_control" type="ppm"/>
     <subsystem name="telemetry" type="xbee_api">
-      <param name="MODEM_UART_NR" value="1"/>
-      <param name="MODEM_BAUD" value="B9600"/>
+      <configure name="MODEM_UART_NR" value="1"/>
+      <configure name="MODEM_BAUD" value="B9600"/>
     </subsystem>
 
     <!-- Actuators are automatically chosen according to board -->
@@ -332,7 +332,7 @@
     <!-- Sensors -->
     <subsystem name="attitude" type="infrared"/>
     <subsystem name="gps" type="ublox_lea4p">
-      <param name="GPS_UART_NR" value="0"/>
+      <configure name="GPS_UART_NR" value="0"/>
     </subsystem>
 
   </firmware>
@@ -345,18 +345,18 @@ $(TARGET).srcs += ./TUDelft/nav_photogrammetry.c
 
   <modules>
     <load name="digital_cam.xml">
-      <flag name="DC_SHUTTER_LED" value="6"/>
-      <flag name="DC_AUTOSHOOT_QUARTERSEC_PERIOD" value="4" />
-<!--      <flag name="GPS_TRIGGERED_FUNCTION" value="dc_shoot_on_gps"/>
-      <flag name="DC_GPS_TRIGGER_START" value="1"/>
-      <flag name="DC_GPS_TRIGGER_STOP" value="3"/> -->
+      <define name="DC_SHUTTER_LED" value="6"/>
+      <define name="DC_AUTOSHOOT_QUARTERSEC_PERIOD" value="4" />
+<!--      <define name="GPS_TRIGGERED_FUNCTION" value="dc_shoot_on_gps"/>
+      <define name="DC_GPS_TRIGGER_START" value="1"/>
+      <define name="DC_GPS_TRIGGER_STOP" value="3"/> -->
     </load>
     <load name="airspeed_adc.xml">
-      <define name="ADC_AIRSPEED" value="ADC_4"/>
-      <flag name=" AIRSPEED_QUADRATIC_SCALE" value="1.2588f"/>
-      <flag name="AIRSPEED_BIAS" value="168.0f"/>
-      <flag name="AIRSPEED_NB_SAMPLES" value="32"/>
-      <flag name="USE_AIRSPEED"/>
+      <configure name="ADC_AIRSPEED" value="ADC_4"/>
+      <define name=" AIRSPEED_QUADRATIC_SCALE" value="1.2588f"/>
+      <define name="AIRSPEED_BIAS" value="168.0f"/>
+      <define name="AIRSPEED_NB_SAMPLES" value="32"/>
+      <define name="USE_AIRSPEED"/>
     </load>
   </modules>
 

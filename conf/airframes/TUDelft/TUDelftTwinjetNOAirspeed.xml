@@ -12,8 +12,8 @@
   <modules>
     <load name="TUDelft/opticflow.xml"/>
     <load name="cam_point.xml">
-      <param name="POINT_CAM_YAW_PITCH"  value="1"/>
-      <param name="SHOW_CAM_COORDINATES" value="1"/>
+      <define name="POINT_CAM_YAW_PITCH"  value="1"/>
+      <define name="SHOW_CAM_COORDINATES" value="1"/>
     </load>
   </modules>
 
@@ -247,7 +247,7 @@
       <define name="TUNE_AGRESSIVE_CLIMB" />
     </target>
     <target name="ap" 			board="tiny_2.11">
-      <param name="FLASH_MODE" 		value="IAP" />
+      <configure name="FLASH_MODE" 		value="IAP" />
       <define name="AGR_CLIMB" />
       <define name="TUNE_AGRESSIVE_CLIMB" />
       <define name="LOITER_TRIM" />
@@ -256,7 +256,7 @@
     <subsystem name="radio_control" 	type="ppm"/>
     <!-- Communication -->
     <subsystem name="telemetry" 	type="xbee_api">
-      <param name="MODEM_BAUD" 		value="B9600"/>
+      <configure name="MODEM_BAUD" 		value="B9600"/>
     </subsystem>
     <!-- Actuators -->
     <subsystem name="control"/>
