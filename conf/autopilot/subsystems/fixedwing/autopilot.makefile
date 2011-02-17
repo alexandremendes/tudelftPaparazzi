@@ -68,8 +68,11 @@ endif
 #
 # Sys-time
 #
-
-$(TARGET).srcs 		+= sys_time.c
+ifndef PERIODIC_FREQUENCY
+PERIODIC_FREQUENCY = 60
+endif
+$(TARGET).CFLAGS += -DPERIODIC_TASK_PERIOD='SYS_TICS_OF_SEC((1./$(PERIODIC_FREQUENCY).))' -DPERIODIC_FREQUENCY=$(PERIODIC_FREQUENCY)
+$(TARGET).srcs += sys_time.c
 
 #
 # InterMCU & Commands
@@ -122,7 +125,6 @@ endif
 #
 
 ns_CFLAGS 		+= -DUSE_SYS_TIME
-ns_CFLAGS 		+= -DPERIODIC_TASK_PERIOD='SYS_TICS_OF_SEC((1./60.))'
 ns_srcs 		+= $(SRC_ARCH)/sys_time_hw.c
 
 
@@ -168,6 +170,12 @@ ap_srcs 		+= $(SRC_FIXEDWING)/estimator.c
 ## SIMULATOR THREAD SPECIFIC
 ##
 
+UNAME = $(shell uname -s)
+ifeq ("$(UNAME)","Darwin")
+  sim.CFLAGS += -I/opt/local/include/
+endif
+
+sim.CFLAGS              += $(CPPFLAGS)
 sim.CFLAGS 		+= $(fbw_CFLAGS) $(ap_CFLAGS)
 sim.srcs 		+= $(fbw_srcs) $(ap_srcs)
 
@@ -182,6 +190,7 @@ sim.srcs 		+= downlink.c $(SRC_FIRMWARE)/datalink.c $(SRC_ARCH)/sim_gps.c $(SRC_
 ## JSBSIM THREAD SPECIFIC
 ##
 
+OCAMLLIBDIR=$(shell ocamlc -where)
 JSBSIM_INC = /usr/include/JSBSim
 #JSBSIM_LIB = /usr/lib
 
@@ -192,7 +201,7 @@ jsbsim.CFLAGS 		+= -DSITL
 jsbsim.srcs 		+= $(SIMDIR)/sim_ac_jsbsim.c $(SIMDIR)/sim_ac_fw.c
 
 # external libraries
-jsbsim.CFLAGS 		+= -I$(SIMDIR) -I/usr/include -I$(JSBSIM_INC) `pkg-config glib-2.0 --cflags`
+jsbsim.CFLAGS 		+= -I$(SIMDIR) -I/usr/include -I$(JSBSIM_INC) -I$(OCAMLLIBDIR) `pkg-config glib-2.0 --cflags`
 jsbsim.LDFLAGS		+= `pkg-config glib-2.0 --libs` -lm -lpcre -lglibivy -L/usr/lib -lJSBSim
 
 jsbsim.CFLAGS 		+= -DDOWNLINK -DDOWNLINK_TRANSPORT=IvyTransport
