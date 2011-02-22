@@ -3,7 +3,6 @@
 <flight_plan alt="50" ground_alt="-1" lat0="51.990" lon0="4.390" max_dist_from_home="2500" name="DelftVersatile" qfu="90" security_height="125">
   <header>
 #include "datalink.h"
-#include "nav_line.h"
 
 // Automatic include of camera trigger is camera is present
 #include "modules/digital_cam/dc.h"
