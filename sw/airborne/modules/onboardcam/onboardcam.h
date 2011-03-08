@@ -44,8 +44,8 @@ extern uint8_t blackfin_mode;
 extern uint8_t onboardcam_status;
 
 //void downlink_onboardcam(uint8_t channel);
-#define PERIODIC_SEND_ONBOARDCAM(_chan) DOWNLINK_SEND_VISUALTARGET (_chan, &adc_onboardcama,&adc_onboardcamb); 
-#define PERIODIC_SEND_IR_SENSORS_CAM(_chan) DOWNLINK_SEND_IR_SENSORS(_chan, &ir_ir1, &ir_ir2, &ir_pitch, &ir_roll, &ir_top);
+#define PERIODIC_SEND_ONBOARDCAM(_chan) DOWNLINK_SEND_ONBOARDCAM (_chan, &adc_onboardcama,&adc_onboardcamb); 
+#define PERIODIC_SEND_IR_SENSORS_CAM(_chan) DOWNLINK_SEND_IR_SENSORS(_chan, &infrared.value.ir1, &infrared.value.ir2, &infrared.pitch, &infrared.roll, &infrared.top);
 
 // Module Functions
 void init_onboardcam(void);

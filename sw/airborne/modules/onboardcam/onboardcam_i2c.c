@@ -1,11 +1,11 @@
 #include BOARD_CONFIG
 
-#include "onboardcam.h"
+#include "onboardcam_i2c.h"
 #include "mcu_periph/adc.h"
 #include "generated/flight_plan.h"
 #include "generated/airframe.h"
 #include "firmwares/fixedwing/stabilization/stabilization_attitude.h"
-
+#include "subsystems/sensors/infrared_adc.c"
 
 #ifndef DOWNLINK_DEVICE
 #define DOWNLINK_DEVICE DOWNLINK_AP_DEVICE
@@ -33,7 +33,7 @@ uint16_t adc_onboardcamb = 2;
 // Init
 void init_onboardcam(void)
 {
-  infrared_init();
+  infrared_adc_init();
   onboardcam_mode = !IS_CAMERA;
   atmega48_init();
 }
@@ -139,8 +139,8 @@ void periodic_onboardcam(void)
 	// Infrared Attitude
 	if ( onboardcam_mode == IS_CAMERA )
 	{
-		infrared_update(); //for mesages
-		if (from_atmega48[2] > 50)
+		infrared_adc_update(); //for mesages
+		if (from_atmega48[2] < 50)
 		{
 			estimator_phi  = RadOfDeg(unscale_from_range(from_atmega48[1], MAX_I2C_BYTE, -MAX_ROLL_ANGLE, MAX_ROLL_ANGLE));
 			estimator_theta  = RadOfDeg(unscale_from_range(from_atmega48[0], MAX_I2C_BYTE, -MAX_PITCH_ANGLE, MAX_PITCH_ANGLE));
@@ -154,7 +154,7 @@ void periodic_onboardcam(void)
 	// Infrared Attitude
 	else	
 	{
-		infrared_update();
+		infrared_adc_update();
 		estimator_update_state_infrared();
 	}
 

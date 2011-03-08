@@ -5,7 +5,7 @@
     <file name="onboardcam.h"/>
   </header>
   <init fun="init_onboardcam()"/>
-  <periodic fun="periodic_onboardcam()" start="start_onboardcam()" stop="stop_onboardcam()" autorun="TRUE"/>
+  <periodic fun="periodic_onboardcam()" start="start_onboardcam()" stop="stop_onboardcam()" autorun="FALSE"/>
   <makefile target="ap">
     <file name="onboardcam.c"/>
     <define name="USE_ADC_14"/>
