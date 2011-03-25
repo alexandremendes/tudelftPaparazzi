@@ -215,8 +215,8 @@
    airframe="airframes/TU_Delft/yapa_xsens.xml"
    radio="radios/TUDelft/mc22.xml"
    telemetry="telemetry/default.xml"
-   flight_plan="flight_plans/TUDelft/versatile_delft.xml"
-   settings=" settings/TUDelft/tuning_xsens.xml"
+   flight_plan="flight_plans/versatile.xml"
+   settings=" settings/TUDelft/tuning_xsens.xml settings/light.xml"
    gui_color="blue"
   />
 </conf>
