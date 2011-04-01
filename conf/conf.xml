@@ -106,7 +106,7 @@
    radio="radios/TUDelft/wk2801.xml"
    telemetry="telemetry/telemetry_booz2.xml"
    flight_plan="flight_plans/dummy.xml"
-   settings="settings/settings_booz2_ahrs_cmpl.xml settings/settings_booz2.xml"
+   settings=" settings/settings_booz2_ahrs_cmpl.xml settings/settings_booz2.xml"
    gui_color="blue"
   />
   <aircraft
@@ -213,7 +213,7 @@
    name="YAPA"
    ac_id="11"
    airframe="airframes/TU_Delft/yapa_xsens.xml"
-   radio="radios/TUDelft/mc22.xml"
+   radio="radios/TUDelft/fasst_tx_graupner.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/versatile.xml"
    settings=" settings/TUDelft/tuning_xsens.xml settings/light.xml"
