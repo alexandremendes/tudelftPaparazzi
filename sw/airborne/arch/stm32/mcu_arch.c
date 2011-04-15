@@ -24,17 +24,24 @@
 
 #include "mcu.h"
 
+#include BOARD_CONFIG
 
 #include <inttypes.h>
 #include <stm32/gpio.h>
 #include <stm32/rcc.h>
 #include <stm32/flash.h>
 #include <stm32/misc.h>
+#ifdef USE_OPENCM3
+#include <libopencm3/stm32/rcc.h>
+#endif
 
-#include BOARD_CONFIG
 
 void mcu_arch_init(void) {
-
+#ifdef USE_OPENCM3
+  rcc_clock_setup_in_hse_12mhz_out_72mhz();
+  NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
+  return;
+#endif
 #ifdef HSE_TYPE_EXT_CLK
 #warning Using external clock
   /* Setup the microcontroller system.
@@ -79,6 +86,13 @@ void mcu_arch_init(void) {
 #endif /* HSE_TYPE_EXT_CLK */
    /* Set the Vector Table base location at 0x08000000 */
   NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
+
+#ifdef STM32_FORCE_ALL_CLOCK_ON
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB |
+                         RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD |
+                         RCC_APB2Periph_GPIOE | RCC_APB2Periph_AFIO, ENABLE);
+#endif  
+
 
 }
 
