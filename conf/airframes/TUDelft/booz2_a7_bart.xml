@@ -182,10 +182,18 @@ AP_MODE_NAV
     <define name="PSI_DDGAIN"   value=" 300"/>
 
   </section>
+<!--
+  <section name="AHRS" prefix="AHRS_">
+    <define name="PROPAGATE_FREQUENCY" value="512"/>
+    <define name="H_X" value=" 0.51562740288882"/>
+    <define name="H_Y" value="-0.05707735220832"/>
+    <define name="H_Z" value=" 0.85490967783446"/>
+  </section>
+-->
 
   <section name="INS" prefix="INS_">
-<!--    <define name="BARO_SENS" value="15." integer="16"/> -->
     <define name="BARO_SENS" value="10." integer="16"/>
+    <define name="UNTILT_ACCEL" value="1"/>
   </section>
 
  <section name="GUIDANCE_V" prefix="GUIDANCE_V_">
@@ -209,6 +217,7 @@ AP_MODE_NAV
    <define name="PGAIN" value="-100"/>
    <define name="DGAIN" value="-100"/>
    <define name="IGAIN" value="-0"/>
+   <define name="NGAIN" value="-0"/>
  </section>
 
  <section name="MISC">
@@ -223,16 +232,14 @@ AP_MODE_NAV
 
 
   <firmware name="rotorcraft">
+     <define name="USE_ADAPT_HOVER"/>
+     <define name="FAILSAFE_GROUND_DETECT"/>
+     <define name="USE_GPS_ACC4R"/>
     <target name="ap" board="lisa_l_1.0"/>
-<!--       <define name="BOOZ_START_DELAY" value="1"/> 
-       <subsystem name="radio_control" type="spektrum">
-        <configure name="RADIO_CONTROL_SPEKTRUM_MODEL" 
-             value="\\\"booz/radio_control/booz_radio_control_spektrum_dx7se.h\\\""/>
-      </subsystem>
-    </target>-->
     <target name="sim" board="pc">
       <subsystem name="fdm"           type="nps"/>
     </target>
+    <subsystem name="telemetry"     type="transparent"/>
     <subsystem name="radio_control" type="ppm"/>
     <subsystem name="actuators"     type="mkk"/>
     <subsystem name="imu"           type="b2_v1.1"/>
@@ -265,12 +272,10 @@ AP_MODE_NAV
       <configure name="TARGET_DIR"    value="~"/>
       <configure name="PERIODIC_FREQ" value="512"/>
     </target>
-    <target name="stm_passthrough" board="lisa_l_1.0"/>
-      <subsystem name="radio_control" type="spektrum">
-        <configure name="RADIO_CONTROL_SPEKTRUM_MODEL" 
-              value="\\\"booz/radio_control/booz_radio_control_spektrum_dx7se.h\\\""/>
-      </subsystem>
+    <target name="stm_passthrough" board="lisa_l_1.0">
+      <subsystem name="radio_control" type="spektrum"/>
       <subsystem name="imu" type="b2_v1.1"/>
+    </target>
  </firmware>
 
  <makefile>
