@@ -182,7 +182,11 @@ AP_MODE_NAV
     <define name="PSI_DDGAIN"   value=" 300"/>
 
   </section>
-<!--
+
+<!--needed for "ahrs"          type="ic"
+H is the normalized local magnetic field which can be obtained from
+http://ngdc.noaa.gov/geomag/magfield.shtml
+
   <section name="AHRS" prefix="AHRS_">
     <define name="PROPAGATE_FREQUENCY" value="512"/>
     <define name="H_X" value=" 0.51562740288882"/>
@@ -244,6 +248,7 @@ AP_MODE_NAV
     <subsystem name="actuators"     type="mkk"/>
     <subsystem name="imu"           type="b2_v1.1"/>
     <subsystem name="ahrs"          type="cmpl"/>
+ <!--     <subsystem name="ahrs"          type="ic"/> activate section name="AHRS" for local magnetiq feeld-->
     <subsystem name="gps"           type="ublox"/>
     <subsystem name="ins"           type="hff"/>
   </firmware>
@@ -282,6 +287,9 @@ AP_MODE_NAV
 
 #include $(PAPARAZZI_SRC)/conf/autopilot/lisa_test_progs.makefile
 
+#Other flags of interest are for "ahrs"          type="ic"
+#AHRS_PROPAGATE_LOW_PASS_RATES : apply a low pass filter on rotational velocity
+#AHRS_MAG_UPDATE_YAW_ONLY : use mag to update yaw only
 
  </makefile>
 
