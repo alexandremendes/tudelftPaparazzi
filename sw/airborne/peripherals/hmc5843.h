@@ -27,25 +27,27 @@
 #include "std.h"
 #include "mcu_periph/i2c.h"
 
-#include "peripherals/hmc5843_arch.h"
-
 struct Hmc5843 {
     struct i2c_transaction i2c_trans;
+    uint32_t timeout;
+    uint8_t sent_tx;
+    uint8_t sent_rx;
+    uint8_t initialized;
+    uint8_t data_available;
   union {
     uint8_t buf[7];
     int16_t value[3];
   } data;
-    uint8_t initialized;
-    uint8_t reading;
-    volatile uint8_t ready_for_read;
-    uint8_t data_available;
-    uint32_t timeout;
 };
 
 extern struct Hmc5843 hmc5843;
 
+#ifndef HMC5843_NO_IRQ
+#include "peripherals/hmc5843_arch.h"
+
 extern void hmc5843_arch_init( void );
 extern void hmc5843_arch_reset( void );
+#endif
 
 extern void hmc5843_init(void);
 extern void hmc5843_periodic(void);

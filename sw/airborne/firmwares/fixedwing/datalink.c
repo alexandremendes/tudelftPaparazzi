@@ -41,6 +41,7 @@
 
 #if defined NAV || defined WIND_INFO
 #include "estimator.h"
+#include "subsystems/nav.h"
 #endif
 
 #ifdef USE_JOYSTICK
@@ -48,14 +49,13 @@
 #endif
 
 #ifdef HITL
-#include "gps.h"
+#include "subsystems/gps.h"
 #endif
 
 
 #include "subsystems/navigation/common_nav.h"
 #include "generated/settings.h"
-#include "latlong.h"
-
+#include "math/pprz_geodetic_float.h"
 
 #ifndef DOWNLINK_DEVICE
 #define DOWNLINK_DEVICE DOWNLINK_AP_DEVICE
@@ -114,16 +114,19 @@ void dl_parse_msg(void) {
     float a = MOfCm(DL_MOVE_WP_alt(dl_buffer));
 
     /* Computes from (lat, long) in the referenced UTM zone */
-    float lat = RadOfDeg((float)(DL_MOVE_WP_lat(dl_buffer) / 1e7));
-    float lon = RadOfDeg((float)(DL_MOVE_WP_lon(dl_buffer) / 1e7));
-    latlong_utm_of(lat, lon, nav_utm_zone0);
-    nav_move_waypoint(wp_id, latlong_utm_x, latlong_utm_y, a);
+    struct LlaCoor_f lla;
+    lla.lat = RadOfDeg((float)(DL_MOVE_WP_lat(dl_buffer) / 1e7));
+    lla.lon = RadOfDeg((float)(DL_MOVE_WP_lon(dl_buffer) / 1e7));
+    struct UtmCoor_f utm;
+    utm.zone = nav_utm_zone0;
+    utm_of_lla_f(&utm, &lla);
+    nav_move_waypoint(wp_id, utm.east, utm.north, a);
 
     /* Waypoint range is limited. Computes the UTM pos back from the relative
        coordinates */
-    latlong_utm_x = waypoints[wp_id].x + nav_utm_east0;
-    latlong_utm_y = waypoints[wp_id].y + nav_utm_north0;
-    DOWNLINK_SEND_WP_MOVED(DefaultChannel, &wp_id, &latlong_utm_x, &latlong_utm_y, &a, &nav_utm_zone0);
+    utm.east = waypoints[wp_id].x + nav_utm_east0;
+    utm.north = waypoints[wp_id].y + nav_utm_north0;
+    DOWNLINK_SEND_WP_MOVED(DefaultChannel, &wp_id, &utm.east, &utm.north, &a, &nav_utm_zone0);
   } else if (msg_id == DL_BLOCK && DL_BLOCK_ac_id(dl_buffer) == AC_ID) {
     nav_goto_block(DL_BLOCK_block_id(dl_buffer));
     SEND_NAVIGATION(DefaultChannel);
@@ -185,10 +188,19 @@ void dl_parse_msg(void) {
 #if defined RADIO_CONTROL && defined RADIO_CONTROL_TYPE_DATALINK
     if (msg_id == DL_RC_3CH /*&& DL_RC_3CH_ac_id(dl_buffer) == TX_ID*/) {
 LED_TOGGLE(3);
-      parse_rc_datalink(
+      parse_rc_3ch_datalink(
           DL_RC_3CH_throttle_mode(dl_buffer),
           DL_RC_3CH_roll(dl_buffer),
           DL_RC_3CH_pitch(dl_buffer));
+    } else
+    if (msg_id == DL_RC_4CH && DL_RC_4CH_ac_id(dl_buffer) == AC_ID) {
+LED_TOGGLE(3);
+      parse_rc_4ch_datalink(
+          DL_RC_4CH_mode(dl_buffer),
+          DL_RC_4CH_throttle(dl_buffer),
+          DL_RC_4CH_roll(dl_buffer),
+          DL_RC_4CH_pitch(dl_buffer),
+          DL_RC_4CH_yaw(dl_buffer));
     } else
 #endif // RC_DATALINK
   { /* Last else */

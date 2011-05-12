@@ -81,6 +81,11 @@ $(TARGET).srcs += sys_time.c
 $(TARGET).CFLAGS 	+= -DINTER_MCU
 $(TARGET).srcs 		+= $(SRC_FIXEDWING)/inter_mcu.c
 
+#
+# Math functions
+#
+$(TARGET).srcs += math/pprz_geodetic_int.c math/pprz_geodetic_float.c math/pprz_geodetic_double.c
+
 ######################################################################
 ##
 ## COMMON FOR ALL NON-SIMULATION TARGETS
@@ -212,6 +217,9 @@ jsbsim.LDFLAGS		+= `pkg-config glib-2.0 --libs` -lm -lpcre -lglibivy -L/usr/lib 
 
 jsbsim.CFLAGS 		+= -DDOWNLINK -DDOWNLINK_TRANSPORT=IvyTransport
 jsbsim.srcs 		+= downlink.c $(SRC_FIRMWARE)/datalink.c $(SRC_ARCH)/jsbsim_hw.c $(SRC_ARCH)/jsbsim_gps.c $(SRC_ARCH)/ivy_transport.c $(SRC_ARCH)/jsbsim_transport.c
+
+jsbsim.srcs 		+= subsystems/settings.c
+jsbsim.srcs 		+= $(SRC_ARCH)/subsystems/settings_arch.c
 
 ######################################################################
 ##
