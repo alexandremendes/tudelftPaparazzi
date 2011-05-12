@@ -75,12 +75,12 @@
   </command_laws>
 
   <section name="AUTO1" prefix="AUTO1_">
-    <define name="MAX_ROLL" value="0.9"/>
-    <define name="MAX_PITCH" value="0.9"/>
+    <define name="MAX_ROLL" value="RadOfDeg(75)"/>
+    <define name="MAX_PITCH" value="RadOfDeg(45)"/>
   </section>
 
   <section name="BAT">
-    <define name="MilliAmpereOfAdc(adc)" value="((adc) - 505) * 124.0f"/>
+<!--    <define name="MilliAmpereOfAdc(adc)" value="((adc) - 505) * 124.0f"/> -->
 
     <define name="LOW_BAT_LEVEL" value="10.5" unit="V"/>
     <define name="CRITIC_BAT_LEVEL" value="10" unit="V"/>
@@ -88,8 +88,8 @@
   </section>
 
   <section name="INS" prefix="INS_">
-    <define name="ROLL_NEUTRAL_DEFAULT" value="-17.1887340546" unit="deg"/>
-    <define name="PITCH_NEUTRAL_DEFAULT" value="28.6478900909" unit="deg"/>
+    <define name="ROLL_NEUTRAL_DEFAULT" value="0" unit="deg"/>
+    <define name="PITCH_NEUTRAL_DEFAULT" value="0" unit="deg"/>
   </section>
 
   <section name="MISC">
@@ -204,8 +204,10 @@
       <define name="WIND_INFO"/>
       <define name="WIND_INFO_RET"/>
       <define name="LOITER_TRIM"/>
+<!--
       <define name="ALT_KALMAN"/>
       <define name="ALT_KALMAN_ENABLED" value="TRUE"/>
+-->
     </target>
     <target name="sim" board="pc"/>
 
