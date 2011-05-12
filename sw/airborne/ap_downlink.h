@@ -181,17 +181,22 @@
 #define PERIODIC_SEND_TUNE_ROLL(_chan) DOWNLINK_SEND_TUNE_ROLL(_chan, &estimator_p,&estimator_phi, &h_ctl_roll_setpoint);
 
 #if defined USE_GPS || defined SITL || defined USE_GPS_XSENS
-#define PERIODIC_SEND_GPS_SOL(_chan) DOWNLINK_SEND_GPS_SOL(_chan, &gps_Pacc, &gps_Sacc, &gps_PDOP, &gps_numSV)
+#define PERIODIC_SEND_GPS_SOL(_chan) DOWNLINK_SEND_GPS_SOL(_chan, &gps.pacc, &gps.sacc, &gps.pdop, &gps.num_sv)
 #endif
 
-/* add by Haiyang Chao for debugging msg used by osam_imu*/
-#if defined UGEAR
-#define PERIODIC_SEND_GPS(_chan) DOWNLINK_SEND_GPS(_chan, &gps_mode, &gps_utm_east, &gps_utm_north, &gps_course, &gps_alt, &gps_gspeed,&gps_climb, &gps_week, &gps_itow, &gps_utm_zone, &gps_nb_ovrn)
-#define PERIODIC_SEND_GPS_SOL(_chan) DOWNLINK_SEND_GPS_SOL(_chan, &gps_Pacc, &gps_Sacc, &gps_PDOP, &gps_numSV)
-#define PERIODIC_SEND_DebugChao(_chan) DOWNLINK_SEND_DebugChao(_chan, &ugear_debug1, &ugear_debug2, &ugear_debug3, &ugear_debug4, &ugear_debug5, &ugear_debug6)
-#else
-#define PERIODIC_SEND_GPS(_chan) gps_send()
-#endif
+//#define PERIODIC_SEND_GPS(_chan) gps_send() /* also sends svinfo */
+#define PERIODIC_SEND_GPS(_chan) {                                      \
+    static uint8_t i;                                                   \
+    int16_t climb = -gps.ned_vel.z;                                     \
+    int16_t course = DegOfRad(estimator_hspeed_dir * 10);                        \
+    DOWNLINK_SEND_GPS(DefaultChannel, &gps.fix, &gps.utm_pos.east, &gps.utm_pos.north, &course, &gps.lla_pos.alt, &gps.gspeed, &climb, &gps.week, &gps.tow, &gps.utm_pos.zone, &i); \
+    if ((gps.fix != GPS_FIX_3D) && (i >= gps.nb_channels)) i = 0;                                    \
+    if (i >= gps.nb_channels * 2) i = 0;                                    \
+    if (i < gps.nb_channels && gps.svinfos[i].cno > 0) { \
+      DOWNLINK_SEND_SVINFO(DefaultChannel, &i, &gps.svinfos[i].svid, &gps.svinfos[i].flags, &gps.svinfos[i].qi, &gps.svinfos[i].cno, &gps.svinfos[i].elev, &gps.svinfos[i].azim); \
+    }                                                                   \
+    i++;                                                                \
+}
 
 #ifdef USE_BARO_MS5534A
 //#include "baro_MS5534A.h"
