@@ -62,7 +62,7 @@ imu_CFLAGS += -DMAX1168_EOC_VIC_SLOT=8
 ap.srcs += $(imu_srcs)
 ap.CFLAGS += $(imu_CFLAGS)
 
-imu_srcs += math/pprz_trig_int.c
+# imu_srcs += math/pprz_trig_int.c
 
 #
 # Simulator
