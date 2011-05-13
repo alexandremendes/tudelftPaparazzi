@@ -185,8 +185,8 @@
    airframe="airframes/TUDelft/TUDelftTwinjetNOAirspeed.xml"
    radio="radios/TUDelft/wk2801.xml"
    telemetry="telemetry/default.xml"
-   flight_plan="flight_plans/TUDelft/opticflow_delft.xml"
-   settings=" settings/TUDelft/TuneTwinjetNOAirspeed.xml"
+   flight_plan="flight_plans/versatile.xml"
+   settings=" settings/tuning.xml"
    gui_color="#ececabab1818"
   />
   <aircraft
