@@ -77,16 +77,16 @@
   </command_laws>
 
   <!-- Local magnetic field -->
-  <section name="AHRS" prefix="AHRS_" >
-    <define name="H_X" value="0.51562740288882" />
-    <define name="H_Y" value="-0.05707735220832" />
-    <define name="H_Z" value="0.85490967783446" />
+  <section name="AHRS" prefix="AHRS_">
+    <define name="H_X" value="0.51562740288882"/>
+    <define name="H_Y" value="-0.05707735220832"/>
+    <define name="H_Z" value="0.85490967783446"/>
   </section>
 
   <section name="XSENS">
-    <define name="GPS_IMU_LEVER_ARM_X" value="-0.285f" />
-    <define name="GPS_IMU_LEVER_ARM_Y" value="0.0f" />
-    <define name="GPS_IMU_LEVER_ARM_Z" value="0.0f" />
+    <define name="GPS_IMU_LEVER_ARM_X" value="-0.285f"/>
+    <define name="GPS_IMU_LEVER_ARM_Y" value="0.0f"/>
+    <define name="GPS_IMU_LEVER_ARM_Z" value="0.0f"/>
   </section>
 
   <section name="AUTO1" prefix="AUTO1_">
@@ -135,24 +135,24 @@
     <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.65"/>
     <define name="AUTO_THROTTLE_LOITER_TRIM" value="1500"/>
     <define name="AUTO_THROTTLE_DASH_TRIM" value="-4000"/>
-    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.108999997377" unit="%/(m/s)"/>
-    <define name="AUTO_THROTTLE_PGAIN" value="0."/>
-    <define name="AUTO_THROTTLE_IGAIN" value="0."/>
-    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.324999988079"/>
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.207000002265" unit="%/(m/s)"/>
+    <define name="AUTO_THROTTLE_PGAIN" value="-0.00700000021607"/>
+    <define name="AUTO_THROTTLE_IGAIN" value="0.0309999994934"/>
+    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.202999994159"/>
 
     <define name="THROTTLE_SLEW_LIMITER" value="2" unit="s"/>
   </section>
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
-    <define name="COURSE_PGAIN" value="-1.20000004768"/>
-    <define name="COURSE_DGAIN" value="0.300000011921"/>
-    <define name="COURSE_PRE_BANK_CORRECTION" value="1.01600003242"/>
+    <define name="COURSE_PGAIN" value="-1.16499996185"/>
+    <define name="COURSE_DGAIN" value="0.358999997377"/>
+    <define name="COURSE_PRE_BANK_CORRECTION" value="0.679000020027"/>
 
     <define name="ROLL_MAX_SETPOINT" value="0.851999998093" unit="radians"/>
     <define name="PITCH_MAX_SETPOINT" value="0.5" unit="radians"/>
     <define name="PITCH_MIN_SETPOINT" value="-0.5" unit="radians"/>
 
-    <define name="PITCH_PGAIN" value="-13476.5615234"/>
+    <define name="PITCH_PGAIN" value="-15429.6865234"/>
     <define name="PITCH_DGAIN" value="7.73400020599"/>
 
     <define name="ELEVATOR_OF_ROLL" value="3007.81298828"/>
