@@ -142,7 +142,7 @@
   <aircraft
    name="MicrojetCDW"
    ac_id="4"
-   airframe="airframes/TU_Delft/MicrojetCDW.xml"
+   airframe="airframes/microjet_example.xml"
    radio="radios/TUDelft/t12fg_5channel.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
    flight_plan="flight_plans/versatile.xml"
@@ -208,6 +208,16 @@
    flight_plan="flight_plans/TUDelft/versatile_delft.xml"
    settings=" settings/cam_pitch.xml settings/tuning.xml"
    gui_color="#ffffb9b9aeae"
+  />
+  <aircraft
+   name="TwinJetAspirin"
+   ac_id="12"
+   airframe="airframes/TUDelft/TwinjetAspirinI2C.xml"
+   radio="radios/TUDelft/wk2801.xml"
+   telemetry="telemetry/default_fixedwing_imu.xml"
+   flight_plan="flight_plans/versatile.xml"
+   settings=" settings/tuning_basic_ins.xml"
+   gui_color="blue"
   />
   <aircraft
    name="TwinStarXSens"
