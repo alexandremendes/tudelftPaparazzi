@@ -1,15 +1,14 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
 <flight_plan alt="75" ground_alt="0" lat0="51.527276" lon0="5.864411" max_dist_from_home="1500" name="Versatile" qfu="270" security_height="25">
-
   <header>
 #include "datalink.h"
 </header>
   <waypoints>
-    <waypoint name="HOME" x="0" y="0"/>
-    <waypoint name="STDBY" x="20" y="80"/>
-    <waypoint name="1" x="42" y="88"/>
-    <waypoint name="2" x="51" y="6"/>
+    <waypoint name="HOME" x="197.1" y="21.5"/>
+    <waypoint alt="105.0" name="STDBY" x="174.2" y="-8.1"/>
+    <waypoint alt="105.0" name="1" x="184.3" y="99.3"/>
+    <waypoint alt="105.0" name="2" x="157.6" y="-41.5"/>
     <waypoint name="MOB" x="-11.5" y="-21.2"/>
     <waypoint name="S1" x="-151.6" y="80.4"/>
     <waypoint name="S2" x="180.1" y="214.9"/>
@@ -44,7 +43,7 @@
       <set value="1" var="kill_throttle"/>
       <attitude roll="0" throttle="0" vmode="throttle"/>
     </block>
-    <block name="Takeoff" strip_icon="takeoff.png" strip_button="Takeoff (wp CLIMB)">
+    <block name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png">
       <exception cond="estimator_z > ground_alt+25" deroute="Standby"/>
       <set value="0" var="kill_throttle"/>
       <go wp="CLIMB"/>
@@ -77,18 +76,14 @@
     <block name="Climb nav_climb m/s">
       <circle climb="nav_climb" radius="nav_radius" until="(10 > PowerVoltage()) || (estimator_z > ground_alt+ 1350)" vmode="climb" wp="1"/>
     </block>
-
     <block name="Circle 0% throttle">
       <circle pitch="fp_pitch" radius="nav_radius" throttle="0.0" until="ground_alt+50 > estimator_z" vmode="throttle" wp="1"/>
       <deroute block="Standby"/>
     </block>
-
     <block name="Oval 0% throttle">
       <oval p1="1" p2="2" pitch="fp_pitch" radius="nav_radius" throttle="0.0" until="ground_alt+50 > estimator_z" vmode="throttle"/>
       <deroute block="Standby"/>
     </block>
-
-
     <block name="Route 1-2">
       <go approaching_time="0" from="1" hmode="route" wp="2"/>
     </block>
@@ -153,7 +148,7 @@
     </block>
     <block name="For loop (circles wp 1)">
       <for from="0" to="3" var="i">
-        <circle radius="DEFAULT_CIRCLE_RADIUS+ $i*10" wp="1" until="NavCircleCount() > 1"/>
+        <circle radius="DEFAULT_CIRCLE_RADIUS+ $i*10" until="NavCircleCount() > 1" wp="1"/>
       </for>
       <deroute block="Standby"/>
     </block>
