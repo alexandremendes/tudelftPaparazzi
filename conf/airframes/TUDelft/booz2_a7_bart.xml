@@ -108,7 +108,6 @@ AP_MODE_NAV
  <section name="BAT">
    <define name="MILLIAMP_PER_PERCENT" value="0.86"/>
    <define name="CATASTROPHIC_BAT_LEVEL" value="9.3" unit="V"/>
-   <define name="BATTERY_SENS"   value="0.48" integer="16"/>
  </section>
 
 
@@ -239,6 +238,14 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
      <define name="USE_ADAPT_HOVER"/>
      <define name="FAILSAFE_GROUND_DETECT"/>
      <define name="USE_GPS_ACC4R"/>
+<!--     <define name="GPS_CONFIGURE"/>
+     <define name="USER_GPS_CONFIGURE"	value="\\\"modules/gps_i2c/runtime_configure.h\\\"" />
+     <define name="USER_GPS_CONFIGURE"	value=\"modules/gps_i2c/runtime_configure.h\"/>
+   Other flags of interest are for "ahrs"          type="ic"
+       apply a low pass filter on rotational velocity
+       use mag to update yaw only
+     <define name="AHRS_PROPAGATE_LOW_PASS_RATES"/> 
+     <define name="AHRS_MAG_UPDATE_YAW_ONLY "/>-->
     <target name="ap" board="lisa_l_1.0"/>
     <target name="sim" board="pc">
       <subsystem name="fdm"           type="nps"/>
@@ -249,7 +256,11 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
     <subsystem name="imu"           type="b2_v1.1"/>
     <subsystem name="ahrs"          type="cmpl"/>
  <!--     <subsystem name="ahrs"          type="ic"/> activate section name="AHRS" for local magnetiq feeld-->
-    <subsystem name="gps"           type="ublox"/>
+    <subsystem name="gps"           type="ublox">
+      <configure name="GPS_PORT" value="UART3"/>
+      <configure name="GPS_BAUD" value="B38400"/>
+<!--      <define name="UART1_NEW_BAUD" value="B9600"/>-->
+    </subsystem>
     <subsystem name="ins"           type="hff"/>
   </firmware>
 
@@ -286,10 +297,7 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
  <makefile>
 
 #include $(PAPARAZZI_SRC)/conf/autopilot/lisa_test_progs.makefile
-
-#Other flags of interest are for "ahrs"          type="ic"
-#AHRS_PROPAGATE_LOW_PASS_RATES : apply a low pass filter on rotational velocity
-#AHRS_MAG_UPDATE_YAW_ONLY : use mag to update yaw only
+#overo_test_uart.CFLAGS  += -DUBX -DUSE_GPS -DUSE_UART0 -DUART0_BAUD=B9600 -DGPS_CONFIGURE -DUSER_GPS_CONFIGURE=\"modules/gps_i2c/runtime_configure.h\" -#DGPS_BAUD=B38400 -DGPS_LINK=Uart0 -DGPS_USE_LATLONG
 
  </makefile>
 
