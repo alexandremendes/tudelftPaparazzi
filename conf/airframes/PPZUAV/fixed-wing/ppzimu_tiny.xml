@@ -245,7 +245,7 @@
     -->
     <subsystem name="imu" type="ppzuav"/>
     <subsystem name="attitude" type="dcm">
-      <define name="USE_MAGNETOMETER" />
+<!--      <define name="USE_MAGNETOMETER" /> -->
     </subsystem>
 
 
