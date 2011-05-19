@@ -12,7 +12,7 @@
   <modules>
     <load name="TUDelft/opticflow.xml"/>
     <load name="cam_point.xml">
-      <define name="POINT_CAM_YAW_PITCH"  value="1"/>
+      <define name="POINT_CAM_YAW_PITCH" value="1"/>
       <define name="SHOW_CAM_COORDINATES" value="1"/>
     </load>
   </modules>
@@ -63,10 +63,10 @@
   </command_laws>
 
   <!-- Local magnetic field -->
-  <section name="AHRS" prefix="AHRS_" >
-    <define name="H_X" value="0.51562740288882" />
-    <define name="H_Y" value="-0.05707735220832" />
-    <define name="H_Z" value="0.85490967783446" />
+  <section name="AHRS" prefix="AHRS_">
+    <define name="H_X" value="0.51562740288882"/>
+    <define name="H_Y" value="-0.05707735220832"/>
+    <define name="H_Z" value="0.85490967783446"/>
   </section>
 
   <section name="IMU" prefix="IMU_">
@@ -122,8 +122,8 @@
   </section>
 
   <section name="INS" prefix="INS_">
-    <define name="ROLL_NEUTRAL_DEFAULT" value="0" unit="deg"/>
-    <define name="PITCH_NEUTRAL_DEFAULT" value="0" unit="deg"/>
+    <define name="ROLL_NEUTRAL_DEFAULT" value="0." unit="deg"/>
+    <define name="PITCH_NEUTRAL_DEFAULT" value="0." unit="deg"/>
   </section>
 
   <section name="AUTO1" prefix="AUTO1_">
@@ -239,18 +239,18 @@
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
 
-    <define name="ELEVATOR_OF_ROLL" value="2500."/>
-    <define name="PITCH_PGAIN" value="-6000."/>
-    <define name="PITCH_DGAIN" value="0"/>
+    <define name="ELEVATOR_OF_ROLL" value="1640."/>
+    <define name="PITCH_PGAIN" value="-8000."/>
+    <define name="PITCH_DGAIN" value="0."/>
 
-    <define name="ROLL_MAX_SETPOINT" value="0.7" unit="radians"/>
+    <define name="ROLL_MAX_SETPOINT" value="0.699999988079" unit="radians"/>
     <define name="ROLL_ATTITUDE_GAIN" value="-6000.90917969"/>
     <define name="ROLL_RATE_GAIN" value="-750."/>
     <define name="AILERON_OF_THROTTLE" value="0."/>
 
-    <define name="COURSE_PGAIN" value="-0.684000015259"/>
-    <define name="COURSE_DGAIN" value="0.675000011921"/>
-    <define name="COURSE_PRE_BANK_CORRECTION" value="0.10000000149"/>
+    <define name="COURSE_PGAIN" value="-1.35300004482"/>
+    <define name="COURSE_DGAIN" value="0.368000000715"/>
+    <define name="COURSE_PRE_BANK_CORRECTION" value="0.90600001812"/>
 
     <define name="PITCH_MAX_SETPOINT" value="0.5" unit="radians"/> <!-- not in fw_h_ctl.c fw_v_ctl.c but where????-->
     <define name="PITCH_MIN_SETPOINT" value="-0.5" unit="radians"/> <!-- not in fw_h_ctl.c fw_v_ctl.c but where????-->
@@ -306,34 +306,34 @@
   </section>
 
   <firmware name="fixedwing">
-    <target name="ap" 			board="tiny_2.11">
-      <configure name="FLASH_MODE" 		value="IAP" />
+    <target name="ap" board="tiny_2.11">
+      <configure name="FLASH_MODE" value="IAP"/>
       <configure name="PERIODIC_FREQUENCY" value="120"/>
       <configure name="AHRS_PROPAGATE_FREQUENCY" value="100"/>
       <configure name="AHRS_CORRECT_FREQUENCY" value="100"/>
-      <define name="AHRS_TRIGGERED_ATTITUDE_LOOP" />
+      <define name="AHRS_TRIGGERED_ATTITUDE_LOOP"/>
       <configure name="AHRS_ALIGNER_LED" value="3"/>
     </target>
-    <target name="sim" 			board="pc"/>
+    <target name="sim" board="pc"/>
 
-    <define name="LOITER_TRIM" />
-    <define name="TUNE_AGRESSIVE_CLIMB" />
-    <define name="AGR_CLIMB" />
-    <define name="ALT_KALMAN" />
+    <define name="LOITER_TRIM"/>
+    <define name="TUNE_AGRESSIVE_CLIMB"/>
+    <define name="AGR_CLIMB"/>
+    <define name="ALT_KALMAN"/>
 
-    <subsystem name="radio_control" 	type="ppm"/>
+    <subsystem name="radio_control" type="ppm"/>
     <!-- Communication -->
-    <subsystem name="telemetry" 	type="xbee_api">
-      <configure name="MODEM_BAUD" 		value="B9600"/>
+    <subsystem name="telemetry" type="xbee_api">
+      <configure name="MODEM_BAUD" value="B9600"/>
     </subsystem>
     <!-- Actuators -->
     <subsystem name="control"/>
     <!-- Sensors -->
 
-    <subsystem name="imu" 		type="aspirin_i2c"/>
-    <subsystem name="attitude" 		type="dcm"/>
-    <subsystem name="gps" 		type="ublox_lea5h"/>
-    <subsystem name="navigation"        type="extra"/><!--this includes OSAMNav, nav, discsurvey and nav_cube as well-->
+    <subsystem name="imu" type="aspirin_i2c"/>
+    <subsystem name="attitude" type="dcm"/>
+    <subsystem name="gps" type="ublox_lea5h"/>
+    <subsystem name="navigation" type="extra"/><!--this includes OSAMNav, nav, discsurvey and nav_cube as well-->
     <subsystem name="i2c"/>
   </firmware>
   <!-- Carefull: add the location after!! -->
