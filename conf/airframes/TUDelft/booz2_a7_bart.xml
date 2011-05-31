@@ -19,7 +19,7 @@ comment everything that is 2 lines back when you stop simulaton-->
 
     <section name="ACTUATORS_MKK" prefix="ACTUATORS_MKK_">
       <define name="NB" value="4"/>
-      <define name="ADDR" value="{ 0x52, 0x54, 0x56, 0x58 }"/>
+      <define name="ADDR" value="{ 0x52, 0x58, 0x56, 0x54 }"/>
     </section>
 
   <section name="SUPERVISION" prefix="SUPERVISION_">
@@ -89,7 +89,7 @@ comment everything that is 2 lines back when you stop simulaton-->
 
     <define name="BODY_TO_IMU_PHI"   value="RadOfDeg(  0.)"/>
     <define name="BODY_TO_IMU_THETA" value="RadOfDeg(  0.)"/>
-    <define name="BODY_TO_IMU_PSI"   value="RadOfDeg(  45.)"/>
+    <define name="BODY_TO_IMU_PSI"   value="RadOfDeg(  -45.)"/>
 
   </section>
 
@@ -262,6 +262,7 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
 <!--      <define name="UART1_NEW_BAUD" value="B9600"/>-->
     </subsystem>
     <subsystem name="ins"           type="hff"/>
+    <subsystem name="stabilization" type="euler"/>
   </firmware>
 
   <firmware name="lisa_l_test_progs">
