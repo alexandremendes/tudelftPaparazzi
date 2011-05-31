@@ -89,7 +89,7 @@ comment everything that is 2 lines back when you stop simulaton-->
 
     <define name="BODY_TO_IMU_PHI"   value="RadOfDeg(  0.)"/>
     <define name="BODY_TO_IMU_THETA" value="RadOfDeg(  0.)"/>
-    <define name="BODY_TO_IMU_PSI"   value="RadOfDeg(  0.)"/>
+    <define name="BODY_TO_IMU_PSI"   value="RadOfDeg(  45.)"/>
 
   </section>
 
