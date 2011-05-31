@@ -12,8 +12,8 @@
   </servos>
 
   <commands>
-    <axis name="PITCH"  failsafe_value="0"/>
     <axis name="ROLL"   failsafe_value="0"/>
+    <axis name="PITCH"  failsafe_value="0"/>
     <axis name="YAW"    failsafe_value="0"/>
     <axis name="THRUST" failsafe_value="0"/>
   </commands>
@@ -49,7 +49,7 @@
   <section name="IMU" prefix="IMU_">
     
     <define name="BODY_TO_IMU_PHI"   value="RadOfDeg( 180. )"/>
-    <define name="BODY_TO_IMU_THETA" value="RadOfDeg(  90. )"/>
+    <define name="BODY_TO_IMU_THETA" value="RadOfDeg(   0. )"/>
     <define name="BODY_TO_IMU_PSI"   value="RadOfDeg(   0. )"/>
 
   </section>
@@ -80,12 +80,14 @@
   </section>
 
   <section name="STABILIZATION_ATTITUDE" prefix="STABILIZATION_ATTITUDE_">
-
     <!-- setpoints -->
     <define name="SP_MAX_PHI"     value="RadOfDeg(45.)"/>
     <define name="SP_MAX_THETA"   value="RadOfDeg(45.)"/>
+    <define name="SP_MAX_PSI"     value="RadOfDeg(45.)"/>
     <define name="SP_MAX_R"       value="RadOfDeg(90.)"/>
+    <define name="SP_MAX_P"       value="RadOfDeg(90.)"/>
     <define name="DEADBAND_R"     value="250"/>
+    <define name="DEADBAND_A"     value="250"/>
 
     <!-- reference -->
     <define name="REF_OMEGA_P"  value="RadOfDeg(600)"/>
@@ -145,6 +147,7 @@
 
   <section name="AHRS" prefix="AHRS_">
     <define name="PROPAGATE_FREQUENCY" value="512"/>
+    <define name="MAG_UPDATE_YAW_ONLY" value="1"/>
     <!-- magnetic field for Santa cruz from http://www.ngdc.noaa.gov/geomagmodels/IGRFWMM.jsp -->
     <define name="H_X" value=" 0.47577"/>
     <define name="H_Y" value=" 0.11811"/>
@@ -192,6 +195,7 @@
     <subsystem name="imu"           type="aspirin"/>
     <subsystem name="gps"           type="ublox"/>
     <subsystem name="ahrs"          type="ic"/>
+    <subsystem name="stabilization" type="quaternion"/>
   </firmware>
 
 
