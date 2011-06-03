@@ -96,7 +96,7 @@ comment everything that is 2 lines back when you stop simulaton-->
  <section name="AUTOPILOT">
    <define name="MODE_MANUAL" value="AP_MODE_ATTITUDE_DIRECT"/>
    <define name="MODE_AUTO1"  value="AP_MODE_HOVER_DIRECT"/>
-   <define name="MODE_AUTO2"  value="AP_MODE_NAV"/> 
+   <define name="MODE_AUTO2"  value="AP_MODE_HOVER_Z_HOLD"/> 
  </section>
 <!--
 AP_MODE_RATE_DIRECT		AP_MODE_ATTITUDE_DIRECT			AP_MODE_HOVER_DIRECT
