@@ -23,7 +23,7 @@ comment everything that is 2 lines back when you stop simulaton-->
     </section>
 
   <section name="SUPERVISION" prefix="SUPERVISION_">
-    <define name="MIN_MOTOR" value="3"/>
+    <define name="MIN_MOTOR" value="15"/>
     <define name="MAX_MOTOR" value="200"/>
     <define name="TRIM_A" value="0"/>
     <define name="TRIM_E" value="0"/>
@@ -74,18 +74,22 @@ comment everything that is 2 lines back when you stop simulaton-->
       <define name="MAG_Y_CHAN" value="0"/>
       <define name="MAG_Z_CHAN" value="2"/>
 
+      <define name="MAG_45_HACK" value="1"/>
+-->
       <define name="MAG_X_SIGN" value="-1"/>
       <define name="MAG_Y_SIGN" value=" 1"/>
       <define name="MAG_Z_SIGN" value="-1"/>
-      <define name="MAG_45_HACK" value="1"/>
--->
-<define name="MAG_X_SENS" value="-5.0509647095" integer="16"/>
-<define name="MAG_Y_SENS" value="-5.29610223222" integer="16"/>
-<define name="MAG_Z_SENS" value="-2.96089492853" integer="16"/>
 
-<define name="MAG_X_NEUTRAL" value="29"/>
-<define name="MAG_Y_NEUTRAL" value="-24"/>
-<define name="MAG_Z_NEUTRAL" value="7"/>
+
+
+
+<define name="MAG_X_SENS" value="4.68438721124" integer="16"/>
+<define name="MAG_Y_SENS" value="4.54132316969" integer="16"/>
+<define name="MAG_Z_SENS" value="2.69730737452" integer="16"/>
+
+<define name="MAG_X_NEUTRAL" value="27"/>
+<define name="MAG_Y_NEUTRAL" value="-12"/>
+<define name="MAG_Z_NEUTRAL" value="-13"/>
 
     <define name="BODY_TO_IMU_PHI"   value="RadOfDeg(  0.)"/>
     <define name="BODY_TO_IMU_THETA" value="RadOfDeg(  0.)"/>
@@ -95,8 +99,8 @@ comment everything that is 2 lines back when you stop simulaton-->
 
  <section name="AUTOPILOT">
    <define name="MODE_MANUAL" value="AP_MODE_ATTITUDE_DIRECT"/>
-   <define name="MODE_AUTO1"  value="AP_MODE_HOVER_DIRECT"/>
-   <define name="MODE_AUTO2"  value="AP_MODE_HOVER_Z_HOLD"/> 
+   <define name="MODE_AUTO1"  value="AP_MODE_HOVER_Z_HOLD"/>
+   <define name="MODE_AUTO2"  value="AP_MODE_NAV"/> 
  </section>
 <!--
 AP_MODE_RATE_DIRECT		AP_MODE_ATTITUDE_DIRECT			AP_MODE_HOVER_DIRECT
@@ -141,8 +145,8 @@ AP_MODE_NAV
   <section name="STABILIZATION_ATTITUDE" prefix="STABILIZATION_ATTITUDE_">
 
     <!-- setpoints -->
-    <define name="SP_MAX_PHI"     value="RadOfDeg(45.)"/>
-    <define name="SP_MAX_THETA"   value="RadOfDeg(45.)"/>
+    <define name="SP_MAX_PHI"     value="RadOfDeg(25.)"/>
+    <define name="SP_MAX_THETA"   value="RadOfDeg(25.)"/>
     <define name="SP_MAX_R"       value="RadOfDeg(90.)"/>
     <define name="DEADBAND_R"     value="250"/>
 
@@ -150,17 +154,17 @@ AP_MODE_NAV
     <define name="REF_OMEGA_P"  value="RadOfDeg(800)"/>
     <define name="REF_ZETA_P"   value="0.85"/>
     <define name="REF_MAX_P"    value="RadOfDeg(300.)"/>
-    <define name="REF_MAX_PDOT" value="RadOfDeg(7000.)"/>
+    <define name="REF_MAX_PDOT" value="RadOfDeg(5000.)"/>
 
     <define name="REF_OMEGA_Q"  value="RadOfDeg(800)"/>
     <define name="REF_ZETA_Q"   value="0.85"/>
     <define name="REF_MAX_Q"    value="RadOfDeg(300.)"/>
-    <define name="REF_MAX_QDOT" value="RadOfDeg(7000.)"/>
+    <define name="REF_MAX_QDOT" value="RadOfDeg(5000.)"/>
 
     <define name="REF_OMEGA_R"  value="RadOfDeg(500)"/>
     <define name="REF_ZETA_R"   value="0.85"/>
     <define name="REF_MAX_R"    value="RadOfDeg(180.)"/>
-    <define name="REF_MAX_RDOT" value="RadOfDeg(1800.)"/>
+    <define name="REF_MAX_RDOT" value="RadOfDeg(1000.)"/>
 
     <!-- feedback -->
     <define name="PHI_PGAIN"  value="-2000"/>
@@ -217,8 +221,8 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
 
 
  <section name="GUIDANCE_H" prefix="GUIDANCE_H_">
-   <define name="PGAIN" value="-100"/>
-   <define name="DGAIN" value="-100"/>
+   <define name="PGAIN" value="-20"/>
+   <define name="DGAIN" value="-20"/>
    <define name="IGAIN" value="-0"/>
    <define name="NGAIN" value="-0"/>
  </section>
@@ -261,7 +265,7 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
       <configure name="GPS_BAUD" value="B38400"/>
 <!--      <define name="UART1_NEW_BAUD" value="B9600"/>-->
     </subsystem>
-    <subsystem name="ins"           type="hff"/>
+<!--    <subsystem name="ins"           type="hff"/> -->
     <subsystem name="stabilization" type="euler"/>
   </firmware>
 
