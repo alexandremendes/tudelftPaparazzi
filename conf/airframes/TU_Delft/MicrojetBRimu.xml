@@ -109,40 +109,7 @@
 
   <section name="AUTO1" prefix="AUTO1_">
     <define name="MAX_ROLL" value="1.1"/>
-    <define name="MAX_PITCH" value="0.6"/>
-  </section>
-
-  <section name="INFRARED" prefix="IR_">
-    <define name="ADC_IR1_NEUTRAL" value="501"/>
-    <define name="ADC_IR2_NEUTRAL" value="510"/>
-    <define name="ADC_TOP_NEUTRAL" value="520"/>
-
-    <define name="HORIZ_SENSOR_ALIGNED" value="1"/>
-    <define name="IR1_SIGN" value="-1"/>
-    <define name="IR2_SIGN" value="1"/>
-    <define name="TOP_SIGN" value="1"/>
-
-    <define name="LATERAL_CORRECTION" value="1."/>
-    <define name="LONGITUDINAL_CORRECTION" value="1."/>
-    <define name="VERTICAL_CORRECTION" value="1."/>
-
-    <define name="ROLL_NEUTRAL_DEFAULT" value="0.114591561258" unit="deg"/>
-    <define name="PITCH_NEUTRAL_DEFAULT" value="0.0572957806289" unit="deg"/>
-
-    <define name="CORRECTION_UP" value="1."/>
-    <define name="CORRECTION_DOWN" value="1."/>
-    <define name="CORRECTION_LEFT" value="1."/>
-    <define name="CORRECTION_RIGHT" value="1."/>
-  </section>
-
-
-  <section name="GYRO" prefix="GYRO_">
-    <define name="ADC_ROLL_NEUTRAL" value="450"/>
-    <define name="DYNAMIC_RANGE" value="150" unit="deg/s"/>
-    <define name="ADXRS300_RESISTOR_BRIDGE" value="(3.3/(3.3+2.2))"/>
-    <define name="ADXRS300_SENSITIVITY" value="5" unit="mV/(deg/s)"/>
-    <define name="ROLL_SCALE" value="3.0*1000./1024./(GYRO_ADXRS300_SENSITIVITY*GYRO_ADXRS300_RESISTOR_BRIDGE)" unit="deg/s/adc_unit"/>
-    <define name="ROLL_DIRECTION" value="1."/>
+    <define name="MAX_PITCH" value="0.9"/>
   </section>
 
   <section name="BAT">
@@ -299,12 +266,6 @@
   </modules>
 
   <firmware name="fixedwing">
-    <target name="sim" 			board="pc" >
-      <define name="STRONG_WIND" />
-      <define name="TUNE_AGRESSIVE_CLIMB" />
-      <define name="LOITER_TRIM" />
-      <define name="AGR_CLIMB" />
-    </target>
     <target name="ap" 			board="tiny_1.1">
       <configure name="FLASH_MODE" value="IAP"/>
       <configure name="PERIODIC_FREQUENCY" value="120"/>
@@ -318,6 +279,12 @@
       <define name="AGR_CLIMB" />
       <define name="TUNE_AGRESSIVE_CLIMB" />
     </target>
+    <target name="sim" 			board="pc" >
+      <define name="STRONG_WIND" />
+      <define name="TUNE_AGRESSIVE_CLIMB" />
+      <define name="LOITER_TRIM" />
+      <define name="AGR_CLIMB" />
+    </target>
 
     <subsystem name="radio_control" 	type="ppm"/>
 
@@ -327,21 +294,14 @@
     </subsystem>
 
     <!-- Sensors -->
-<!--    <subsystem name="gyro"		type="roll">
-      <configure name="ADC_GYRO_ROLL" 	value="ADC_3" />
-    </subsystem>
--->
-    <subsystem name="imu" type="aspirin_i2c"/>
+    <subsystem name="imu" type="ppzuav"/>
     <subsystem name="attitude" type="dcm"/>
     <subsystem name="i2c"/>
-    <subsystem name="attitude" 		type="infrared"/>
+
     <subsystem name="gps" 		type="ublox_lea4p"/>
     <subsystem name="control"	/>
     <subsystem name="navigation"	type="extra"/>
 
   </firmware>
 
-<makefile location="after">
-
-  </makefile>
 </airframe>
