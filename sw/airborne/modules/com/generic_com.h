@@ -1,7 +1,5 @@
 /*
- * $Id$
- *
- * Copyright (C) 2008-2009 Antoine Drouin <poinix@gmail.com>
+ * Copyright (C) 2011 Gautier Hattenberger
  *
  * This file is part of paparazzi.
  *
@@ -19,18 +17,18 @@
  * along with paparazzi; see the file COPYING.  If not, write to
  * the Free Software Foundation, 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ *
  */
 
-#ifndef IMU_CRISTA_ARCH_H
-#define IMU_CRISTA_ARCH_H
+/* Generic module to send data to a gsm/satcom module controlled by arduino over i2c */
 
-#include "std.h"
+#ifndef GENERIC_COM_H
+#define GENERIC_COM_H
 
+void generic_com_init( void );
+void generic_com_periodic( void );
+void generic_com_event( void );
+void start_com( void );
+void stop_com( void );
 
-#define ImuCristaArchPeriodic() {		\
-    ADS8344_start();				\
-  }
-
-extern void ADS8344_start( void );
-
-#endif /* IMU_CRISTA_ARCH_H */
+#endif // GENERIC_COM_H
