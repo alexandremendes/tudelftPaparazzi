@@ -30,7 +30,7 @@ uint8_t strobe_light_mode;
 uint8_t nav_light_mode;
 
 #ifndef STROBE_LIGHT_MODE_DEFAULT
-#define STROBE_LIGHT_MODE_DEFAULT 5
+#define STROBE_LIGHT_MODE_DEFAULT 6
 #endif
 
 #ifndef NAV_LIGHT_MODE_DEFAULT
