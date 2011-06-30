@@ -172,11 +172,11 @@
   <aircraft
    name="TINY_FW"
    ac_id="22"
-   airframe="airframes/TU_Delft/yapa_xsens.xml"
+   airframe="airframes/CDW/ChimuTinyFwSpi.xml"
    radio="radios/cockpitSX.xml"
    telemetry="telemetry/default.xml"
    flight_plan="flight_plans/versatile.xml"
-   settings=" settings/dc.xml settings/tuning.xml"
+   settings=" settings/tuning_basic_ins.xml"
    gui_color="blue"
   />
   <aircraft
