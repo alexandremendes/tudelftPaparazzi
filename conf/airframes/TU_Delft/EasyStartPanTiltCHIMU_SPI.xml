@@ -10,16 +10,16 @@
     <servo name="THROTTLE" no="0" min="1100" neutral="1000" max="1900"/>
     <servo name="RUDDER" no="2" min="1100" neutral="1500" max="1900"/>
     <servo name="ELEVATOR" no="6" min="1000" neutral="1500" max="2000"/>
-    <servo name="TILT" no="7" min="2500" neutral="1500" max="500"/>
-    <servo name="PAN" no="3" min="500" neutral="1500" max="2500"/>
+    <servo name="CAM_TILT" no="7" min="700" neutral="1600" max="2500"/>
+    <servo name="CAM_PAN" no="3" min="800" neutral="1650" max="2500"/>
   </servos>
 
   <commands>
     <axis name="THROTTLE" failsafe_value="0"/>
     <axis name="ROLL" failsafe_value="0"/>
     <axis name="PITCH" failsafe_value="0"/>
-    <axis name="PAN" failsafe_value="0"/>
-    <axis name="TILT" failsafe_value="0"/>
+    <axis name="CAM_PAN" failsafe_value="0"/>
+    <axis name="CAM_TILT" failsafe_value="0"/>
   </commands>
 
   <rc_commands>
@@ -29,16 +29,17 @@
   </rc_commands>
 
   <command_laws>
+    <set servo="CAM_PAN" value="@CAM_PAN"/>
+    <set servo="CAM_TILT" value="@CAM_TILT"/>
+
     <!-- Differential Aileron Depending on Brake Value -->
     <set servo="RUDDER" value="@ROLL"/>
-    <set servo="PAN" value="@ROLL"/>
 
     <!-- Differential Thurst -->
     <set servo="THROTTLE" value="@THROTTLE"/>
 
     <!-- Pitch with Brake-Trim Function -->
     <set servo="ELEVATOR" value="@PITCH"/>
-    <set servo="TILT" value="@PITCH"/>
   </command_laws>
 
   <section name="INS" prefix="INS_">
@@ -49,6 +50,18 @@
   <section name="AUTO1" prefix="AUTO1_">
     <define name="MAX_ROLL" value="0.7"/>
     <define name="MAX_PITCH" value="0.7"/>
+  </section>
+
+  <section name="PANTILT" prefix="CAM_">
+    <define name="PAN_MIN" value="-45"/>
+    <define name="PAN_NEUTRAL" value="33"/>
+    <define name="PAN_MAX" value="156"/>
+    <define name="PAN0" value="0"/>
+    <define name="TILT_MIN" value="-62"/>
+    <define name="TILT_NEUTRAL" value="47"/>
+    <define name="TILT_MAX" value="122"/>
+    <define name="TILT0" value="90"/>
+    <define name="MODE0" value="1"/>
   </section>
 
   <section name="BAT">
@@ -63,8 +76,8 @@
     <define name="NOMINAL_AIRSPEED" value="13." unit="m/s"/>
     <define name="CARROT" value="5." unit="s"/>
     <define name="CONTROL_RATE" value="60" unit="Hz"/>
-    <define name="XBEE_INIT" value="&quot;ATPL2\rATRN5\rATTT80\r&quot;"/>
-<!--    <define name="NO_XBEE_API_INIT" value="TRUE"/> -->
+ <!--   <define name="XBEE_INIT" value="&quot;ATPL2\rATRN5\rATTT80\r&quot;"/>
+    <define name="NO_XBEE_API_INIT" value="TRUE"/> -->
     <define name="ALT_KALMAN_ENABLED" value="TRUE"/>
 
     <define name="DEFAULT_CIRCLE_RADIUS" value="80."/>
@@ -141,8 +154,10 @@
 
 
   <modules>
-    <load name="ins_chimu_spi.xml" />
-
+    <load name="ins_chimu_spi.xml" >
+      <define name="CHIMU_BIG_ENDIAN" />
+    </load>
+    <load name="./TUDelft/campoint60Hz.xml" />
   </modules>
 
   <firmware name="fixedwing">
@@ -152,6 +167,7 @@
       <define name="WIND_INFO_RET"/>
       <define name="LOITER_TRIM"/>
       <define name="ALT_KALMAN"/>
+      <define name="POINT_CAM_PITCH_ROLL" />
     </target>
     <target name="sim" board="pc"/>
 
