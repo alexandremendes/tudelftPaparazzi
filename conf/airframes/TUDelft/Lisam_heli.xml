@@ -8,6 +8,7 @@
     <servo name="CIC_RIGHT" no="3" min="1900" neutral="1500" max="1100"/>
     <servo name="CIC_FRONT" no="1" min="1900" neutral="1500" max="1100"/>
     <servo name="TAIL" no="4" min="1100" neutral="1500" max="1900"/>
+    <servo name="GYRO_GAIN" no="6" min="1100" neutral="1500" max="1900"/>
   </servos>
 
   <commands>
@@ -30,23 +31,26 @@
   </rc_commands>
 
   <command_laws>
+    <let var="halfway" value="(@THRUST >= (3800) ? 1 : 0)"/>
+
     <let var="thrust" value="@THRUST * MAX_PPRZ / SUPERVISION_SCALE" />
     <let var="roll" value="@ROLL * MAX_PPRZ / SUPERVISION_SCALE" />
     <let var="pitch" value="@PITCH * MAX_PPRZ / SUPERVISION_SCALE" />
     <let var="yaw" value="@YAW * MAX_PPRZ / SUPERVISION_SCALE" />
 
-    <let var="collective" value="$thrust * 1.8 - (MAX_PPRZ * 0.7)" />
+    <let var="collective" value="$thrust * 1.8 - (MAX_PPRZ * 0.9)" />
 
-    <set servo="GAS" value="$thrust" />
+    <set servo="GAS" value="(3800 * 1.6) + $halfway * ($thrust - 3800)  + (1 - $halfway) * ($thrust - 3800) * 1.6" />
     <set servo="CIC_LEFT" value="((-$pitch/2)+($roll*0.7))+($collective)"/>
     <set servo="CIC_RIGHT" value="(($pitch/2)+($roll*0.7))-($collective)"/>
     <set servo="CIC_FRONT" value="$pitch+($collective)"/>
     <set servo="TAIL" value="$yaw"/>
+    <set servo="GYRO_GAIN" value="-MAX_PPRZ/2"/>
   </command_laws>
   
  <section name="AUTOPILOT">
    <define name="MODE_MANUAL" value="AP_MODE_RC_DIRECT"/>
-   <define name="MODE_AUTO1"  value="AP_MODE_HOVER_Z_HOLD"/>
+   <define name="MODE_AUTO1"  value="AP_MODE_ATTITUDE_DIRECT"/>
    <define name="MODE_AUTO2"  value="AP_MODE_NAV"/> 
  </section>
 <!--
@@ -236,6 +240,8 @@ AP_MODE_NAV
       <subsystem name="telemetry" type="transparent"/>
       <define name="SERVO_HZ" value="50"/>
       <define name="SERVO_HZ_SECONDARY" value="50"/>
+      <define name="USE_SERVOS_7AND8"/>
+      <define name="ROTORCRAFT_COMMANDS_YAW_ALWAYS_ENABLED"/>
     </target>
     <target name="sim" board="pc">
       <subsystem name="fdm" type="nps"/>
@@ -247,6 +253,7 @@ AP_MODE_NAV
     <subsystem name="gps" type="ublox"/>
     <subsystem name="ahrs" type="cmpl"/>
     <subsystem name="stabilization" type="euler"/>
+
   </firmware>
 
 </airframe>
