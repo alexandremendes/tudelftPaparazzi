@@ -5,6 +5,14 @@
 
   <process name="Main">
 
+    <mode name="log_imu">
+      <message name="IMU_ACCEL_SCALED"     period=".05"/>
+      <message name="IMU_GYRO_SCALED"      period=".05"/>
+      <message name="IMU_MAG_SCALED"       period=".05"/>
+			<message name="ROTORCRAFT_FP"       period=".05"/>
+    </mode>
+
+
     <mode name="default">
       <message name="DL_VALUE"          period="1.1"/>
       <message name="ROTORCRAFT_STATUS"       period="1.2"/>
