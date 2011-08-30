@@ -66,6 +66,7 @@ float estimator_hspeed_dir;
 /* wind */
 float wind_east, wind_north;
 float estimator_airspeed;
+float estimator_AOA;
 
 #define NORM_RAD_ANGLE2(x) { \
     while (x > 2 * M_PI) x -= 2 * M_PI; \
@@ -99,6 +100,10 @@ void estimator_init( void ) {
 
 #ifdef USE_AIRSPEED
   EstimatorSetAirspeed( 0. );
+#endif
+
+#ifdef USE_AOA
+  EstimatorSetAOA( 0. );
 #endif
 
   estimator_flight_time = 0;

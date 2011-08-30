@@ -95,7 +95,7 @@ float imu_health = 0.;
 static inline void set_dcm_matrix_from_rmat(struct FloatRMat *rmat)
 {
   for (int i=0; i<3; i++) {
-    for (int j=0; j<3; j++) { 
+    for (int j=0; j<3; j++) {
       DCM_Matrix[i][j] = RMAT_ELMT(*rmat, j, i);
     }
   }
@@ -462,8 +462,8 @@ void Drift_correction(void)
 
   //  Here we will place a limit on the integrator so that the integrator cannot ever exceed half the saturation limit of the gyros
   Integrator_magnitude = sqrt(Vector_Dot_Product(Omega_I,Omega_I));
-  if (Integrator_magnitude > DegOfRad(300)) {
-    Vector_Scale(Omega_I,Omega_I,0.5f*DegOfRad(300)/Integrator_magnitude);
+  if (Integrator_magnitude > RadOfDeg(300)) {
+    Vector_Scale(Omega_I,Omega_I,0.5f*RadOfDeg(300)/Integrator_magnitude);
   }
 
 

@@ -8,6 +8,7 @@
 
 <airframe name="Microjet Tiny 1.1">
 
+
   <servos>
     <servo name="MOTOR"         no="0" min="1290" neutral="1290" max="1810"/>
     <servo name="AILEVON_LEFT"  no="1" min="2000" neutral="1510" max="1000"/>
@@ -158,8 +159,8 @@
     <define name="DEVICE_TYPE" value="XBEE"/>
     <define name="DEVICE_ADDRESS" value="...."/>
   </section>
-  
-  
+
+
   <section name="SIMU">
     <define name="JSBSIM_MODEL" value="&quot;Malolo1&quot;"/>
     <define name="JSBSIM_IR_ROLL_NEUTRAL" value="RadOfDeg(0.)"/>
@@ -187,7 +188,7 @@
     <!-- Sensors -->
     <subsystem name="gyro"          type="roll"/>
     <subsystem name="attitude" 		type="infrared"/>
-    <subsystem name="gps" 		    type="ublox_lea4p"/>
+    <subsystem name="gps" 		    type="ublox_utm"/>
     <subsystem name="navigation"/>
 
   </firmware>

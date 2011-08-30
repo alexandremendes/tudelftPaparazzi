@@ -49,7 +49,7 @@
     <subsystem name="control" type="new"/>
     <subsystem name="navigation"/>
     <!-- Sensors -->
-    <subsystem name="gps" type="ublox_lea5h"/>
+    <subsystem name="gps" type="ublox"/>
   </firmware>
 
 
@@ -115,7 +115,7 @@
 
     <define name="TRIGGER_DELAY" value="1."/>
     <define name="DEFAULT_CIRCLE_RADIUS" value="80."/>
-    
+
     <define name="UNLOCKED_HOME_MODE" value="TRUE"/>
   </section>
 
