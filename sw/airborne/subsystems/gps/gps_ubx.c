@@ -93,6 +93,7 @@ void gps_impl_init(void) {
    gps_status_config = 0;
    gps_configuring = TRUE;
 #endif
+   gps_ubx.have_velned = 0;
 }
 
 
@@ -167,11 +168,12 @@ void gps_ubx_read_message(void) {
       gps.ned_vel.y = UBX_NAV_VELNED_VEL_E(gps_ubx.msg_buf);
       gps.ned_vel.z = UBX_NAV_VELNED_VEL_D(gps_ubx.msg_buf);
       // Ublox gives I4 heading in 1e-5 degrees, apparenty from 0 to 360 degrees (not -180 to 180)
-      // I4 max = 2^31 = 214 * 1e5 * 100 < 360 * 1e7: overflow on angles over 214 deg -> casted to -214 deg 
+      // I4 max = 2^31 = 214 * 1e5 * 100 < 360 * 1e7: overflow on angles over 214 deg -> casted to -214 deg
       // solution: First to radians, and then scale to 1e-7 radians
       // First x 10 for loosing less resolution, then to radians, then multiply x 10 again
-      gps.course = (RadOfDeg(UBX_NAV_VELNED_Heading(gps_ubx.msg_buf)*10)) * 10; 
+      gps.course = (RadOfDeg(UBX_NAV_VELNED_Heading(gps_ubx.msg_buf)*10)) * 10;
       gps.tow = UBX_NAV_VELNED_ITOW(gps_ubx.msg_buf);
+      gps_ubx.have_velned = 1;
     }
     else if (gps_ubx.msg_id == UBX_NAV_SVINFO_ID) {
       gps.nb_channels = Min(UBX_NAV_SVINFO_NCH(gps_ubx.msg_buf), GPS_NB_CHANNELS);
