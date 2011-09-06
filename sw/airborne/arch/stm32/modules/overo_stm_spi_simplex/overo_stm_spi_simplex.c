@@ -187,6 +187,10 @@ void spi_parse(uint8_t c) {
 }
 
 void periodic_70Hz_overo_stm_spi_simplex(void) {
+													// seems to be running at more than 70Hz =(
+	static int timeout = 0; // reseting dc_photo_nr if no processing result
+													// is received for ~10s
+
 	// DEBUG	
 	if(spi_parser.msg_cnt == 10)
 		LED_ON(4);	
@@ -199,5 +203,10 @@ void periodic_70Hz_overo_stm_spi_simplex(void) {
 		overo_msg_available = FALSE;
 		DOWNLINK_SEND_CAMERA_SNAPSHOT(DefaultChannel, &dc_photo_nr);
 		dc_photo_nr++;
+		timeout = 0;
 	}
+
+	if (timeout >= 70*10)
+		dc_photo_nr = 0;
+	timeout++;
 }
