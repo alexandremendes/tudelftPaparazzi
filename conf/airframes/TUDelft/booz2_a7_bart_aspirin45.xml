@@ -218,6 +218,9 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
       <define name="SENSORS_PARAMS" value="&quot;nps_sensors_params_booz2_a1.h&quot;"/>
     </section>
 
+  <modules main_freq="70">
+    <load name="overo_stm_spi_simplex.xml" />
+	</modules>
 
   <firmware name="rotorcraft">
      <define name="USE_ADAPT_HOVER"/>

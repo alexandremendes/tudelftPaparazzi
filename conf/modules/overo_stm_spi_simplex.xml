@@ -1,0 +1,16 @@
+<!DOCTYPE module SYSTEM "module.dtd">
+
+<module name="overo_stm_spi_simplex">
+  <header>
+    <file name="overo_stm_spi_simplex.h"/>
+  </header>
+  <init fun="init_overo_stm_spi_simplex()"/>
+  <periodic fun="periodic_70Hz_overo_stm_spi_simplex()" freq="70" autorun="LOCK"/> 
+	<event fun="event_overo_stm_spi_simplex()"/>
+  <makefile>
+    <raw>
+    </raw>
+    <file_arch name="overo_stm_spi_simplex.c"/>
+  </makefile>
+</module>
+
