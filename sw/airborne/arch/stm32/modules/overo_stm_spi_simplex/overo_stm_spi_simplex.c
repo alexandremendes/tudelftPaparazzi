@@ -202,6 +202,9 @@ void periodic_70Hz_overo_stm_spi_simplex(void) {
 	if (overo_msg_available == TRUE) {
 		overo_msg_available = FALSE;
 		DOWNLINK_SEND_CAMERA_SNAPSHOT(DefaultChannel, &dc_photo_nr);
+		DOWNLINK_SEND_CAMERA_BLOB_X(DefaultChannel, &overo_msg.x);
+		DOWNLINK_SEND_CAMERA_BLOB_Y(DefaultChannel, &overo_msg.y);
+		DOWNLINK_SEND_CAMERA_BLOB_AREA(DefaultChannel, &overo_msg.area);
 		dc_photo_nr++;
 		timeout = 0;
 	}

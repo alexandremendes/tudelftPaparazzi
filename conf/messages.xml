@@ -548,9 +548,17 @@
 
  <!-- 70 is free -->
  <!-- 71 is free -->
- <!-- 72 is free -->
- <!-- 73 is free -->
- <!-- 74 is free -->
+
+  <message name="CAMERA_BLOB_X" id="72">
+  	 <field name="camera_blob_x" type="int32"/>
+	</message>
+  <message name="CAMERA_BLOB_Y" id="73">
+  	 <field name="camera_blob_y" type="int32"/>
+	</message>
+  <message name="CAMERA_BLOB_AREA" id="74">
+  	 <field name="camera_blob_area" type="int32"/>
+	</message>
+
  <!-- 75 is free -->
 
   <message name="VF_UPDATE" id="76">
