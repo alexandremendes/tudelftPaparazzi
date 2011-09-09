@@ -162,6 +162,9 @@
       <define name="CHIMU_BIG_ENDIAN" />
     </load>
     <load name="./TUDelft/campoint60Hz.xml" />
+    <load name="gps_ubx_ucenter.xml">
+      <define name="GPS_PORT_ID" value="GPS_PORT_UART2" />
+    </load>
   </modules>
 
   <firmware name="fixedwing">
@@ -172,14 +175,11 @@
       <define name="LOITER_TRIM"/>
       <define name="ALT_KALMAN"/>
       <define name="POINT_CAM_PITCH_ROLL" />
-      <define name="GPS_CONFIGURE" />
     </target>
     <target name="sim" board="pc"/>
 
     <subsystem name="radio_control" type="ppm"/>
-    <subsystem name="gps" type="ublox_utm" >
-      <configure name="GPS_BAUD" value="B57600"/>
-    </subsystem>
+    <subsystem name="gps" type="ublox" />
 
 
     <!-- Communication -->
