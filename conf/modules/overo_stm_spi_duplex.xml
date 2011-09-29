@@ -1,0 +1,16 @@
+<!DOCTYPE module SYSTEM "module.dtd">
+
+<module name="overo_stm_spi_duplex">
+  <header>
+    <file name="overo_stm_spi_duplex.h"/>
+  </header>
+  <init fun="init_overo_stm_spi_duplex()"/>
+  <periodic fun="periodic_70Hz_overo_stm_spi_duplex()" freq="70" autorun="LOCK"/> 
+  <event fun="event_overo_stm_spi_duplex()"/>
+  <makefile>
+    <raw>
+    </raw>
+    <file_arch name="overo_stm_spi_duplex.c"/>
+  </makefile>
+</module>
+
