@@ -242,8 +242,8 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
     </section>
 
   <modules main_freq="70">
-    <load name="overo_stm_spi_simplex.xml" />
-	</modules>
+    <load name="overo_stm_spi_duplex.xml" />
+	</modules> 
 
   <firmware name="rotorcraft">
      <define name="USE_ADAPT_HOVER"/>

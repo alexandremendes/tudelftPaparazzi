@@ -74,8 +74,6 @@ void GPIO_Configuration(void)
 void init_overo_stm_spi_duplex(void) {
 	/* DEBUG */	
 	LED_INIT(2);
-	LED_INIT(3);
-	LED_INIT(4);
 
 	RCC_Configuration();
 	GPIO_Configuration();	
@@ -134,7 +132,6 @@ void init_overo_stm_spi_duplex(void) {
 void event_overo_stm_spi_duplex(void) {
 	// incoming buffer filled and old message read?
 	if(DMA_GetFlagStatus(SPI_SLAVE_Rx_DMA_FLAG) && (overo_msg_available == FALSE) ) {
-		LED_TOGGLE(3);		
 		memcpy((uint8_t*)&overo_msg_rx, buf_in, BUFSIZE); // copy incoming message to user space
 		overo_msg_available = TRUE;			  // signal new message
 
