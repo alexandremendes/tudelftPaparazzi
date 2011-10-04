@@ -59,7 +59,7 @@
     <program name="Http Server" command="sw/ground_segment/tmtc/boa"/>
   </section>
   <section name="sessions">
-    <session name="Bluetooth: Transparant @ 57600">
+  <session name="Bluetooth: Transparant @ 57600">
       <program name="Data Link">
         <arg flag="-d" constant="/dev/rfcomm0"/>
         <arg flag="-uplink"/>

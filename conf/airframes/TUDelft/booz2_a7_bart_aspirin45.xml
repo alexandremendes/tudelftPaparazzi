@@ -66,8 +66,8 @@ comment everything that is 2 lines back when you stop simulaton-->
 <define name="ACCEL_Y_SENS" value="2.54239768247" integer="16"/>
 <define name="ACCEL_Z_SENS" value="2.54900395804" integer="16"/>
 
-<define name="ACCEL_X_NEUTRAL" value="32828"/>
-<define name="ACCEL_Y_NEUTRAL" value="32559"/>
+<define name="ACCEL_X_NEUTRAL" value="33000"/>
+<define name="ACCEL_Y_NEUTRAL" value="33000"/>
 <define name="ACCEL_Z_NEUTRAL" value="32554"/>
 <!--
       <define name="MAG_X_CHAN" value="4"/>
@@ -243,7 +243,8 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
 
   <modules main_freq="70">
     <load name="overo_stm_spi_duplex.xml" />
-	</modules> 
+    <load name="gps_ubx_ucenter.xml" />
+  </modules> 
 
   <firmware name="rotorcraft">
      <define name="USE_ADAPT_HOVER"/>
@@ -261,14 +262,16 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
     <target name="sim" board="pc">
       <subsystem name="fdm"           type="nps"/>
     </target>
-    <subsystem name="telemetry"     type="transparent"/>
+    <subsystem name="telemetry"     type="xbee_api">
+	<configure name="MODEM_PORT" value="UART3"/>
+    </subsystem>
     <subsystem name="radio_control" type="ppm"/>
     <subsystem name="actuators"     type="mkk"/>
     <subsystem name="imu"           type="b2_v1.1"/>
     <subsystem name="ahrs"          type="int_cmpl_euler"/>
  <!--     <subsystem name="ahrs"          type="ic"/> activate section name="AHRS" for local magnetiq feeld-->
     <subsystem name="gps"           type="ublox">
-      <configure name="GPS_PORT" value="UART3"/>
+      <configure name="GPS_PORT" value="UART2"/>
       <configure name="GPS_BAUD" value="B38400"/>
 <!--      <define name="UART1_NEW_BAUD" value="B9600"/>-->
     </subsystem>

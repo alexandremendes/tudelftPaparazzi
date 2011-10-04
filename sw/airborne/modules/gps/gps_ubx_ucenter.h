@@ -1,7 +1,5 @@
 /*
- * $Id: $
- *
- * Copyright (C) 2009 Flixr
+ * Copyright (C) 2008-2011 The Paparazzi Team
  *
  * This file is part of paparazzi.
  *
@@ -21,18 +19,41 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/** @file gps_ucenter_onboard.h
+ * @brief Configure Ublox GPS
+ *
+ */
 
-#ifndef BOOZ_DROP_H
-#define BOOZ_DROP_H
+#ifndef GPS_UBX_UCENTER_H
+#define GPS_UBX_UCENTER_H
 
-#include "std.h"
+/** U-Center Variables */
+#define GPS_UBX_UCENTER_CONFIG_STEPS	  17
 
-extern bool_t booz_drop_ball;
+struct gps_ubx_ucenter_struct 
+{
+  uint8_t status;
+  uint8_t reply;
+  uint8_t cnt;
 
-extern void booz_drop_init(void);
-extern void booz_drop_periodic(void);
+  uint16_t baud_init;
+  uint16_t baud_run;
 
-#define NavDropNow() ({ booz_drop_ball = TRUE; FALSE; })
-#define NavDropClose() ({ booz_drop_ball = FALSE; FALSE; })
+  uint8_t sw_ver_h;
+  uint8_t sw_ver_l;
 
-#endif  /* BOOZ_DROP_H */
+  uint16_t hw_ver_h;
+  uint16_t hw_ver_l;
+
+  char replies[GPS_UBX_UCENTER_CONFIG_STEPS];
+};
+
+extern struct gps_ubx_ucenter_struct gps_ubx_ucenter;
+
+extern void gps_ubx_ucenter_init(void);
+extern void gps_ubx_ucenter_periodic(void);
+extern void gps_ubx_ucenter_event(void);
+
+#endif
+
+
