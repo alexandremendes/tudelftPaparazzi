@@ -133,11 +133,10 @@ void event_overo_stm_spi_duplex(void) {
 	// incoming buffer filled and old message read?
 	if(DMA_GetFlagStatus(SPI_SLAVE_Rx_DMA_FLAG) && (overo_msg_available == FALSE) ) {
 		memcpy((uint8_t*)&overo_msg_rx, buf_in, BUFSIZE); // copy incoming message to user space
-		overo_msg_available = TRUE;			  // signal new message
-
 		memcpy(buf_out, (uint8_t*)&overo_msg_tx, BUFSIZE); // copy from user space; prepare to be clocked out
+		overo_msg_available = TRUE;			  // signal new message
 	
-		/* Reset DMA devices */		
+		/* Reset devices */		
 		DMA_Cmd(SPI_SLAVE_Rx_DMA_Channel, DISABLE);
 		DMA_ClearFlag(SPI_SLAVE_Rx_DMA_FLAG);	
 		SPI_SLAVE_Rx_DMA_Channel->CNDTR = DMA_InitStructure_rx.DMA_BufferSize;
@@ -161,7 +160,7 @@ void event_overo_stm_spi_duplex(void) {
 
 void periodic_70Hz_overo_stm_spi_duplex(void) {
 	static uint16_t dc_photo_nr = 0; // last processed image id	
-	static int timeout = 0; // reseting dc_photo_nr if no processing result is received for ~10s
+	static int timeout = 0; // reseting dc_photo_nr if no processing result is received for ~5s
 
 	if (overo_msg_available == TRUE) {
 		LED_TOGGLE(2);
