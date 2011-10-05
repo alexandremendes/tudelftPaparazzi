@@ -9,8 +9,6 @@
 
 #include <string.h>
 
-#include "subsystems/ahrs.h"
-
 /*-- User interface --*/
 	// Received struct
 	overo_msg_rx_t 	overo_msg_rx;
@@ -135,11 +133,10 @@ void event_overo_stm_spi_duplex(void) {
 	// incoming buffer filled and old message read?
 	if(DMA_GetFlagStatus(SPI_SLAVE_Rx_DMA_FLAG) && (overo_msg_available == FALSE) ) {
 		memcpy((uint8_t*)&overo_msg_rx, buf_in, BUFSIZE); // copy incoming message to user space
-		overo_msg_available = TRUE;			  // signal new message
-
 		memcpy(buf_out, (uint8_t*)&overo_msg_tx, BUFSIZE); // copy from user space; prepare to be clocked out
+		overo_msg_available = TRUE;			  // signal new message
 	
-		/* Reset DMA devices */		
+		/* Reset devices */		
 		DMA_Cmd(SPI_SLAVE_Rx_DMA_Channel, DISABLE);
 		DMA_ClearFlag(SPI_SLAVE_Rx_DMA_FLAG);	
 		SPI_SLAVE_Rx_DMA_Channel->CNDTR = DMA_InitStructure_rx.DMA_BufferSize;
@@ -153,6 +150,8 @@ void event_overo_stm_spi_duplex(void) {
 	}
 }
 
+// ATT info
+#include "subsystems/ahrs.h"
 // Paparazzi Logging 
 #ifndef DOWNLINK_DEVICE
 #define DOWNLINK_DEVICE DOWNLINK_AP_DEVICE
@@ -163,19 +162,19 @@ void event_overo_stm_spi_duplex(void) {
 
 void periodic_70Hz_overo_stm_spi_duplex(void) {
 	static uint16_t dc_photo_nr = 0; // last processed image id	
-	static int timeout = 0; // reseting dc_photo_nr if no processing result is received for ~10s
+	static int timeout = 0; // reseting dc_photo_nr if no processing result is received for ~5s
 
 	if (overo_msg_available == TRUE) {
 		LED_TOGGLE(2);
 		
 		// Log image processing result		
-		DOWNLINK_SEND_CAMERA_SNAPSHOT(DefaultChannel, &dc_photo_nr);
-		DOWNLINK_SEND_CAMERA_BLOB_X(DefaultChannel, &overo_msg_tx.phi);
-		DOWNLINK_SEND_CAMERA_BLOB_Y(DefaultChannel, &overo_msg_tx.theta);
-		//DOWNLINK_SEND_CAMERA_BLOB_AREA(DefaultChannel, &overo_msg_rx.area);
+		// DOWNLINK_SEND_CAMERA_SNAPSHOT(DefaultChannel, &dc_photo_nr);
+		// DOWNLINK_SEND_CAMERA_BLOB_X(DefaultChannel, &overo_msg_tx.phi);
+		// DOWNLINK_SEND_CAMERA_BLOB_Y(DefaultChannel, &overo_msg_tx.theta);
+		// DOWNLINK_SEND_CAMERA_BLOB_AREA(DefaultChannel, &overo_msg_rx.area);
 		
 		// Populate next to be sent message
-		overo_msg_tx.phi = ahrs.ltp_to_imu_euler.phi;
+		overo_msg_tx.phi = ahrs.ltp_to_imu_euler.phi; // angles in rad with 12 FP bits 
 		overo_msg_tx.theta = ahrs.ltp_to_imu_euler.theta;
 
 		// Signal message as read
