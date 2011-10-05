@@ -3,12 +3,15 @@
 
 #include <inttypes.h>
 
+#define NBINS 10 // deleteme
+
 typedef struct __attribute__ ((packed)) {
-	int x, y, area;
+	int bins[NBINS];
 } overo_msg_rx_t;
 
 typedef struct __attribute__ ((packed)) {
-	int a, b, c;
+	int phi, theta;
+	int foo[NBINS-2];
 } overo_msg_tx_t;
 
 extern overo_msg_rx_t overo_msg_rx;

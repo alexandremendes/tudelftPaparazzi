@@ -9,6 +9,8 @@
 
 #include <string.h>
 
+#include "subsystems/ahrs.h"
+
 /*-- User interface --*/
 	// Received struct
 	overo_msg_rx_t 	overo_msg_rx;
@@ -168,14 +170,13 @@ void periodic_70Hz_overo_stm_spi_duplex(void) {
 		
 		// Log image processing result		
 		DOWNLINK_SEND_CAMERA_SNAPSHOT(DefaultChannel, &dc_photo_nr);
-		DOWNLINK_SEND_CAMERA_BLOB_X(DefaultChannel, &overo_msg_rx.x);
-		DOWNLINK_SEND_CAMERA_BLOB_Y(DefaultChannel, &overo_msg_rx.y);
-		DOWNLINK_SEND_CAMERA_BLOB_AREA(DefaultChannel, &overo_msg_rx.area);
+		DOWNLINK_SEND_CAMERA_BLOB_X(DefaultChannel, &overo_msg_tx.phi);
+		DOWNLINK_SEND_CAMERA_BLOB_Y(DefaultChannel, &overo_msg_tx.theta);
+		//DOWNLINK_SEND_CAMERA_BLOB_AREA(DefaultChannel, &overo_msg_rx.area);
 		
 		// Populate next to be sent message
-		overo_msg_tx.a = 1;
-		overo_msg_tx.b = 99;
-		overo_msg_tx.c = 255;
+		overo_msg_tx.phi = ahrs.ltp_to_imu_euler.phi;
+		overo_msg_tx.theta = ahrs.ltp_to_imu_euler.theta;
 
 		// Signal message as read
 		overo_msg_available = FALSE;
