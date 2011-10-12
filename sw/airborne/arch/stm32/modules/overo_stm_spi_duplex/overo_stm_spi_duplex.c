@@ -167,11 +167,8 @@ void periodic_70Hz_overo_stm_spi_duplex(void) {
 	if (overo_msg_available == TRUE) {
 		LED_TOGGLE(2);
 		
-		// Log image processing result		
-		// DOWNLINK_SEND_CAMERA_SNAPSHOT(DefaultChannel, &dc_photo_nr);
-		// DOWNLINK_SEND_CAMERA_BLOB_X(DefaultChannel, &overo_msg_tx.phi);
-		// DOWNLINK_SEND_CAMERA_BLOB_Y(DefaultChannel, &overo_msg_tx.theta);
-		// DOWNLINK_SEND_CAMERA_BLOB_AREA(DefaultChannel, &overo_msg_rx.area);
+		// To be shown by Vision Results
+		DOWNLINK_SEND_PAYLOAD(DefaultChannel, N_BINS, overo_msg_rx.bins);
 		
 		// Populate next to be sent message
 		overo_msg_tx.phi = ahrs.ltp_to_imu_euler.phi; // angles in rad with 12 FP bits 
