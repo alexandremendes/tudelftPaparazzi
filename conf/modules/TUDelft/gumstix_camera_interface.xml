@@ -1,0 +1,13 @@
+<!DOCTYPE module SYSTEM "../module.dtd">
+
+<module name="gumstix_camera_interface">
+  <header>
+    <file name="gumstix_camera_interface.h"/>
+  </header>
+  <init fun="init_gumstix_camera_interface()"/>
+  <periodic fun="periodic_gumstix_camera_interface()" freq="1" start="start_gumstix_camera_interface()" stop="stop_gumstix_camera_interface()" autorun="FALSE"/>
+  <makefile target="ap">
+    <file name="gumstix_camera_interface.c"/>
+    <define name="GUMSTIX_CAMERA_INTERFACE_FLAG"/>
+  </makefile>
+</module>

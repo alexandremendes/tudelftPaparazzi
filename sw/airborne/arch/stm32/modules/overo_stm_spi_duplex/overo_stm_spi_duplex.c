@@ -170,7 +170,7 @@ void periodic_70Hz_overo_stm_spi_duplex(void) {
 		DOWNLINK_SEND_CAMERA_SNAPSHOT(DefaultChannel, &dc_photo_nr);
 		DOWNLINK_SEND_CAMERA_BLOB_X(DefaultChannel, &overo_msg_rx.x);
 		DOWNLINK_SEND_CAMERA_BLOB_Y(DefaultChannel, &overo_msg_rx.y);
-		DOWNLINK_SEND_CAMERA_BLOB_AREA(DefaultChannel, &overo_msg_rx.area);
+		DOWNLINK_SEND_CAMERA_BLOB_AREA(DefaultChannel, &overo_msg_rx.z);
 		
 		// Populate next to be sent message
 		overo_msg_tx.a = 1;

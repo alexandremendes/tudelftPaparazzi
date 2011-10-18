@@ -126,7 +126,7 @@
    radio="radios/R6107SP_7ch.xml"
    telemetry="telemetry/telemetry_booz2.xml"
    flight_plan="flight_plans/rotorcraft_basic.xml"
-   settings=" settings/settings_booz2_ahrs_cmpl.xml settings/settings_booz2.xml"
+   settings=" settings/settings_booz2_ahrs_cmpl.xml settings/settings_booz2.xml settings/TUDelft/settings_gumstix_camera_interface.xml"
    gui_color="blue"
   />
   <aircraft

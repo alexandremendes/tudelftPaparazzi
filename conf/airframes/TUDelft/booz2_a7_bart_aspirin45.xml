@@ -244,6 +244,7 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
   <modules main_freq="70">
     <load name="overo_stm_spi_duplex.xml" />
     <load name="gps_ubx_ucenter.xml" />
+    <load name="TUDelft/gumstix_camera_interface.xml" />
   </modules> 
 
   <firmware name="rotorcraft">

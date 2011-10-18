@@ -1,0 +1,11 @@
+<!DOCTYPE settings SYSTEM "../settings.dtd">
+
+<settings>
+  <dl_settings NAME="NEW">
+    <dl_settings NAME="NEW">
+      <dl_setting MAX="1" MIN="0" STEP="1" VAR="gumstix_camera_interface_dummy_var" shortname="dummy" module="modules/gumstix_camera_interface/gumstix_camera_interface"/>
+      <dl_setting MAX="1" MIN="0" STEP="1" VAR="x_gumstix_simulated" shortname="x_cam" module="modules/gumstix_camera_interface/gumstix_camera_interface"/>
+      <dl_setting MAX="1" MIN="0" STEP="1" VAR="y_gumstix_simulated" shortname="y_cam" module="modules/gumstix_camera_interface/gumstix_camera_interface"/>
+    </dl_settings>
+  </dl_settings>
+</settings>

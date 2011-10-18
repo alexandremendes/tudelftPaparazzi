@@ -4,7 +4,7 @@
 #include <inttypes.h>
 
 typedef struct __attribute__ ((packed)) {
-	int x, y, area;
+	int x, y, z;
 } overo_msg_rx_t;
 
 typedef struct __attribute__ ((packed)) {
