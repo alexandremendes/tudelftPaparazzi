@@ -198,7 +198,7 @@ STATIC_INLINE void main_event( void ) {
   BaroEvent(on_baro_abs_event, on_baro_dif_event);
 
 #ifdef USE_GPS
-  GpsEvent(on_gps_event);
+  //GpsEvent(on_gps_event);
 #endif
 
   if (overo_msg_available == TRUE) {
