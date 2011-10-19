@@ -63,11 +63,14 @@
 
 #include "generated/modules.h"
 
+#include "arch/stm32/modules/overo_stm_spi_duplex/overo_stm_spi_duplex.h"
+
 static inline void on_gyro_event( void );
 static inline void on_accel_event( void );
 static inline void on_baro_abs_event( void );
 static inline void on_baro_dif_event( void );
 static inline void on_gps_event( void );
+static inline void on_vision_event( void );
 static inline void on_mag_event( void );
 
 #ifndef SITL
@@ -198,6 +201,10 @@ STATIC_INLINE void main_event( void ) {
   GpsEvent(on_gps_event);
 #endif
 
+  if (overo_msg_available == TRUE) {
+    on_vision_event();
+  }
+
 #ifdef FAILSAFE_GROUND_DETECT
   DetectGroundEvent();
 #endif
@@ -252,6 +259,10 @@ static inline void on_gps_event(void) {
   if (gps.fix == GPS_FIX_3D)
     vi_notify_gps_available();
 #endif
+}
+
+static inline void on_vision_event(void) {
+  ins_update_vision();
 }
 
 static inline void on_mag_event(void) {

@@ -67,6 +67,7 @@ extern void ins_realign_v(float z);
 extern void ins_propagate( void );
 extern void ins_update_baro( void );
 extern void ins_update_gps( void );
+extern void ins_update_vision( void );
 extern void ins_update_sonar( void );
 
 

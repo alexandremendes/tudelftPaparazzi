@@ -31,6 +31,8 @@
 
 #include "subsystems/ahrs.h"
 
+#include "arch/stm32/modules/overo_stm_spi_duplex/overo_stm_spi_duplex.h"
+
 #ifdef USE_VFF
 #include "subsystems/ins/vf_float.h"
 #endif
@@ -264,6 +266,16 @@ void ins_update_gps(void) {
     INT32_VECT3_ENU_OF_NED(ins_enu_accel, ins_ltp_accel);
   }
 #endif /* USE_GPS */
+}
+
+void ins_update_vision() {
+
+#ifdef USE_HFF
+    VECT2_ASSIGN(ins_gps_pos_m_ned, overo_msg_rx.x, overo_msg_rx.y);
+    VECT2_SDIV(ins_gps_pos_m_ned, ins_gps_pos_m_ned, 100.);
+    b2_hff_update_gps();    
+#endif
+
 }
 
 void ins_update_sonar() {
