@@ -60,7 +60,7 @@ void periodic_gumstix_camera_interface(void) {
     //WaypointAlt(WP_CAM) = 1;
     if (overo_msg_rx.z > 100)
     {
-      LED_TOGGLE(DEMO_MODULE_LED);
+      //LED_TOGGLE(DEMO_MODULE_LED);
     }
     euler_angles_test = ahrs.ltp_to_body_euler;
     if (euler_angles_test.phi < 10)
@@ -76,6 +76,10 @@ void periodic_gumstix_camera_interface(void) {
     if (z_accel_float > -9)
     {
 	//LED_TOGGLE(DEMO_MODULE_LED);
+    }
+    if (overo_msg_available == TRUE)
+    {
+       LED_TOGGLE(DEMO_MODULE_LED);
     }
   }
   else

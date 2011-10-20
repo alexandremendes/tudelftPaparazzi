@@ -263,9 +263,11 @@ __attribute__ ((always_inline)) static inline void  guidance_h_hover_run(void) {
 
   /* Rotate to body frame */
   int32_t s_psi, c_psi;
-  PPRZ_ITRIG_SIN(s_psi, ahrs.ltp_to_body_euler.psi);
-  PPRZ_ITRIG_COS(c_psi, ahrs.ltp_to_body_euler.psi);
+  //PPRZ_ITRIG_SIN(s_psi, ahrs.ltp_to_body_euler.psi);
+  //PPRZ_ITRIG_COS(c_psi, ahrs.ltp_to_body_euler.psi);
 
+  PPRZ_ITRIG_SIN(s_psi, 0);
+  PPRZ_ITRIG_COS(c_psi, 0);
 
   // INT32_TRIG_FRAC - 2: 100mm erreur, gain 100 -> 10000 command | 2 degres = 36000, so multiply by 4
   guidance_h_command_body.phi =
@@ -382,6 +384,9 @@ __attribute__ ((always_inline)) static inline void  guidance_h_nav_run(bool_t in
 
 __attribute__ ((always_inline)) static inline void guidance_h_hover_enter(void) {
 
+  //VECT2_COPY(guidance_h_pos_sp, ins_ltp_pos);
+  ins_ltp_pos.x = 0;
+  ins_ltp_pos.y = 0;
   VECT2_COPY(guidance_h_pos_sp, ins_ltp_pos);
 
   STABILIZATION_ATTITUDE_RESET_PSI_REF( guidance_h_rc_sp );

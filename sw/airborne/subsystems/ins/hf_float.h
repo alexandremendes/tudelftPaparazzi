@@ -37,7 +37,7 @@
 #define HFF_FREQ (512./HFF_PRESCALER)
 #define DT_HFILTER (1./HFF_FREQ)
 
-#define HFF_UPDATE_SPEED
+//#define HFF_UPDATE_SPEED
 
 struct HfilterFloat {
   float x;

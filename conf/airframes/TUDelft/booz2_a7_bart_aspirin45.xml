@@ -45,10 +45,14 @@ comment everything that is 2 lines back when you stop simulaton-->
       <define name="GYRO_P_SIGN" value="1"/>
       <define name="GYRO_Q_SIGN" value="-1"/>
       <define name="GYRO_R_SIGN" value="-1"/>
-
+<!--
     <define name="GYRO_P_NEUTRAL" value="31948"/>
     <define name="GYRO_Q_NEUTRAL" value="31834"/>
     <define name="GYRO_R_NEUTRAL" value="32687"/>
+-->
+    <define name="GYRO_P_NEUTRAL" value="33250"/>
+    <define name="GYRO_Q_NEUTRAL" value="32380"/>
+    <define name="GYRO_R_NEUTRAL" value="32550"/>
 
     <define name="GYRO_P_SENS" value=" 1.101357422" integer="16"/>
     <define name="GYRO_Q_SENS" value=" 1.122670898" integer="16"/>
@@ -66,9 +70,17 @@ comment everything that is 2 lines back when you stop simulaton-->
 <define name="ACCEL_Y_SENS" value="2.54239768247" integer="16"/>
 <define name="ACCEL_Z_SENS" value="2.54900395804" integer="16"/>
 
+<!--
 <define name="ACCEL_X_NEUTRAL" value="33000"/>
 <define name="ACCEL_Y_NEUTRAL" value="33000"/>
 <define name="ACCEL_Z_NEUTRAL" value="32554"/>
+-->
+
+<define name="ACCEL_X_NEUTRAL" value="32735"/>
+<define name="ACCEL_Y_NEUTRAL" value="32795"/>
+<define name="ACCEL_Z_NEUTRAL" value="32365"/>
+
+
 <!--
       <define name="MAG_X_CHAN" value="4"/>
       <define name="MAG_Y_CHAN" value="0"/>
@@ -199,7 +211,7 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
 -->
 
   <section name="INS" prefix="INS_">
-    <define name="BARO_SENS" value="10." integer="16"/>
+    <define name="BARO_SENS" value="20." integer="16"/>
     <define name="UNTILT_ACCEL" value="1"/>
   </section>
 
@@ -233,7 +245,7 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
     <!--uncommant API protocol in makefile-->
 <!--    <define name="XBEE_INIT" value="&quot;ATCHC\rATID3332\rATPL4\rATRN1\rATTT80\rATBD3\rATWR\r&quot;"/>
     <define name="NO_XBEE_API_INIT" value="TRUE"/>   uncommant after programed-->
- </section>
+ </section><subsystem name="ins"           type="hff"/>
 
     <section name="SIMULATOR" prefix="NPS_">
       <define name="ACTUATOR_NAMES"  value="{&quot;front_motor&quot;, &quot;back_motor&quot;, &quot;right_motor&quot;, &quot;left_motor&quot;}"/>
@@ -277,6 +289,7 @@ http://ngdc.noaa.gov/geomag/magfield.shtml
 <!--      <define name="UART1_NEW_BAUD" value="B9600"/>-->
     </subsystem>
 <!--    <subsystem name="ins"           type="hff"/> -->
+    <subsystem name="ins"           type="hff"/> 
     <subsystem name="stabilization" type="euler"/>
   </firmware>
 
