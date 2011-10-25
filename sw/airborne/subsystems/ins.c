@@ -154,7 +154,8 @@ void ins_propagate() {
   float z_accel_float = ACCEL_FLOAT_OF_BFP(accel_ltp.z);
 
 #ifdef USE_VFF
-  if (baro.status == BS_RUNNING && ins_baro_initialised) {
+  //if (baro.status == BS_RUNNING && ins_baro_initialised) {
+    if (baro.status == BS_RUNNING) {
     vff_propagate(z_accel_float);
     ins_ltp_accel.z = ACCEL_BFP_OF_REAL(vff_zdotdot);
     ins_ltp_speed.z = SPEED_BFP_OF_REAL(vff_zdot);
@@ -275,6 +276,9 @@ void ins_update_vision() {
     VECT2_SDIV(ins_gps_pos_m_ned, ins_gps_pos_m_ned, 100.);
     b2_hff_update_gps();    
 #endif
+    float alt_float;
+    alt_float = overo_msg_rx.z/100.0;
+    vff_update(alt_float);
 
 }
 

@@ -195,7 +195,7 @@ STATIC_INLINE void main_event( void ) {
 
   ImuEvent(on_gyro_event, on_accel_event, on_mag_event);
 
-  BaroEvent(on_baro_abs_event, on_baro_dif_event);
+  //BaroEvent(on_baro_abs_event, on_baro_dif_event);
 
 #ifdef USE_GPS
   //GpsEvent(on_gps_event);
