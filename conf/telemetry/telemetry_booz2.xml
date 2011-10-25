@@ -4,19 +4,27 @@
 
 
   <process name="Main">
-
+<!--
     <mode name="log_imu">
       <message name="ROTORCRAFT_STATUS"       period="1.2"/>
       <message name="DL_VALUE"          period="0.5"/>
       <message name="ALIVE"             period="2.1"/>
-
-			<message name="IMU_ACCEL_SCALED"     period=".2"/>
+      <message name="IMU_ACCEL_SCALED"     period=".2"/>
       <message name="IMU_GYRO_SCALED"      period=".2"/>
       <message name="IMU_MAG_SCALED"       period=".2"/>
       <message name="BARO_RAW"          period=".2"/>
-			<message name="ROTORCRAFT_FP"       period=".2"/>
-
+      <message name="ROTORCRAFT_FP"       period=".2"/>
     </mode>
+-->
+
+    <mode name="log_imu">
+      <message name="ROTORCRAFT_STATUS"       period="1.2"/>
+      <message name="DL_VALUE"                period="0.5"/>
+      <message name="ALIVE"                   period="2.1"/>
+      <message name="IMU_ACCEL_SCALED"        period=".03"/>
+      <message name="ROTORCRAFT_FP"           period=".03"/>
+    </mode>
+
 
 
     <mode name="default">
