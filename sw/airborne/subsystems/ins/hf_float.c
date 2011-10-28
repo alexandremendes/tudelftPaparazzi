@@ -52,6 +52,7 @@
 #endif
 #define Q       HFF_ACCEL_NOISE*DT_HFILTER*DT_HFILTER/2.
 #define Qdotdot HFF_ACCEL_NOISE*DT_HFILTER
+#define Qbiasbiash 1e-7 
 
 //TODO: proper measurement noise
 #ifndef HFF_R_POS
@@ -281,6 +282,7 @@ void b2_hff_init(float init_x, float init_xdot, float init_y, float init_ydot) {
 static inline void b2_hff_init_x(float init_x, float init_xdot) {
   b2_hff_state.x     = init_x;
   b2_hff_state.xdot  = init_xdot;
+  b2_hff_state.xbias = 0;
   int i, j;
   for (i=0; i<HFF_STATE_SIZE; i++) {
     for (j=0; j<HFF_STATE_SIZE; j++)
@@ -293,6 +295,7 @@ static inline void b2_hff_init_x(float init_x, float init_xdot) {
 static inline void b2_hff_init_y(float init_y, float init_ydot) {
   b2_hff_state.y     = init_y;
   b2_hff_state.ydot  = init_ydot;
+  b2_hff_state.ybias = 0;
   int i, j;
   for (i=0; i<HFF_STATE_SIZE; i++) {
     for (j=0; j<HFF_STATE_SIZE; j++)
@@ -446,6 +449,8 @@ void b2_hff_propagate(void) {
       INT32_RMAT_TRANSP_VMULT(mean_accel_ltp, ahrs.ltp_to_body_rmat, acc_body_mean);
       b2_hff_xdd_meas = ACCEL_FLOAT_OF_BFP(mean_accel_ltp.x);
       b2_hff_ydd_meas = ACCEL_FLOAT_OF_BFP(mean_accel_ltp.y);
+      //b2_hff_xdd_meas = ACCEL_FLOAT_OF_BFP(acc_body_mean.x);
+      //b2_hff_ydd_meas = ACCEL_FLOAT_OF_BFP(acc_body_mean.y);
 #ifdef GPS_LAG
       b2_hff_store_accel_ltp(b2_hff_xdd_meas, b2_hff_ydd_meas);
 #endif
@@ -588,36 +593,70 @@ void b2_hff_realign(struct FloatVect2 pos, struct FloatVect2 vel) {
 */
 static inline void b2_hff_propagate_x(struct HfilterFloat* hff_work) {
   /* update state */
-  hff_work->xdotdot = b2_hff_xdd_meas;
+  hff_work->xdotdot = b2_hff_xdd_meas - hff_work->xbias;
   hff_work->x = hff_work->x + DT_HFILTER * hff_work->xdot;
   hff_work->xdot = hff_work->xdot + DT_HFILTER * hff_work->xdotdot;
   /* update covariance */
+  //const float FPF00 = hff_work->xP[0][0] + DT_HFILTER * ( hff_work->xP[1][0] + hff_work->xP[0][1] + DT_HFILTER * hff_work->xP[1][1] );
+  //const float FPF01 = hff_work->xP[0][1] + DT_HFILTER * hff_work->xP[1][1];
+  //const float FPF10 = hff_work->xP[1][0] + DT_HFILTER * hff_work->xP[1][1];
+  //const float FPF11 = hff_work->xP[1][1];
   const float FPF00 = hff_work->xP[0][0] + DT_HFILTER * ( hff_work->xP[1][0] + hff_work->xP[0][1] + DT_HFILTER * hff_work->xP[1][1] );
-  const float FPF01 = hff_work->xP[0][1] + DT_HFILTER * hff_work->xP[1][1];
-  const float FPF10 = hff_work->xP[1][0] + DT_HFILTER * hff_work->xP[1][1];
-  const float FPF11 = hff_work->xP[1][1];
+  const float FPF01 = hff_work->xP[0][1] + DT_HFILTER * ( hff_work->xP[1][1] - hff_work->xP[0][2] - DT_HFILTER * hff_work->xP[1][2] );
+  const float FPF02 = hff_work->xP[0][2] + DT_HFILTER * ( hff_work->xP[1][2] );
+  const float FPF10 = hff_work->xP[1][0] + DT_HFILTER * (-hff_work->xP[2][0] + hff_work->xP[1][1] + DT_HFILTER * hff_work->xP[2][1] );
+  const float FPF11 = hff_work->xP[1][1] + DT_HFILTER * (-hff_work->xP[2][1] - hff_work->xP[1][2] - DT_HFILTER * hff_work->xP[2][2] );
+  const float FPF12 = hff_work->xP[1][2] + DT_HFILTER * (-hff_work->xP[2][2] );
+  const float FPF20 = hff_work->xP[2][0] + DT_HFILTER * ( hff_work->xP[2][1] );
+  const float FPF21 = hff_work->xP[2][1] + DT_HFILTER * (-hff_work->xP[2][2] );
+  const float FPF22 = hff_work->xP[2][2];
 
   hff_work->xP[0][0] = FPF00 + Q;
   hff_work->xP[0][1] = FPF01;
+  hff_work->xP[0][2] = FPF02;
   hff_work->xP[1][0] = FPF10;
   hff_work->xP[1][1] = FPF11 + Qdotdot;
+  hff_work->xP[1][2] = FPF12;
+  hff_work->xP[2][0] = FPF20;
+  hff_work->xP[2][1] = FPF21;
+  hff_work->xP[2][2] = FPF22 + Qbiasbiash;
 }
 
 static inline void b2_hff_propagate_y(struct HfilterFloat* hff_work) {
   /* update state */
-  hff_work->ydotdot = b2_hff_ydd_meas;
+  hff_work->ydotdot = b2_hff_ydd_meas - hff_work->ybias;
   hff_work->y = hff_work->y + DT_HFILTER * hff_work->ydot + DT_HFILTER*DT_HFILTER/2 * hff_work->ydotdot;
   hff_work->ydot = hff_work->ydot + DT_HFILTER * hff_work->ydotdot;
   /* update covariance */
-  const float FPF00 = hff_work->yP[0][0] + DT_HFILTER * ( hff_work->yP[1][0] + hff_work->yP[0][1] + DT_HFILTER * hff_work->yP[1][1] );
-  const float FPF01 = hff_work->yP[0][1] + DT_HFILTER * hff_work->yP[1][1];
-  const float FPF10 = hff_work->yP[1][0] + DT_HFILTER * hff_work->yP[1][1];
-  const float FPF11 = hff_work->yP[1][1];
+  //const float FPF00 = hff_work->yP[0][0] + DT_HFILTER * ( hff_work->yP[1][0] + hff_work->yP[0][1] + DT_HFILTER * hff_work->yP[1][1] );
+  //const float FPF01 = hff_work->yP[0][1] + DT_HFILTER * hff_work->yP[1][1];
+  //const float FPF10 = hff_work->yP[1][0] + DT_HFILTER * hff_work->yP[1][1];
+  //const float FPF11 = hff_work->yP[1][1];
 
+  const float FPF00 = hff_work->yP[0][0] + DT_HFILTER * ( hff_work->yP[1][0] + hff_work->yP[0][1] + DT_HFILTER * hff_work->yP[1][1] );
+  const float FPF01 = hff_work->yP[0][1] + DT_HFILTER * ( hff_work->yP[1][1] - hff_work->yP[0][2] - DT_HFILTER * hff_work->yP[1][2] );
+  const float FPF02 = hff_work->yP[0][2] + DT_HFILTER * ( hff_work->yP[1][2] );
+  const float FPF10 = hff_work->yP[1][0] + DT_HFILTER * (-hff_work->yP[2][0] + hff_work->yP[1][1] + DT_HFILTER * hff_work->yP[2][1] );
+  const float FPF11 = hff_work->yP[1][1] + DT_HFILTER * (-hff_work->yP[2][1] - hff_work->yP[1][2] - DT_HFILTER * hff_work->yP[2][2] );
+  const float FPF12 = hff_work->yP[1][2] + DT_HFILTER * (-hff_work->yP[2][2] );
+  const float FPF20 = hff_work->yP[2][0] + DT_HFILTER * ( hff_work->yP[2][1] );
+  const float FPF21 = hff_work->yP[2][1] + DT_HFILTER * (-hff_work->yP[2][2] );
+  const float FPF22 = hff_work->yP[2][2];
+
+  //hff_work->yP[0][0] = FPF00 + Q;
+  //hff_work->yP[0][1] = FPF01;
+  //hff_work->yP[1][0] = FPF10;
+  //hff_work->yP[1][1] = FPF11 + Qdotdot;
   hff_work->yP[0][0] = FPF00 + Q;
   hff_work->yP[0][1] = FPF01;
+  hff_work->yP[0][2] = FPF02;
   hff_work->yP[1][0] = FPF10;
   hff_work->yP[1][1] = FPF11 + Qdotdot;
+  hff_work->yP[1][2] = FPF12;
+  hff_work->yP[2][0] = FPF20;
+  hff_work->yP[2][1] = FPF21;
+  hff_work->yP[2][2] = FPF22 + Qbiasbiash;
+
 }
 
 
@@ -652,19 +691,31 @@ static inline void b2_hff_update_x(struct HfilterFloat* hff_work, float x_meas, 
   const float S  = hff_work->xP[0][0] + Rpos;
   const float K1 = hff_work->xP[0][0] * 1/S;
   const float K2 = hff_work->xP[1][0] * 1/S;
+  const float K3 = hff_work->xP[2][0] * 1/S;
 
   hff_work->x     = hff_work->x     + K1 * y;
   hff_work->xdot  = hff_work->xdot  + K2 * y;
+  hff_work->xbias = hff_work->xbias + K3 * y;
 
   const float P11 = (1. - K1) * hff_work->xP[0][0];
   const float P12 = (1. - K1) * hff_work->xP[0][1];
+  const float P13 = (1. - K1) * hff_work->xP[0][2];
   const float P21 = -K2 * hff_work->xP[0][0] + hff_work->xP[1][0];
   const float P22 = -K2 * hff_work->xP[0][1] + hff_work->xP[1][1];
+  const float P23 = -K2 * hff_work->xP[0][2] + hff_work->xP[1][2];
+  const float P31 = -K3 * hff_work->xP[0][0] + hff_work->xP[2][0];
+  const float P32 = -K3 * hff_work->xP[0][1] + hff_work->xP[2][1];
+  const float P33 = -K3 * hff_work->xP[0][2] + hff_work->xP[2][2];
 
   hff_work->xP[0][0] = P11;
   hff_work->xP[0][1] = P12;
+  hff_work->xP[0][2] = P13;
   hff_work->xP[1][0] = P21;
   hff_work->xP[1][1] = P22;
+  hff_work->xP[1][2] = P23;
+  hff_work->xP[2][0] = P31;
+  hff_work->xP[2][1] = P32;
+  hff_work->xP[2][2] = P33;
 }
 
 static inline void b2_hff_update_y(struct HfilterFloat* hff_work, float y_meas, float Rpos) {
@@ -674,19 +725,31 @@ static inline void b2_hff_update_y(struct HfilterFloat* hff_work, float y_meas, 
   const float S  = hff_work->yP[0][0] + Rpos;
   const float K1 = hff_work->yP[0][0] * 1/S;
   const float K2 = hff_work->yP[1][0] * 1/S;
+  const float K3 = hff_work->yP[2][0] * 1/S;
 
   hff_work->y     = hff_work->y     + K1 * y;
   hff_work->ydot  = hff_work->ydot  + K2 * y;
+  hff_work->ybias = hff_work->ybias + K3 * y;
 
   const float P11 = (1. - K1) * hff_work->yP[0][0];
   const float P12 = (1. - K1) * hff_work->yP[0][1];
+  const float P13 = (1. - K1) * hff_work->yP[0][2];
   const float P21 = -K2 * hff_work->yP[0][0] + hff_work->yP[1][0];
   const float P22 = -K2 * hff_work->yP[0][1] + hff_work->yP[1][1];
+  const float P23 = -K2 * hff_work->yP[0][2] + hff_work->yP[1][2];
+  const float P31 = -K3 * hff_work->yP[0][0] + hff_work->yP[2][0];
+  const float P32 = -K3 * hff_work->yP[0][1] + hff_work->yP[2][1];
+  const float P33 = -K3 * hff_work->yP[0][2] + hff_work->yP[2][2];
 
   hff_work->yP[0][0] = P11;
   hff_work->yP[0][1] = P12;
+  hff_work->yP[0][2] = P13;
   hff_work->yP[1][0] = P21;
   hff_work->yP[1][1] = P22;
+  hff_work->yP[1][2] = P23;
+  hff_work->yP[2][0] = P31;
+  hff_work->yP[2][1] = P32;
+  hff_work->yP[2][2] = P33;
 }
 
 

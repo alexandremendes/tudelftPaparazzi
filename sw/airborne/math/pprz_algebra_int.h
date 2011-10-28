@@ -445,9 +445,9 @@ struct Int64Vect3 {
     int32_t ctheta;							\
     PPRZ_ITRIG_COS(ctheta, (_e).theta);					\
     int32_t spsi;							\
-    PPRZ_ITRIG_SIN(spsi, (_e).psi);					\
+    PPRZ_ITRIG_SIN(spsi, 0);					\
     int32_t cpsi;							\
-    PPRZ_ITRIG_COS(cpsi, (_e).psi);					\
+    PPRZ_ITRIG_COS(cpsi, 0);					\
     									\
     int32_t ctheta_cpsi = INT_MULT_RSHIFT(ctheta, cpsi,   INT32_TRIG_FRAC); \
     int32_t ctheta_spsi = INT_MULT_RSHIFT(ctheta, spsi,   INT32_TRIG_FRAC); \
@@ -522,6 +522,48 @@ struct Int64Vect3 {
 									\
   }
 
+#define INT32_RMAT_OF_EULERS_WITH_PSI(_rm, _e) {				\
+									\
+    int32_t sphi;							\
+    PPRZ_ITRIG_SIN(sphi, (_e).phi);					\
+    int32_t cphi;							\
+    PPRZ_ITRIG_COS(cphi, (_e).phi);					\
+    int32_t stheta;							\
+    PPRZ_ITRIG_SIN(stheta, (_e).theta);					\
+    int32_t ctheta;							\
+    PPRZ_ITRIG_COS(ctheta, (_e).theta);					\
+    int32_t spsi;							\
+    PPRZ_ITRIG_SIN(spsi, (_e).psi);					\
+    int32_t cpsi;							\
+    PPRZ_ITRIG_COS(cpsi, (_e).psi);					\
+    									\
+    int32_t ctheta_cpsi = INT_MULT_RSHIFT(ctheta, cpsi,   INT32_TRIG_FRAC); \
+    int32_t ctheta_spsi = INT_MULT_RSHIFT(ctheta, spsi,   INT32_TRIG_FRAC); \
+    int32_t cphi_spsi   = INT_MULT_RSHIFT(cphi,   spsi,   INT32_TRIG_FRAC); \
+    int32_t cphi_cpsi   = INT_MULT_RSHIFT(cphi,   cpsi,   INT32_TRIG_FRAC); \
+    int32_t cphi_ctheta = INT_MULT_RSHIFT(cphi,   ctheta, INT32_TRIG_FRAC); \
+    int32_t cphi_stheta = INT_MULT_RSHIFT(cphi,   stheta, INT32_TRIG_FRAC); \
+    int32_t sphi_ctheta = INT_MULT_RSHIFT(sphi,   ctheta, INT32_TRIG_FRAC); \
+    int32_t sphi_stheta = INT_MULT_RSHIFT(sphi,   stheta, INT32_TRIG_FRAC); \
+    int32_t sphi_spsi   = INT_MULT_RSHIFT(sphi,   spsi,   INT32_TRIG_FRAC); \
+    int32_t sphi_cpsi   = INT_MULT_RSHIFT(sphi,   cpsi,   INT32_TRIG_FRAC); \
+    									\
+    int32_t sphi_stheta_cpsi = INT_MULT_RSHIFT(sphi_stheta, cpsi, INT32_TRIG_FRAC); \
+    int32_t sphi_stheta_spsi = INT_MULT_RSHIFT(sphi_stheta, spsi, INT32_TRIG_FRAC); \
+    int32_t cphi_stheta_cpsi = INT_MULT_RSHIFT(cphi_stheta, cpsi, INT32_TRIG_FRAC); \
+    int32_t cphi_stheta_spsi = INT_MULT_RSHIFT(cphi_stheta, spsi, INT32_TRIG_FRAC); \
+    									\
+    RMAT_ELMT(_rm, 0, 0) = ctheta_cpsi;					\
+    RMAT_ELMT(_rm, 0, 1) = ctheta_spsi;					\
+    RMAT_ELMT(_rm, 0, 2) = -stheta;					\
+    RMAT_ELMT(_rm, 1, 0) = sphi_stheta_cpsi - cphi_spsi;		\
+    RMAT_ELMT(_rm, 1, 1) = sphi_stheta_spsi + cphi_cpsi;		\
+    RMAT_ELMT(_rm, 1, 2) = sphi_ctheta;					\
+    RMAT_ELMT(_rm, 2, 0) = cphi_stheta_cpsi + sphi_spsi;		\
+    RMAT_ELMT(_rm, 2, 1) = cphi_stheta_spsi - sphi_cpsi;		\
+    RMAT_ELMT(_rm, 2, 2) = cphi_ctheta;					\
+    									\
+  }
 
 /*
  * Quaternions
