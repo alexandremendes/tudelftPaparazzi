@@ -147,10 +147,12 @@ void ins_realign_v(float z) {
 
 void ins_propagate() {
   /* untilt accels */
-  struct Int32Vect3 accel_body;
-  INT32_RMAT_TRANSP_VMULT(accel_body, imu.body_to_imu_rmat, imu.accel);
+  //struct Int32Vect3 accel_body;
+  //INT32_RMAT_TRANSP_VMULT(accel_body, imu.body_to_imu_rmat, imu.accel);
+  //struct Int32Vect3 accel_ltp;
+  //INT32_RMAT_TRANSP_VMULT(accel_ltp, ahrs.ltp_to_body_rmat, accel_body);
   struct Int32Vect3 accel_ltp;
-  INT32_RMAT_TRANSP_VMULT(accel_ltp, ahrs.ltp_to_body_rmat, accel_body);
+  INT32_RMAT_TRANSP_VMULT(accel_ltp, imu.body_to_imu_rmat, imu.accel);
   float z_accel_float = ACCEL_FLOAT_OF_BFP(accel_ltp.z);
 
 #ifdef USE_VFF
