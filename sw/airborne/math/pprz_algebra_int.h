@@ -445,9 +445,9 @@ struct Int64Vect3 {
     int32_t ctheta;							\
     PPRZ_ITRIG_COS(ctheta, (_e).theta);					\
     int32_t spsi;							\
-    PPRZ_ITRIG_SIN(spsi, 0);					\
+    PPRZ_ITRIG_SIN(spsi, (_e).psi);					\
     int32_t cpsi;							\
-    PPRZ_ITRIG_COS(cpsi, 0);					\
+    PPRZ_ITRIG_COS(cpsi, (_e).psi);					\
     									\
     int32_t ctheta_cpsi = INT_MULT_RSHIFT(ctheta, cpsi,   INT32_TRIG_FRAC); \
     int32_t ctheta_spsi = INT_MULT_RSHIFT(ctheta, spsi,   INT32_TRIG_FRAC); \

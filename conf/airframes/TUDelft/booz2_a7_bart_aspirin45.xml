@@ -76,7 +76,7 @@ comment everything that is 2 lines back when you stop simulaton-->
 <define name="ACCEL_Z_NEUTRAL" value="32554"/>
 -->
 
-<define name="ACCEL_X_NEUTRAL" value="32735"/>
+<define name="ACCEL_X_NEUTRAL" value="33140"/>
 <define name="ACCEL_Y_NEUTRAL" value="32795"/>
 <define name="ACCEL_Z_NEUTRAL" value="32365"/>
 
@@ -95,13 +95,13 @@ comment everything that is 2 lines back when you stop simulaton-->
 
 
 
-<define name="MAG_X_SENS" value="4.68438721124" integer="16"/>
-<define name="MAG_Y_SENS" value="4.54132316969" integer="16"/>
-<define name="MAG_Z_SENS" value="2.69730737452" integer="16"/>
+<define name="MAG_X_SENS" value="0.00014" integer="16"/>
+<define name="MAG_Y_SENS" value="0.00014" integer="16"/>
+<define name="MAG_Z_SENS" value="0.0001" integer="16"/>
 
-<define name="MAG_X_NEUTRAL" value="27"/>
-<define name="MAG_Y_NEUTRAL" value="-12"/>
-<define name="MAG_Z_NEUTRAL" value="-13"/>
+<define name="MAG_X_NEUTRAL" value="-20000"/>
+<define name="MAG_Y_NEUTRAL" value="20000"/>
+<define name="MAG_Z_NEUTRAL" value="0"/>
 
     <define name="BODY_TO_IMU_PHI"   value="RadOfDeg(  0.)"/>
     <define name="BODY_TO_IMU_THETA" value="RadOfDeg(  0.)"/>
@@ -201,14 +201,14 @@ AP_MODE_NAV
 <!--needed for "ahrs"          type="ic"
 H is the normalized local magnetic field which can be obtained from
 http://ngdc.noaa.gov/geomag/magfield.shtml
-
+-->
   <section name="AHRS" prefix="AHRS_">
     <define name="PROPAGATE_FREQUENCY" value="512"/>
-    <define name="H_X" value=" 0.51562740288882"/>
-    <define name="H_Y" value="-0.05707735220832"/>
-    <define name="H_Z" value=" 0.85490967783446"/>
+    <define name="H_X" value="1"/>
+    <define name="H_Y" value="0"/>
+    <define name="H_Z" value="0"/>
   </section>
--->
+
 
   <section name="INS" prefix="INS_">
     <define name="BARO_SENS" value="20." integer="16"/>
