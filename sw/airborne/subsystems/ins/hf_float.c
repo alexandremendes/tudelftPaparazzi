@@ -47,21 +47,26 @@
 #define INIT_PXX 1.
 /* process noise (is the same for x and y)*/
 #ifndef HFF_ACCEL_NOISE
-//#define HFF_ACCEL_NOISE 0.5
-#define HFF_ACCEL_NOISE 0.05
+#define HFF_ACCEL_NOISE 0.5
+//#define HFF_ACCEL_NOISE 0.05
 #endif
-#define Q       HFF_ACCEL_NOISE*DT_HFILTER*DT_HFILTER/2.
-#define Qdotdot HFF_ACCEL_NOISE*DT_HFILTER
-#define Qbiasbiash 1e-7 
+//#define Q       HFF_ACCEL_NOISE*DT_HFILTER*DT_HFILTER/2.
+//#define Qdotdot HFF_ACCEL_NOISE*DT_HFILTER
+//#define Qbiasbiash 1e-7 
+#define Qbiasbiash 1e-6 
+#define Q       HFF_ACCEL_NOISE/512./512./2.
+#define Qdotdot HFF_ACCEL_NOISE/512.
 
 //TODO: proper measurement noise
 #ifndef HFF_R_POS
 //#define HFF_R_POS   8.
-#define HFF_R_POS 0.01
+//#define HFF_R_POS 0.01
+#define HFF_R_POS   1.
 #endif
 #ifndef HFF_R_POS_MIN
 //#define HFF_R_POS_MIN 3.
-#define HFF_R_POS_MIN 0.01
+//#define HFF_R_POS_MIN 0.01
+#define HFF_R_POS_MIN 1.
 #endif
 
 #ifndef HFF_R_SPEED

@@ -39,8 +39,8 @@ temps :
 #define Qzz       ACCEL_NOISE/512./512./2.
 #define Qzdotzdot ACCEL_NOISE/512.
 #define Qbiasbias 1e-7
-//#define R 1.
-#define R 0.01
+#define R 1.
+//#define R 0.01
 
 float vff_z;
 float vff_bias;
