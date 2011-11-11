@@ -89,6 +89,7 @@ float Rgps_pos, Rgps_vel;
 /* output filter states */
 struct HfilterFloat b2_hff_state;
 
+struct innovations y_inn;
 
 /* last acceleration measurement */
 float b2_hff_xdd_meas;
@@ -242,6 +243,10 @@ static inline void b2_hff_update_xdot(struct HfilterFloat* hff_work, float vel, 
 static inline void b2_hff_update_ydot(struct HfilterFloat* hff_work, float vel, float Rvel);
 
 
+static inline float store_innovations(float y, struct innovations* y_inn);
+
+
+
 
 void b2_hff_init(float init_x, float init_xdot, float init_y, float init_ydot) {
   Rgps_pos = HFF_R_POS;
@@ -306,6 +311,19 @@ static inline void b2_hff_init_y(float init_y, float init_ydot) {
     for (j=0; j<HFF_STATE_SIZE; j++)
       b2_hff_state.yP[i][j] = 0.;
 	b2_hff_state.yP[i][i] = INIT_PXX;
+  }
+
+  // initialize innovations as zeros
+  y_inn.y1 = 0;
+  y_inn.y2 = 0;
+  y_inn.y3 = 0;
+  y_inn.y4 = 0;
+  y_inn.y5 = 0;
+  y_inn.y6 = 0;
+  y_inn.y7 = 0;
+  y_inn.y8 = 0;
+  for (i=0; i<INN_BUFFER_SIZE; i++) {
+	y_inn.yn[i] = 0;
   }
 }
 
@@ -755,6 +773,21 @@ static inline void b2_hff_update_y(struct HfilterFloat* hff_work, float y_meas, 
   hff_work->yP[2][0] = P31;
   hff_work->yP[2][1] = P32;
   hff_work->yP[2][2] = P33;
+
+  float avg_inn = store_innovations(y, &y_inn);
+  float PXX_reset = 10;
+  if ( avg_inn > 0.15 || avg_inn < -0.15 )
+  {
+    hff_work->yP[0][0] = PXX_reset;
+    hff_work->yP[0][1] = 0;
+    hff_work->yP[0][2] = 0;
+    hff_work->yP[1][0] = 0;
+    hff_work->yP[1][1] = PXX_reset;
+    hff_work->yP[1][2] = 0;
+    hff_work->yP[2][0] = 0;
+    hff_work->yP[2][1] = 0;
+    hff_work->yP[2][2] = PXX_reset;    
+  }
 }
 
 
@@ -826,4 +859,28 @@ static inline void b2_hff_update_ydot(struct HfilterFloat* hff_work, float vel, 
   hff_work->yP[0][1] = P12;
   hff_work->yP[1][0] = P21;
   hff_work->yP[1][1] = P22;
+}
+
+static inline float store_innovations(float y,struct innovations* y_inn) {
+  y_inn->y1 = y_inn->y2;
+  y_inn->y2 = y_inn->y3;
+  y_inn->y3 = y_inn->y4;
+  y_inn->y4 = y_inn->y5;
+  y_inn->y5 = y_inn->y6;
+  y_inn->y6 = y_inn->y7;
+  y_inn->y7 = y_inn->y8;
+  y_inn->y8 = y;
+  int i;
+  for (i=0; i<(INN_BUFFER_SIZE-1); i++) {
+	y_inn->yn[i] = y_inn->yn[i+1];
+  }
+  y_inn->yn[INN_BUFFER_SIZE-1] = y;
+
+  //float avg = ( y_inn->y1 + y_inn->y2 + y_inn->y3 + y_inn->y4 + y_inn->y5 + y_inn->y6 + y_inn->y7 + y_inn->y8 ) / 8;
+  float total = 0;
+  for (i=0; i<(INN_BUFFER_SIZE); i++) {
+	total = total + y_inn->yn[i];
+  }
+  float avg = total/INN_BUFFER_SIZE;
+  return avg;
 }

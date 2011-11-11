@@ -40,6 +40,10 @@
 
 //#define HFF_UPDATE_SPEED
 
+#ifndef INN_BUFFER_SIZE
+#define INN_BUFFER_SIZE 90
+#endif
+
 struct HfilterFloat {
   float x;
   /* float xbias; */
@@ -58,6 +62,20 @@ struct HfilterFloat {
 };
 
 extern struct HfilterFloat b2_hff_state;
+
+struct innovations {
+  float y1;
+  float y2;
+  float y3;
+  float y4;
+  float y5;
+  float y6;
+  float y7;
+  float y8;
+  float yn[INN_BUFFER_SIZE];
+};
+
+extern struct innovations y_inn;
 
 extern float b2_hff_x_meas;
 extern float b2_hff_y_meas;
